@@ -69,15 +69,15 @@ def md_to_html(markdown: str, section_links: dict[str, str]) -> str:
             continue
         if line.startswith("# "):
             flush_para()
-            out.append(f"<h1>{finish(inline(line[2:].strip()))}</h1>")
+            out.append(f"<h1>{inline(line[2:].strip())}</h1>")
             continue
         if line.startswith("## "):
             flush_para()
-            out.append(f"<h2>{finish(inline(line[3:].strip()))}</h2>")
+            out.append(f"<h2>{inline(line[3:].strip())}</h2>")
             continue
         if line.startswith("### "):
             flush_para()
-            out.append(f"<h3>{finish(inline(line[4:].strip()))}</h3>")
+            out.append(f"<h3>{inline(line[4:].strip())}</h3>")
             continue
         if line.startswith("- "):
             flush_para()
