@@ -12,7 +12,7 @@ DOCS_DIR = ROOT / "docs"
 ASSETS_DIR = DOCS_DIR / "assets"
 SECTION_OUT_DIR = DOCS_DIR / "sections"
 
-SECTION_REF_RE = re.compile(r"\b(S\d{3})\.\s*([^<\n]+)")
+SECTION_REF_RE = re.compile(r"\b(S\d{3}[A-Z]?)\.\s*([^<\n]+)")
 
 
 def inline(text: str) -> str:
@@ -96,7 +96,7 @@ def extract_title(markdown: str) -> str:
 
 
 def extract_section_id(filename: str) -> str | None:
-    match = re.match(r"(S\d{3})_", filename)
+    match = re.match(r"(S\d{3}[A-Z]?)_", filename)
     return match.group(1) if match else None
 
 
@@ -108,6 +108,8 @@ def write(path: Path, content: str) -> None:
 def main() -> None:
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
     SECTION_OUT_DIR.mkdir(parents=True, exist_ok=True)
+    for old_page in SECTION_OUT_DIR.glob("S*.html"):
+        old_page.unlink()
 
     source_sections: list[dict[str, str]] = []
     section_links: dict[str, str] = {}
