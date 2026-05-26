@@ -101,6 +101,17 @@ def extract_section_id(filename: str) -> str | None:
     return match.group(1) if match else None
 
 
+def section_sort_key(path: Path) -> tuple[int, str, str]:
+    """Sort S030 before S030B, while keeping lettered branches after the base section."""
+
+    match = re.match(r"S(\d{3})([A-Z]?)_", path.name)
+    if not match:
+        return (9999, "", path.name)
+    number = int(match.group(1))
+    suffix = match.group(2)
+    return (number, suffix, path.name)
+
+
 def write(path: Path, content: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8", newline="\n")
@@ -121,7 +132,7 @@ def main() -> None:
 
     source_sections: list[dict[str, str]] = []
     section_links: dict[str, str] = {}
-    for path in sorted(SECTIONS_DIR.glob("S*.md")):
+    for path in sorted(SECTIONS_DIR.glob("S*.md"), key=section_sort_key):
         markdown = path.read_text(encoding="utf-8")
         title = extract_title(markdown)
         outname = path.with_suffix(".html").name
