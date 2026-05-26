@@ -293,9 +293,36 @@ def build_big_workshop(source_sections: list[dict[str, str]], section_links: dic
 
     section_json = json.dumps(data_sections, ensure_ascii=False).replace("</", "<\\/")
     edges_json = json.dumps(edges, ensure_ascii=False).replace("</", "<\\/")
+    def render_node(item: dict[str, str]) -> str:
+        return (
+            f'<button class="flow-node {item["kind"]}" '
+            f'data-section="{html.escape(item["id"])}" '
+            f'aria-label="{html.escape(item["title"])}">'
+            f'<span>{html.escape(item["id"])}</span></button>'
+        )
+
+    rows: list[list[dict[str, str]]] = []
+    index = 0
+    while index < len(data_sections):
+        item = data_sections[index]
+        match = re.match(r"S(\d{3})([A-Z]?)$", item['id'])
+        suffix = match.group(2) if match else ''
+        if suffix:
+            prefix = item['id'][:4]
+            group: list[dict[str, str]] = []
+            while index < len(data_sections) and data_sections[index]['id'].startswith(prefix) and re.match(r"S\d{3}[A-Z]$", data_sections[index]['id']):
+                group.append(data_sections[index])
+                index += 1
+            rows.append(group)
+            continue
+        rows.append([item])
+        index += 1
+
     nodes = '\n'.join(
-        f'<button class="flow-node {item["kind"]}" data-section="{html.escape(item["id"])}" aria-label="{html.escape(item["title"])}"><span>{html.escape(item["id"])}</span></button>'
-        for item in data_sections
+        '<div class="flow-row ' + ('branch-row' if len(row) > 1 else 'single-row') + '">'
+        + ''.join(render_node(item) for item in row)
+        + '</div>'
+        for row in rows
     )
 
     page = f'''<!doctype html>
@@ -309,28 +336,29 @@ def build_big_workshop(source_sections: list[dict[str, str]], section_links: dic
 <style>
 :root{{--paper:#fbfaf8;--surface:#ffffff;--surface-warm:#f5f2ee;--ink:#171615;--muted:#69635d;--hair:#dfdbd4;--hair-strong:#c9c2b8;--accent:#8f5b2e;--accent-soft:#f3e6d8;--story:#ffffff;--decision:#fff7e8;--ending:#f1f1f1;}}
 *{{box-sizing:border-box}} html,body{{height:100%}} body{{margin:0;background:var(--paper);color:var(--ink);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",Segoe UI,sans-serif;letter-spacing:-.012em;word-break:keep-all;overflow:hidden}}
-a{{color:inherit}} .workshop{{display:grid;grid-template-columns:220px minmax(560px,1fr) minmax(420px,34vw);height:100vh}}
+a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;padding:7px 12px;border:1px solid var(--hair);border-radius:999px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);font-size:13px;font-weight:700;color:var(--ink);box-shadow:0 8px 24px rgba(31,25,18,.06)}} .workshop{{display:grid;grid-template-columns:220px minmax(0,1fr) minmax(0,1fr);height:100vh}}
 .sidebar{{border-right:1px solid var(--hair);background:#fff;padding:24px 18px;display:flex;flex-direction:column;gap:22px}}
-.brand small{{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-bottom:6px}} .brand strong{{display:block;font-size:22px;line-height:1.05;letter-spacing:-.04em}} .brand span{{display:block;margin-top:8px;color:var(--muted);font-size:13px;line-height:1.45}}
-.nav{{display:grid;gap:6px}} .nav button,.small-link{{border:0;background:transparent;text-align:left;border-radius:10px;padding:10px 11px;color:var(--muted);font:600 15px/1 Pretendard,sans-serif;text-decoration:none;cursor:pointer}} .nav button.active,.nav button:hover,.small-link:hover{{background:var(--surface-warm);color:var(--ink)}} .small-link{{display:block;margin-top:auto;border:1px solid var(--hair);text-align:center;color:var(--ink);background:#fff}}
+.brand small{{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-bottom:6px}} .brand strong{{display:block;font-size:20px;line-height:1.15;letter-spacing:-.04em}} .brand span{{display:block;margin-top:8px;color:var(--muted);font-size:13px;line-height:1.45}}
+.nav{{display:grid;gap:6px}} .menu-title{{margin:2px 0 8px;padding:11px;border:1px solid var(--hair);border-radius:12px;background:var(--surface-warm);font-size:14px;font-weight:800;color:var(--ink)}} .submenu{{display:grid;gap:4px;padding-left:8px;border-left:1px solid var(--hair)}} .nav button,.small-link{{border:0;background:transparent;text-align:left;border-radius:10px;padding:10px 11px;color:var(--muted);font:600 15px/1 Pretendard,sans-serif;text-decoration:none;cursor:pointer}} .nav button.active,.nav button:hover,.small-link:hover{{background:var(--surface-warm);color:var(--ink)}} .nav button:disabled{{color:#b8b2aa;cursor:not-allowed;background:transparent}} .small-link{{display:block;margin-top:auto;border:1px solid var(--hair);text-align:center;color:var(--ink);background:#fff}}
 .legend{{border-top:1px solid var(--hair);padding-top:16px;color:var(--muted);font-size:12px;line-height:1.7}} .legend b{{color:var(--ink)}} .legend-row{{display:flex;align-items:center;gap:8px;margin:6px 0}} .sample{{width:18px;height:13px;border:1px solid var(--hair-strong);background:#fff;display:inline-block}} .sample.decision{{transform:rotate(45deg);background:var(--decision)}} .sample.ending{{border-radius:999px;background:var(--ending)}}
-.flow-wrap{{position:relative;display:flex;flex-direction:column;min-width:0;background:linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:32px 32px}}
+.flow-wrap{{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:32px 32px}}
 .flow-header{{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--hair);background:rgba(251,250,248,.86);backdrop-filter:blur(14px);z-index:3}} .flow-header h1{{margin:0;font-size:21px;letter-spacing:-.04em}} .flow-header p{{margin:4px 0 0;color:var(--muted);font-size:13px}} .flow-tools button{{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:8px 12px;font-weight:700;color:var(--muted);cursor:pointer}}
-.flow-canvas{{position:relative;flex:1;overflow:auto;padding:54px 70px 90px}} .flow-grid{{position:relative;z-index:2;display:grid;grid-template-columns:repeat(4,112px);gap:42px 72px;align-items:center;justify-content:center;min-width:680px}}
-.flow-node{{position:relative;width:112px;height:58px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 15px/1 Pretendard,sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}} .flow-node:hover{{transform:translateY(-2px);box-shadow:0 10px 22px rgba(31,25,18,.10)}} .flow-node.decision{{background:var(--decision);transform:rotate(45deg);width:74px;height:74px;margin:0 19px}} .flow-node.decision span{{transform:rotate(-45deg)}} .flow-node.ending{{background:var(--ending);border-radius:999px}} .flow-node.selected{{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 4px rgba(143,91,46,.14),0 12px 28px rgba(143,91,46,.14)}} .flow-node.decision.selected{{background:#f2d8ba}}
-.edge-layer{{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}} .edge-layer path{{stroke:#b7afa5;stroke-width:1.5;fill:none;marker-end:url(#arrow)}}
-.reader{{background:#fff;border-left:1px solid var(--hair);display:flex;flex-direction:column;min-width:0}} .reader-head{{height:70px;border-bottom:1px solid var(--hair);padding:17px 24px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}} .reader-kicker{{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.05em}} .reader-title{{font-size:20px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}} .open-small{{font-size:12px;font-weight:700;color:var(--muted);text-decoration:none;border:1px solid var(--hair);padding:7px 10px;border-radius:999px;white-space:nowrap}}
-.reader-body{{overflow:auto;padding:26px 30px 70px;font-size:16px;line-height:1.76}} .reader-body h2{{font-size:15px;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--hair);letter-spacing:-.02em}} .reader-body h3{{font-size:15px;margin:22px 0 8px}} .reader-body p{{margin:0 0 15px}} .reader-body blockquote{{margin:0 0 15px;padding:11px 13px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0}} .reader-body li{{margin:8px 0}} .reader-body a{{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25)}}
+.flow-canvas{{position:relative;flex:1;min-height:0;overflow:auto;padding:32px 34px 64px}} .flow-grid{{position:relative;z-index:2;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:flex-start;min-width:360px}} .flow-row{{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;min-height:52px}} .branch-row{{gap:14px}}
+.flow-node{{position:relative;width:78px;height:38px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 12px/1 Pretendard,sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}} .flow-node:hover{{transform:translateY(-2px);box-shadow:0 8px 18px rgba(31,25,18,.10)}} .flow-node.decision{{background:var(--decision);transform:rotate(45deg);width:46px;height:46px;margin:3px 12px}} .flow-node.decision span{{transform:rotate(-45deg);font-size:11px}} .flow-node.ending{{background:var(--ending);border-radius:999px}} .flow-node.selected{{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(143,91,46,.14),0 10px 22px rgba(143,91,46,.12)}} .flow-node.decision.selected{{background:#f2d8ba}}
+.edge-layer{{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}} .edge-layer path{{stroke:#aaa197;stroke-width:1.35;fill:none;marker-end:url(#arrow)}}
+.reader{{background:#fff;border-left:1px solid var(--hair);display:flex;flex-direction:column;min-width:0;min-height:0}} .reader-head{{height:70px;border-bottom:1px solid var(--hair);padding:17px 24px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}} .reader-kicker{{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.05em}} .reader-title{{font-size:20px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}} .open-small{{font-size:12px;font-weight:700;color:var(--muted);text-decoration:none;border:1px solid var(--hair);padding:7px 10px;border-radius:999px;white-space:nowrap}}
+.reader-body{{flex:1;min-height:0;overflow:auto;padding:26px 30px 70px;font-size:16px;line-height:1.76}} .reader-body h2{{font-size:15px;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--hair);letter-spacing:-.02em}} .reader-body h3{{font-size:15px;margin:22px 0 8px}} .reader-body p{{margin:0 0 15px}} .reader-body blockquote{{margin:0 0 15px;padding:11px 13px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0}} .reader-body li{{margin:8px 0}} .reader-body a{{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25)}}
 .illust-card{{margin:28px 0 0;padding:16px;border:1px solid var(--hair);background:var(--surface-warm);border-radius:16px}} .illust-card strong{{display:block;font-size:13px;margin-bottom:7px;color:var(--accent)}} .illust-card p{{margin:0;color:var(--muted);font-size:14px;line-height:1.65}}
 .info-panel{{display:none;padding:26px 30px 70px;overflow:auto}} .info-panel.active{{display:block}} .info-panel h2{{font-size:26px;letter-spacing:-.045em;margin:0 0 14px}} .info-panel p{{line-height:1.75;color:var(--muted)}} .info-list{{display:grid;gap:10px;margin-top:22px}} .info-list a{{display:block;padding:14px;border:1px solid var(--hair);border-radius:14px;background:#fff;text-decoration:none}} .info-list small{{display:block;color:var(--muted);margin-top:3px}}
-@media(max-width:1100px){{body{{overflow:auto}}.workshop{{grid-template-columns:1fr;height:auto}}.sidebar{{position:sticky;top:0;z-index:5;border-right:0;border-bottom:1px solid var(--hair)}}.reader{{min-height:70vh;border-left:0;border-top:1px solid var(--hair)}}}}
+@media(max-width:1100px){{body{{overflow:auto}}.page-title{{position:static;margin:10px}}.workshop{{grid-template-columns:1fr;height:auto}}.sidebar{{position:sticky;top:0;z-index:5;border-right:0;border-bottom:1px solid var(--hair)}}.reader{{min-height:70vh;border-left:0;border-top:1px solid var(--hair)}}}}
 </style>
 </head>
 <body>
+<div class="page-title">큰작업실 - 분기와 본문을 한 화면에서 검토하는 PC 작업실</div>
 <div class="workshop">
   <aside class="sidebar">
-    <div class="brand"><small>큰작업실</small><strong>어스름 너머의 세계</strong><span>분기와 본문을 한 화면에서 검토하는 PC 작업실</span></div>
-    <nav class="nav" aria-label="큰작업실 메뉴"><button class="active" data-view="story">스토리</button><button data-view="world">세계관</button><button data-view="character">캐릭터</button></nav>
+    <div class="brand"><small>작업실</small><strong>프로젝트</strong><span>왼쪽 메뉴에서 검토할 범주를 고르는 자리야.</span></div>
+    <nav class="nav" aria-label="큰작업실 메뉴"><div class="menu-title">어스름 너머의 세계</div><div class="submenu"><button class="active" data-view="story">스토리</button><button data-view="world" disabled>세계관</button><button data-view="character" disabled>캐릭터</button></div></nav>
     <div class="legend"><b>기호</b><div class="legend-row"><i class="sample"></i>스토리</div><div class="legend-row"><i class="sample decision"></i>분기발생지점</div><div class="legend-row"><i class="sample ending"></i>엔딩</div></div>
     <a class="small-link" href="index.html">작은작업실로 이동</a>
   </aside>
