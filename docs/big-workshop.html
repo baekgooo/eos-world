@@ -122,8 +122,7 @@ function renderEdges(){
       const end=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
       path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x+offset} ${start.y+18*(downward?1:-1)}, ${end.x+offset} ${end.y-18*(downward?1:-1)}, ${end.x} ${end.y}`);
     }else{
-      const sourceSide=a.classList.contains('decision')&&Math.abs(bx-ax)>=10?Math.sign(bx-ax):0;
-      const start=sourceSide?point(ar,a,'side',sourceSide):point(ar,a,downward?'bottom':'top');
+      const start=point(ar,a,downward?'bottom':'top');
       const end=point(br,b,downward?'top':'bottom');
       const midY=start.y+(end.y-start.y)*0.55;
       path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x} ${midY}, ${end.x} ${midY}, ${end.x} ${end.y}`);
