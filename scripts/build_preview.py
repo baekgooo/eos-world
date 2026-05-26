@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import html
 import re
+from datetime import datetime
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -105,9 +106,16 @@ def write(path: Path, content: str) -> None:
     path.write_text(content, encoding="utf-8", newline="\n")
 
 
+def build_updated_at() -> str:
+    """Return a reader-facing timestamp for checking whether the preview is current."""
+
+    return datetime.now().astimezone().strftime("%Y.%m.%d %H:%M")
+
+
 def main() -> None:
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
     SECTION_OUT_DIR.mkdir(parents=True, exist_ok=True)
+    updated_at = build_updated_at()
     for old_page in SECTION_OUT_DIR.glob("S*.html"):
         old_page.unlink()
 
@@ -140,6 +148,7 @@ def main() -> None:
 <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
+<div class="updated-at" aria-label="최종 업데이트">최종 업데이트 {html.escape(updated_at)}</div>
 <header class="top"><a href="../index.html">← 작업실</a></header>
 <main class="page section-page">
 {body}
@@ -162,6 +171,7 @@ def main() -> None:
 <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
+<div class="updated-at" aria-label="최종 업데이트">최종 업데이트 {html.escape(updated_at)}</div>
 <main class="page">
 <section class="hero">
 <p class="eyebrow">PDF 전자책 게임북 제작 미리보기</p>
@@ -187,9 +197,10 @@ def main() -> None:
 :root{--bg:#14131a;--panel:#201f2a;--text:#f3eee7;--muted:#b8ad9f;--line:#34303d;--accent:#d9b76f;--link:#ffe2a3;}
 *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at top,#252338 0,#14131a 52%,#0f0e14 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",Segoe UI,sans-serif;line-height:1.78;font-size:18px;word-break:keep-all;overflow-wrap:break-word;}
 a{color:var(--link);text-decoration:none}.section-ref{font-weight:700;border-bottom:1px solid rgba(255,226,163,.45)}.page{width:min(760px,100%);margin:0 auto;padding:28px 18px 64px}.top{position:sticky;top:0;background:rgba(20,19,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 18px;z-index:5}.top a{font-size:15px;color:var(--muted)}
+.updated-at{position:fixed;top:10px;right:12px;z-index:10;padding:5px 9px;border:1px solid rgba(217,183,111,.35);border-radius:999px;background:rgba(20,19,26,.82);backdrop-filter:blur(10px);color:var(--accent);font-size:12px;line-height:1.2;letter-spacing:-.01em;box-shadow:0 8px 20px rgba(0,0,0,.18)}
 .hero{padding:28px 0 16px}.eyebrow{color:var(--accent);font-size:14px;letter-spacing:.04em;margin:0 0 6px}.hero h1{font-size:34px;line-height:1.2;margin:0 0 14px}.card{background:rgba(32,31,42,.86);border:1px solid var(--line);border-radius:18px;padding:18px;margin:18px 0;box-shadow:0 12px 36px rgba(0,0,0,.18)}.muted{color:var(--muted)}
 h1{font-size:30px;line-height:1.25;margin:24px 0 22px;color:#fff4dc}h2{font-size:20px;margin:30px 0 10px;color:var(--accent);border-top:1px solid var(--line);padding-top:20px}h3{font-size:18px;color:#f6dca0}p{margin:0 0 18px}pre{background:#0d0c12;border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;white-space:pre-wrap;color:#f7e6c0}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em}.section-list{list-style:none;margin:0;padding:0}.section-list li{border-top:1px solid var(--line)}.section-list li:first-child{border-top:0}.section-list a{display:block;padding:14px 4px}.section-list span{display:block;color:var(--text);font-weight:700}.section-list small{display:block;color:var(--muted);font-size:13px;margin-top:2px}.bottom-nav{margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}li{margin:8px 0}
-@media (max-width:480px){body{font-size:17px;line-height:1.82}.page{padding:22px 16px 56px}.hero h1{font-size:30px}h1{font-size:26px}h2{font-size:19px}.card{border-radius:16px;padding:16px}}
+@media (max-width:480px){body{font-size:17px;line-height:1.82}.page{padding:42px 16px 56px}.hero h1{font-size:30px}h1{font-size:26px}h2{font-size:19px}.card{border-radius:16px;padding:16px}.updated-at{top:8px;right:8px;font-size:11px;padding:5px 8px}}
 '''
     write(ASSETS_DIR / "style.css", css)
     write(DOCS_DIR / ".nojekyll", "")
