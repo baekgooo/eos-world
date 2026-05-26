@@ -140,13 +140,24 @@ def build_updated_at() -> str:
     return datetime.now().astimezone().strftime("%Y.%m.%d %H:%M")
 
 
-def extract_choice_targets(markdown: str) -> list[str]:
-    """Return section IDs linked from the explicit choice block only."""
+def extract_choice_edges(markdown: str) -> list[dict[str, str]]:
+    """Return labelled edges from the explicit choice block only."""
 
     if "## 선택지" not in markdown:
         return []
     choice_block = markdown.split("## 선택지", 1)[1].split("## 다음 섹션", 1)[0]
-    return re.findall(r"→\s*(S\d{3}[A-Z]?)\.", choice_block)
+    edges: list[dict[str, str]] = []
+    for line in choice_block.splitlines():
+        match = re.match(r"\s*([A-Z])\.\s*(.*?)\s*→\s*(S\d{3}[A-Z]?)\.", line)
+        if match:
+            edges.append({"choice": match.group(1), "label": match.group(2).strip(), "target": match.group(3)})
+    return edges
+
+
+def extract_choice_targets(markdown: str) -> list[str]:
+    """Return section IDs linked from the explicit choice block only."""
+
+    return [edge["target"] for edge in extract_choice_edges(markdown)]
 
 
 def validate_choice_targets(
@@ -243,15 +254,33 @@ def section_kind(markdown: str) -> str:
     return 'story'
 
 
-def extract_all_targets(markdown: str) -> list[str]:
-    '''Extract next-section refs used by the workshop flow.'''
+def decision_tier(section_id: str, markdown: str) -> str:
+    """Classify decision weight for the workshop map."""
+
     targets = extract_choice_targets(markdown)
-    if targets:
-        return targets
+    if len(targets) <= 1:
+        return ''
+    major_ids = {'S007', 'S016', 'S020', 'S024', 'S028'}
+    if section_id in major_ids or len(targets) >= 3:
+        return 'major'
+    return 'minor'
+
+
+def extract_all_edges(markdown: str) -> list[dict[str, str]]:
+    '''Extract labelled next-section edges used by the workshop flow.'''
+    choice_edges = extract_choice_edges(markdown)
+    if choice_edges:
+        return [{'to': edge['target'], 'label': f"{edge['choice']}. {edge['label']}"} for edge in choice_edges]
+    targets: list[str] = []
     if '## 다음 섹션' in markdown:
         block = markdown.split('## 다음 섹션', 1)[1].split('## ', 1)[0]
         targets = re.findall(r'\b(S\d{3}[A-Z]?)\.', block)
-    return targets
+    return [{'to': target, 'label': ''} for target in targets]
+
+
+def extract_all_targets(markdown: str) -> list[str]:
+    '''Extract next-section refs used by the workshop flow.'''
+    return [edge['to'] for edge in extract_all_edges(markdown)]
 
 
 def extract_illustration_note(markdown: str) -> str:
@@ -277,14 +306,15 @@ def build_big_workshop(source_sections: list[dict[str, str]], section_links: dic
             continue
         markdown = section['markdown']
         title = extract_title(markdown)
-        targets = [target for target in extract_all_targets(markdown) if target in id_set]
-        for target in targets:
-            edges.append({'from': section_id, 'to': target})
+        edge_items = [edge for edge in extract_all_edges(markdown) if edge['to'] in id_set]
+        for edge in edge_items:
+            edges.append({'from': section_id, 'to': edge['to'], 'label': edge['label']})
         body_html = md_to_html(strip_heading(markdown), section_links)
         data_sections.append({
             'id': section_id,
             'title': title,
             'kind': section_kind(markdown),
+            'tier': decision_tier(section_id, markdown),
             'src': section['src'],
             'html': body_html,
             'illustration': inline(extract_illustration_note(markdown)),
@@ -294,8 +324,9 @@ def build_big_workshop(source_sections: list[dict[str, str]], section_links: dic
     section_json = json.dumps(data_sections, ensure_ascii=False).replace("</", "<\\/")
     edges_json = json.dumps(edges, ensure_ascii=False).replace("</", "<\\/")
     def render_node(item: dict[str, str]) -> str:
+        classes = ' '.join(part for part in ['flow-node', item['kind'], item.get('tier', '')] if part)
         return (
-            f'<button class="flow-node {item["kind"]}" '
+            f'<button class="{html.escape(classes)}" '
             f'data-section="{html.escape(item["id"])}" '
             f'aria-label="{html.escape(item["title"])}">'
             f'<span>{html.escape(item["id"])}</span></button>'
@@ -318,12 +349,27 @@ def build_big_workshop(source_sections: list[dict[str, str]], section_links: dic
         rows.append([item])
         index += 1
 
-    nodes = '\n'.join(
-        '<div class="flow-row ' + ('branch-row' if len(row) > 1 else 'single-row') + '">'
-        + ''.join(render_node(item) for item in row)
-        + '</div>'
-        for row in rows
-    )
+    def chapter_label(section_id: str) -> str:
+        match = re.match(r"S(\d{3})", section_id)
+        number = int(match.group(1)) if match else 0
+        if number >= 19:
+            return '2장 · 초저녁 정거장'
+        return '1장 · 멈춘 방과 첫 문'
+
+    node_parts: list[str] = []
+    current_chapter = ''
+    for row in rows:
+        label = chapter_label(row[0]['id'])
+        if label != current_chapter:
+            current_chapter = label
+            node_parts.append(f'<div class="chapter-band">{html.escape(label)}</div>')
+        row_class = 'branch-row' if len(row) > 1 else 'single-row'
+        node_parts.append(
+            f'<div class="flow-row {row_class}">'
+            + ''.join(render_node(item) for item in row)
+            + '</div>'
+        )
+    nodes = '\n'.join(node_parts)
 
     page = f'''<!doctype html>
 <html lang="ko">
@@ -334,18 +380,18 @@ def build_big_workshop(source_sections: list[dict[str, str]], section_links: dic
 <link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
 <style>
-:root{{--paper:#fbfaf8;--surface:#ffffff;--surface-warm:#f5f2ee;--ink:#171615;--muted:#69635d;--hair:#dfdbd4;--hair-strong:#c9c2b8;--accent:#8f5b2e;--accent-soft:#f3e6d8;--story:#ffffff;--decision:#fff7e8;--ending:#f1f1f1;}}
+:root{{--paper:#fbfaf8;--surface:#ffffff;--surface-warm:#f5f2ee;--ink:#171615;--muted:#69635d;--hair:#dfdbd4;--hair-strong:#c9c2b8;--accent:#8f5b2e;--accent-soft:#f3e6d8;--major:#f0c994;--minor:#e8f0e9;--story:#ffffff;--decision:#fff7e8;--ending:#f1f1f1;}}
 *{{box-sizing:border-box}} html,body{{height:100%}} body{{margin:0;background:var(--paper);color:var(--ink);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",Segoe UI,sans-serif;letter-spacing:-.012em;word-break:keep-all;overflow:hidden}}
 a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;padding:7px 12px;border:1px solid var(--hair);border-radius:999px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);font-size:13px;font-weight:700;color:var(--ink);box-shadow:0 8px 24px rgba(31,25,18,.06)}} .workshop{{display:grid;grid-template-columns:220px minmax(0,1fr) minmax(0,1fr);height:100vh}}
 .sidebar{{border-right:1px solid var(--hair);background:#fff;padding:24px 18px;display:flex;flex-direction:column;gap:22px}}
 .brand small{{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-bottom:6px}} .brand strong{{display:block;font-size:20px;line-height:1.15;letter-spacing:-.04em}} .brand span{{display:block;margin-top:8px;color:var(--muted);font-size:13px;line-height:1.45}}
 .nav{{display:grid;gap:6px}} .menu-title{{margin:2px 0 8px;padding:11px;border:1px solid var(--hair);border-radius:12px;background:var(--surface-warm);font-size:14px;font-weight:800;color:var(--ink)}} .submenu{{display:grid;gap:4px;padding-left:8px;border-left:1px solid var(--hair)}} .nav button,.small-link{{border:0;background:transparent;text-align:left;border-radius:10px;padding:10px 11px;color:var(--muted);font:600 15px/1 Pretendard,sans-serif;text-decoration:none;cursor:pointer}} .nav button.active,.nav button:hover,.small-link:hover{{background:var(--surface-warm);color:var(--ink)}} .nav button:disabled{{color:#b8b2aa;cursor:not-allowed;background:transparent}} .small-link{{display:block;margin-top:auto;border:1px solid var(--hair);text-align:center;color:var(--ink);background:#fff}}
-.legend{{border-top:1px solid var(--hair);padding-top:16px;color:var(--muted);font-size:12px;line-height:1.7}} .legend b{{color:var(--ink)}} .legend-row{{display:flex;align-items:center;gap:8px;margin:6px 0}} .sample{{width:18px;height:13px;border:1px solid var(--hair-strong);background:#fff;display:inline-block}} .sample.decision{{transform:rotate(45deg);background:var(--decision)}} .sample.ending{{border-radius:999px;background:var(--ending)}}
+.legend{{border-top:1px solid var(--hair);padding-top:16px;color:var(--muted);font-size:12px;line-height:1.7}} .legend b{{color:var(--ink)}} .legend-row{{display:flex;align-items:center;gap:8px;margin:6px 0}} .sample{{width:18px;height:13px;border:1px solid var(--hair-strong);background:#fff;display:inline-block}} .sample.decision{{transform:rotate(45deg);background:var(--major)}} .sample.minor{{transform:none;border-radius:7px;background:var(--minor)}} .sample.ending{{border-radius:999px;background:var(--ending)}}
 .flow-wrap{{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:linear-gradient(90deg,rgba(0,0,0,.035) 1px,transparent 1px),linear-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:32px 32px}}
 .flow-header{{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--hair);background:rgba(251,250,248,.86);backdrop-filter:blur(14px);z-index:3}} .flow-header h1{{margin:0;font-size:21px;letter-spacing:-.04em}} .flow-header p{{margin:4px 0 0;color:var(--muted);font-size:13px}} .flow-tools button{{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:8px 12px;font-weight:700;color:var(--muted);cursor:pointer}}
-.flow-canvas{{position:relative;flex:1;min-height:0;overflow:auto;padding:32px 34px 64px}} .flow-grid{{position:relative;z-index:2;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:flex-start;min-width:360px}} .flow-row{{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;min-height:52px}} .branch-row{{gap:14px}}
-.flow-node{{position:relative;width:78px;height:38px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 12px/1 Pretendard,sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease,opacity .16s ease}} .flow-node:hover{{transform:translateY(-2px);box-shadow:0 8px 18px rgba(31,25,18,.10)}} .flow-node.decision{{background:var(--decision);transform:rotate(45deg);width:46px;height:46px;margin:3px 12px}} .flow-node.decision span{{transform:rotate(-45deg);font-size:11px}} .flow-node.ending{{background:var(--ending);border-radius:999px}} .flow-node.selected{{border-color:var(--accent);background:#f0d3b1;box-shadow:0 0 0 3px rgba(143,91,46,.18),0 10px 22px rgba(143,91,46,.14)}} .flow-node.decision.selected{{background:#f0c994}} .flow-node.next{{border-color:#5f8f6a;background:#e6f3e7;box-shadow:0 0 0 3px rgba(95,143,106,.13)}} .flow-node.decision.next{{background:#d9ecd9}}
-.edge-layer{{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}} .edge-layer path{{stroke:#d7d1ca;stroke-width:1.1;fill:none;transition:stroke .16s ease,stroke-width .16s ease,opacity .16s ease}} .edge-layer path.active-edge{{stroke:#d6531f;stroke-width:3.1;opacity:1}}
+.flow-canvas{{position:relative;flex:1;min-height:0;overflow:auto;padding:32px 34px 64px}} .flow-grid{{position:relative;z-index:2;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:flex-start;min-width:360px}} .chapter-band{{width:min(420px,82%);margin:2px 0 0;padding:7px 14px;border:1px solid var(--hair);border-radius:999px;background:rgba(255,255,255,.82);box-shadow:0 8px 20px rgba(31,25,18,.05);color:var(--muted);font-size:12px;font-weight:900;text-align:center;letter-spacing:.06em}} .flow-row{{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;min-height:52px}} .branch-row{{gap:14px}}
+.flow-node{{position:relative;width:78px;height:38px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 12px/1 Pretendard,sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease,opacity .16s ease}} .flow-node:hover{{transform:translateY(-2px);box-shadow:0 8px 18px rgba(31,25,18,.10)}} .flow-node.decision{{background:var(--major);transform:rotate(45deg);width:46px;height:46px;margin:3px 12px}} .flow-node.decision span{{transform:rotate(-45deg);font-size:11px}} .flow-node.decision.minor{{transform:none;width:70px;height:34px;margin:0 4px;border-radius:12px;background:var(--minor)}} .flow-node.decision.minor span{{transform:none;font-size:11px}} .flow-node.ending{{background:var(--ending);border-radius:999px}} .flow-node.selected{{border-color:var(--accent);background:#f0d3b1;box-shadow:0 0 0 3px rgba(143,91,46,.18),0 10px 22px rgba(143,91,46,.14)}} .flow-node.decision.selected{{background:#f0c994}} .flow-node.decision.minor.selected{{background:#cfe5d2}} .flow-node.next{{border-color:#5f8f6a;background:#e6f3e7;box-shadow:0 0 0 3px rgba(95,143,106,.13)}} .flow-node.decision.next{{background:#d9ecd9}}
+.edge-layer{{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}} .edge-layer path{{stroke:#d7d1ca;stroke-width:1.1;fill:none;transition:stroke .16s ease,stroke-width .16s ease,opacity .16s ease}} .edge-layer.has-selection path.edge{{opacity:.16}} .edge-layer path.active-edge,.edge-layer.has-selection path.edge.active-edge{{stroke:#d6531f;stroke-width:3.1;opacity:1}}
 .reader{{background:#fff;border-left:1px solid var(--hair);display:flex;flex-direction:column;min-width:0;min-height:0}} .reader-head{{height:70px;border-bottom:1px solid var(--hair);padding:17px 24px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}} .reader-kicker{{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.05em}} .reader-title{{font-size:20px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}} .open-small{{font-size:12px;font-weight:700;color:var(--muted);text-decoration:none;border:1px solid var(--hair);padding:7px 10px;border-radius:999px;white-space:nowrap}}
 .reader-body{{flex:1;min-height:0;overflow:auto;padding:26px 30px 70px;font-size:16px;line-height:1.76}} .reader-body h2{{font-size:15px;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--hair);letter-spacing:-.02em}} .reader-body h3{{font-size:15px;margin:22px 0 8px}} .reader-body p{{margin:0 0 15px}} .reader-body blockquote{{margin:0 0 15px;padding:11px 13px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0}} .reader-body li{{margin:8px 0}} .reader-body a{{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25)}}
 .illust-card{{margin:28px 0 0;padding:16px;border:1px solid var(--hair);background:var(--surface-warm);border-radius:16px}} .illust-card strong{{display:block;font-size:13px;margin-bottom:7px;color:var(--accent)}} .illust-card p{{margin:0;color:var(--muted);font-size:14px;line-height:1.65}}
@@ -359,7 +405,7 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
   <aside class="sidebar">
     <div class="brand"><small>작업실</small><strong>프로젝트</strong><span>왼쪽 메뉴에서 검토할 범주를 고르는 자리야.</span></div>
     <nav class="nav" aria-label="큰작업실 메뉴"><div class="menu-title">어스름 너머의 세계</div><div class="submenu"><button class="active" data-view="story">스토리</button><button data-view="world" disabled>세계관</button><button data-view="character" disabled>캐릭터</button></div></nav>
-    <div class="legend"><b>기호</b><div class="legend-row"><i class="sample"></i>스토리</div><div class="legend-row"><i class="sample decision"></i>분기발생지점</div><div class="legend-row"><i class="sample ending"></i>엔딩</div></div>
+    <div class="legend"><b>기호</b><div class="legend-row"><i class="sample"></i>스토리</div><div class="legend-row"><i class="sample decision"></i>큰 분기</div><div class="legend-row"><i class="sample minor"></i>작은 선택</div><div class="legend-row"><i class="sample ending"></i>엔딩</div></div>
     <a class="small-link" href="index.html">작은작업실로 이동</a>
   </aside>
   <section class="flow-wrap"><header class="flow-header"><div><h1>스토리줄기</h1><p>기호를 누르면 오른쪽에 원고가 열려.</p></div><div class="flow-tools"><button id="fitFlow">처음으로</button></div></header><div class="flow-canvas" id="flowCanvas"><svg class="edge-layer" id="edgeLayer"></svg><div class="flow-grid" id="flowGrid">{nodes}</div></div></section>
@@ -403,6 +449,10 @@ function renderEdges(){{
     path.setAttribute('class','edge');
     path.dataset.from=edge.from;
     path.dataset.to=edge.to;
+    path.dataset.label=edge.label||'';
+    const edgeTitle=document.createElementNS('http://www.w3.org/2000/svg','title');
+    edgeTitle.textContent=edge.label?`${{edge.from}} → ${{edge.to}} · ${{edge.label}}`:`${{edge.from}} → ${{edge.to}}`;
+    path.appendChild(edgeTitle);
     if(sameColumn&&longJump){{
       const routeKey=`${{Math.round(ax)}}:${{downward?'down':'up'}}`;
       const count=sideRoutes.get(routeKey)||0;
@@ -424,6 +474,7 @@ function renderEdges(){{
 }}
 function applyFlowHighlight(){{
   const nextSet=nextById.get(selectedId)||new Set();
+  edgeLayer.classList.toggle('has-selection',Boolean(selectedId));
   nodes.forEach(n=>{{
     const id=n.dataset.section;
     n.classList.toggle('selected',id===selectedId);
