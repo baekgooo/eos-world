@@ -368,7 +368,43 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
 <script type="application/json" id="sectionData">{section_json}</script><script type="application/json" id="edgeData">{edges_json}</script>
 <script>
 const sections=JSON.parse(document.getElementById('sectionData').textContent);const edges=JSON.parse(document.getElementById('edgeData').textContent);const byId=new Map(sections.map(s=>[s.id,s]));const bySmallUrl=new Map(sections.map(s=>[s.smallUrl,s.id]));const nodes=[...document.querySelectorAll('.flow-node')];const readerBody=document.getElementById('readerBody');const readerId=document.getElementById('readerId');const readerTitle=document.getElementById('readerTitle');const openSmall=document.getElementById('openSmall');const flowCanvas=document.getElementById('flowCanvas');const edgeLayer=document.getElementById('edgeLayer');
-function renderEdges(){{const box=flowCanvas.getBoundingClientRect();edgeLayer.setAttribute('width',flowCanvas.scrollWidth);edgeLayer.setAttribute('height',flowCanvas.scrollHeight);[...edgeLayer.querySelectorAll('path.edge')].forEach(p=>p.remove());for(const edge of edges){{const a=document.querySelector(`[data-section="${{edge.from}}"]`);const b=document.querySelector(`[data-section="${{edge.to}}"]`);if(!a||!b)continue;const ar=a.getBoundingClientRect();const br=b.getBoundingClientRect();const x1=ar.left+ar.width/2-box.left+flowCanvas.scrollLeft;const y1=ar.top+ar.height/2-box.top+flowCanvas.scrollTop;const x2=br.left+br.width/2-box.left+flowCanvas.scrollLeft;const y2=br.top+br.height/2-box.top+flowCanvas.scrollTop;const midY=y1+(y2-y1)*0.55;const path=document.createElementNS('http://www.w3.org/2000/svg','path');path.setAttribute('class','edge');path.setAttribute('d',`M ${{x1}} ${{y1}} C ${{x1}} ${{midY}}, ${{x2}} ${{midY}}, ${{x2}} ${{y2}}`);edgeLayer.appendChild(path);}}}}
+function renderEdges(){{
+  const box=flowCanvas.getBoundingClientRect();
+  edgeLayer.setAttribute('width',flowCanvas.scrollWidth);
+  edgeLayer.setAttribute('height',flowCanvas.scrollHeight);
+  [...edgeLayer.querySelectorAll('path.edge')].forEach(p=>p.remove());
+  const sideRoutes=new Map();
+  for(const edge of edges){{
+    const a=document.querySelector(`[data-section="${{edge.from}}"]`);
+    const b=document.querySelector(`[data-section="${{edge.to}}"]`);
+    if(!a||!b)continue;
+    const ar=a.getBoundingClientRect();
+    const br=b.getBoundingClientRect();
+    const ax=ar.left+ar.width/2-box.left+flowCanvas.scrollLeft;
+    const bx=br.left+br.width/2-box.left+flowCanvas.scrollLeft;
+    const downward=br.top>=ar.top;
+    const y1=(downward?ar.bottom:ar.top)-box.top+flowCanvas.scrollTop;
+    const y2=(downward?br.top:br.bottom)-box.top+flowCanvas.scrollTop;
+    const sameColumn=Math.abs(ax-bx)<10;
+    const longJump=Math.abs(y2-y1)>85;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('class','edge');
+    path.dataset.from=edge.from;
+    path.dataset.to=edge.to;
+    if(sameColumn&&longJump){{
+      const routeKey=`${{Math.round(ax)}}:${{downward?'down':'up'}}`;
+      const count=sideRoutes.get(routeKey)||0;
+      sideRoutes.set(routeKey,count+1);
+      const dir=count%2===0?-1:1;
+      const offset=dir*(46+Math.floor(count/2)*24);
+      path.setAttribute('d',`M ${{ax}} ${{y1}} C ${{ax+offset}} ${{y1+18*(downward?1:-1)}}, ${{bx+offset}} ${{y2-18*(downward?1:-1)}}, ${{bx}} ${{y2}}`);
+    }}else{{
+      const midY=y1+(y2-y1)*0.55;
+      path.setAttribute('d',`M ${{ax}} ${{y1}} C ${{ax}} ${{midY}}, ${{bx}} ${{midY}}, ${{bx}} ${{y2}}`);
+    }}
+    edgeLayer.appendChild(path);
+  }}
+}}
 function selectSection(id){{const s=byId.get(id);if(!s)return;nodes.forEach(n=>n.classList.toggle('selected',n.dataset.section===id));readerId.textContent=`${{s.id}} · ${{s.kind==='decision'?'분기발생지점':s.kind==='ending'?'엔딩':'스토리'}}`;readerTitle.textContent=s.title;openSmall.href=s.smallUrl;readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));readerBody.innerHTML=s.html+`<section class="illust-card"><strong>삽화 메모</strong><p>${{s.illustration}}</p></section>`;readerBody.scrollTo({{top:0,behavior:'smooth'}});document.querySelector(`[data-section="${{id}}"]`)?.scrollIntoView({{block:'center',inline:'center',behavior:'smooth'}});requestAnimationFrame(renderEdges);}}
 nodes.forEach(n=>n.addEventListener('click',()=>selectSection(n.dataset.section)));readerBody.addEventListener('click',event=>{{const link=event.target.closest('a.section-ref');if(!link)return;const raw=link.getAttribute('href')||'';const normalized=raw.replace(/^\.\//,'').split('#')[0];const targetId=bySmallUrl.get(normalized);if(!targetId)return;event.preventDefault();selectSection(targetId);}});document.getElementById('fitFlow').addEventListener('click',()=>{{flowCanvas.scrollTo({{left:0,top:0,behavior:'smooth'}});selectSection(sections[0].id);}});document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const view=btn.dataset.view;if(view==='story'){{readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));selectSection(document.querySelector('.flow-node.selected')?.dataset.section||sections[0].id);}}if(view==='world'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('worldPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='세계관';openSmall.href='project/world_rules.html';}}if(view==='character'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('characterPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='캐릭터';openSmall.href='project/character_bible.html';}}}}));
 window.addEventListener('resize',renderEdges);flowCanvas.addEventListener('scroll',()=>requestAnimationFrame(renderEdges));selectSection(sections[0].id);requestAnimationFrame(renderEdges);
