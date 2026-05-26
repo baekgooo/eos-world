@@ -345,7 +345,7 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
 .flow-header{{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--hair);background:rgba(251,250,248,.86);backdrop-filter:blur(14px);z-index:3}} .flow-header h1{{margin:0;font-size:21px;letter-spacing:-.04em}} .flow-header p{{margin:4px 0 0;color:var(--muted);font-size:13px}} .flow-tools button{{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:8px 12px;font-weight:700;color:var(--muted);cursor:pointer}}
 .flow-canvas{{position:relative;flex:1;min-height:0;overflow:auto;padding:32px 34px 64px}} .flow-grid{{position:relative;z-index:2;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:flex-start;min-width:360px}} .flow-row{{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;min-height:52px}} .branch-row{{gap:14px}}
 .flow-node{{position:relative;width:78px;height:38px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 12px/1 Pretendard,sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}} .flow-node:hover{{transform:translateY(-2px);box-shadow:0 8px 18px rgba(31,25,18,.10)}} .flow-node.decision{{background:var(--decision);transform:rotate(45deg);width:46px;height:46px;margin:3px 12px}} .flow-node.decision span{{transform:rotate(-45deg);font-size:11px}} .flow-node.ending{{background:var(--ending);border-radius:999px}} .flow-node.selected{{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 3px rgba(143,91,46,.14),0 10px 22px rgba(143,91,46,.12)}} .flow-node.decision.selected{{background:#f2d8ba}}
-.edge-layer{{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}} .edge-layer path{{stroke:#aaa197;stroke-width:1.35;fill:none;marker-end:url(#arrow)}}
+.edge-layer{{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}} .edge-layer path{{stroke:#aaa197;stroke-width:1.25;fill:none}}
 .reader{{background:#fff;border-left:1px solid var(--hair);display:flex;flex-direction:column;min-width:0;min-height:0}} .reader-head{{height:70px;border-bottom:1px solid var(--hair);padding:17px 24px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}} .reader-kicker{{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.05em}} .reader-title{{font-size:20px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}} .open-small{{font-size:12px;font-weight:700;color:var(--muted);text-decoration:none;border:1px solid var(--hair);padding:7px 10px;border-radius:999px;white-space:nowrap}}
 .reader-body{{flex:1;min-height:0;overflow:auto;padding:26px 30px 70px;font-size:16px;line-height:1.76}} .reader-body h2{{font-size:15px;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--hair);letter-spacing:-.02em}} .reader-body h3{{font-size:15px;margin:22px 0 8px}} .reader-body p{{margin:0 0 15px}} .reader-body blockquote{{margin:0 0 15px;padding:11px 13px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0}} .reader-body li{{margin:8px 0}} .reader-body a{{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25)}}
 .illust-card{{margin:28px 0 0;padding:16px;border:1px solid var(--hair);background:var(--surface-warm);border-radius:16px}} .illust-card strong{{display:block;font-size:13px;margin-bottom:7px;color:var(--accent)}} .illust-card p{{margin:0;color:var(--muted);font-size:14px;line-height:1.65}}
@@ -362,7 +362,7 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
     <div class="legend"><b>기호</b><div class="legend-row"><i class="sample"></i>스토리</div><div class="legend-row"><i class="sample decision"></i>분기발생지점</div><div class="legend-row"><i class="sample ending"></i>엔딩</div></div>
     <a class="small-link" href="index.html">작은작업실로 이동</a>
   </aside>
-  <section class="flow-wrap"><header class="flow-header"><div><h1>스토리줄기</h1><p>기호를 누르면 오른쪽에 원고가 열려.</p></div><div class="flow-tools"><button id="fitFlow">처음으로</button></div></header><div class="flow-canvas" id="flowCanvas"><svg class="edge-layer" id="edgeLayer"><defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="#b7afa5"></path></marker></defs></svg><div class="flow-grid" id="flowGrid">{nodes}</div></div></section>
+  <section class="flow-wrap"><header class="flow-header"><div><h1>스토리줄기</h1><p>기호를 누르면 오른쪽에 원고가 열려.</p></div><div class="flow-tools"><button id="fitFlow">처음으로</button></div></header><div class="flow-canvas" id="flowCanvas"><svg class="edge-layer" id="edgeLayer"></svg><div class="flow-grid" id="flowGrid">{nodes}</div></div></section>
   <aside class="reader"><div class="reader-head"><div><div class="reader-kicker" id="readerId">SECTION</div><div class="reader-title" id="readerTitle">섹션을 선택해줘</div></div><a class="open-small" id="openSmall" href="index.html">작은작업실</a></div><div class="reader-body" id="readerBody"></div><div class="info-panel" id="worldPanel"><h2>세계관</h2><p>작은작업실의 세계관 문서로 바로 이동할 수 있어. 큰작업실 안에서도 다음 단계에서 요약 카드를 붙일 수 있게 자리를 잡아두었어.</p><div class="info-list"><a href="project/world_rules.html">사잇별의 땅 규칙<small>world_rules.md</small></a><a href="project/game_rules.html">게임 규칙<small>game_rules.md</small></a><a href="project/concept.html">기획 개념<small>concept.md</small></a></div></div><div class="info-panel" id="characterPanel"><h2>캐릭터</h2><p>주요 인물 설정을 확인하는 자리야. 지금은 캐릭터 바이블로 연결해두었고, 이후 인물별 카드형 보기로 확장할 수 있어.</p><div class="info-list"><a href="project/character_bible.html">캐릭터 바이블<small>character_bible.md</small></a><a href="project/style_guide.html">문체와 분위기<small>style_guide.md</small></a></div></div></aside>
 </div>
 <script type="application/json" id="sectionData">{section_json}</script><script type="application/json" id="edgeData">{edges_json}</script>
@@ -374,19 +374,31 @@ function renderEdges(){{
   edgeLayer.setAttribute('height',flowCanvas.scrollHeight);
   [...edgeLayer.querySelectorAll('path.edge')].forEach(p=>p.remove());
   const sideRoutes=new Map();
+  const point=(rect,node,where,side=0)=>{{
+    const centerX=rect.left+rect.width/2-box.left+flowCanvas.scrollLeft;
+    const centerY=rect.top+rect.height/2-box.top+flowCanvas.scrollTop;
+    const isDecision=node.classList.contains('decision');
+    if(isDecision&&where==='side'&&side!==0){{
+      return {{x:(side<0?rect.left:rect.right)-box.left+flowCanvas.scrollLeft,y:centerY}};
+    }}
+    return {{
+      x:centerX,
+      y:(where==='bottom'?rect.bottom:where==='top'?rect.top:rect.top+rect.height/2)-box.top+flowCanvas.scrollTop
+    }};
+  }};
   for(const edge of edges){{
     const a=document.querySelector(`[data-section="${{edge.from}}"]`);
     const b=document.querySelector(`[data-section="${{edge.to}}"]`);
     if(!a||!b)continue;
     const ar=a.getBoundingClientRect();
     const br=b.getBoundingClientRect();
-    const ax=ar.left+ar.width/2-box.left+flowCanvas.scrollLeft;
-    const bx=br.left+br.width/2-box.left+flowCanvas.scrollLeft;
     const downward=br.top>=ar.top;
-    const y1=(downward?ar.bottom:ar.top)-box.top+flowCanvas.scrollTop;
-    const y2=(downward?br.top:br.bottom)-box.top+flowCanvas.scrollTop;
+    const ac=point(ar,a,'center');
+    const bc=point(br,b,'center');
+    const ax=ac.x;
+    const bx=bc.x;
     const sameColumn=Math.abs(ax-bx)<10;
-    const longJump=Math.abs(y2-y1)>85;
+    const longJump=Math.abs(bc.y-ac.y)>85;
     const path=document.createElementNS('http://www.w3.org/2000/svg','path');
     path.setAttribute('class','edge');
     path.dataset.from=edge.from;
@@ -397,10 +409,14 @@ function renderEdges(){{
       sideRoutes.set(routeKey,count+1);
       const dir=count%2===0?-1:1;
       const offset=dir*(46+Math.floor(count/2)*24);
-      path.setAttribute('d',`M ${{ax}} ${{y1}} C ${{ax+offset}} ${{y1+18*(downward?1:-1)}}, ${{bx+offset}} ${{y2-18*(downward?1:-1)}}, ${{bx}} ${{y2}}`);
+      const start=point(ar,a,a.classList.contains('decision')?'side':downward?'bottom':'top',dir);
+      const end=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
+      path.setAttribute('d',`M ${{start.x}} ${{start.y}} C ${{start.x+offset}} ${{start.y+18*(downward?1:-1)}}, ${{end.x+offset}} ${{end.y-18*(downward?1:-1)}}, ${{end.x}} ${{end.y}}`);
     }}else{{
-      const midY=y1+(y2-y1)*0.55;
-      path.setAttribute('d',`M ${{ax}} ${{y1}} C ${{ax}} ${{midY}}, ${{bx}} ${{midY}}, ${{bx}} ${{y2}}`);
+      const start=point(ar,a,downward?'bottom':'top');
+      const end=point(br,b,downward?'top':'bottom');
+      const midY=start.y+(end.y-start.y)*0.55;
+      path.setAttribute('d',`M ${{start.x}} ${{start.y}} C ${{start.x}} ${{midY}}, ${{end.x}} ${{midY}}, ${{end.x}} ${{end.y}}`);
     }}
     edgeLayer.appendChild(path);
   }}
