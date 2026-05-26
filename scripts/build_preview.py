@@ -140,6 +140,40 @@ def build_updated_at() -> str:
     return datetime.now().astimezone().strftime("%Y.%m.%d %H:%M")
 
 
+def extract_choice_targets(markdown: str) -> list[str]:
+    """Return section IDs linked from the explicit choice block only."""
+
+    if "## 선택지" not in markdown:
+        return []
+    choice_block = markdown.split("## 선택지", 1)[1].split("## 다음 섹션", 1)[0]
+    return re.findall(r"→\s*(S\d{3}[A-Z]?)\.", choice_block)
+
+
+def validate_choice_targets(
+    source_sections: list[dict[str, str]], section_links: dict[str, str]
+) -> None:
+    """Prevent confusing gamebook choices before generating the preview."""
+
+    errors: list[str] = []
+    for section in source_sections:
+        targets = extract_choice_targets(section["markdown"])
+        if len(targets) > 1 and len(set(targets)) != len(targets):
+            duplicate_targets = sorted({target for target in targets if targets.count(target) > 1})
+            errors.append(
+                f"{section['src']}: 선택지 여러 개가 같은 페이지로 이동함 "
+                f"({', '.join(duplicate_targets)})"
+            )
+        missing_targets = sorted({target for target in targets if target not in section_links})
+        if missing_targets:
+            errors.append(
+                f"{section['src']}: 존재하지 않는 섹션으로 이동함 "
+                f"({', '.join(missing_targets)})"
+            )
+    if errors:
+        detail = "\n".join(f"- {error}" for error in errors)
+        raise SystemExit(f"선택지 검증 실패:\n{detail}")
+
+
 def render_page(title: str, body: str, css_href: str, back_href: str, updated_at: str) -> str:
     return f'''<!doctype html>
 <html lang="ko">
@@ -209,6 +243,8 @@ def main() -> None:
         source_sections.append(
             {"title": title, "outname": outname, "src": path.name, "markdown": markdown}
         )
+
+    validate_choice_targets(source_sections, section_links)
 
     items: list[tuple[str, str, str]] = []
     for section in source_sections:
