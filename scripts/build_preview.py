@@ -119,7 +119,7 @@ def extract_section_id(filename: str) -> str | None:
 
 
 def section_sort_key(path: Path) -> tuple[int, str, str]:
-    """Sort S030 before S030B, while keeping lettered branches after the base section."""
+    """Sort base sections before same-number lettered branches."""
 
     match = re.match(r"S(\d{3})([A-Z]?)_", path.name)
     if not match:
