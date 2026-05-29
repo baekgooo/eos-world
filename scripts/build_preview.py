@@ -185,7 +185,25 @@ def validate_choice_targets(
         raise SystemExit(f"선택지 검증 실패:\n{detail}")
 
 
-def render_page(title: str, body: str, css_href: str, back_href: str, updated_at: str) -> str:
+def render_previous_nav(previous_items: list[tuple[str, str, str]]) -> str:
+    if not previous_items:
+        return ""
+    links = "".join(
+        f'<a href="{html.escape(href)}"><span>{html.escape(section_id)}</span><small>{html.escape(title)}</small></a>'
+        for section_id, title, href in previous_items
+    )
+    return f'<nav class="previous-nav" aria-label="이전 섹션"><strong>이전 섹션</strong><div>{links}</div></nav>'
+
+
+def render_page(
+    title: str,
+    body: str,
+    css_href: str,
+    back_href: str,
+    updated_at: str,
+    previous_items: list[tuple[str, str, str]] | None = None,
+) -> str:
+    previous_nav = render_previous_nav(previous_items or [])
     return f'''<!doctype html>
 <html lang="ko">
 <head>
@@ -198,6 +216,7 @@ def render_page(title: str, body: str, css_href: str, back_href: str, updated_at
 <div class="updated-at" aria-label="최종 업데이트">최종 업데이트 {html.escape(updated_at)}</div>
 <header class="top"><a href="{back_href}">← 작업실</a></header>
 <main class="page section-page">
+{previous_nav}
 {body}
 <nav class="bottom-nav"><a href="{back_href}">목록으로</a></nav>
 </main>
@@ -393,7 +412,7 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
 .flow-node{{position:relative;width:78px;height:38px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 12px/1 Pretendard,sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease,opacity .16s ease}} .flow-node:hover{{transform:translateY(-2px);box-shadow:0 8px 18px rgba(31,25,18,.10)}} .flow-node.decision{{background:var(--major);transform:rotate(45deg);width:46px;height:46px;margin:3px 12px}} .flow-node.decision span{{transform:rotate(-45deg);font-size:11px}} .flow-node.decision.minor{{transform:none;width:70px;height:34px;margin:0 4px;border-radius:12px;background:var(--minor)}} .flow-node.decision.minor span{{transform:none;font-size:11px}} .flow-node.ending{{background:var(--ending);border-radius:999px}} .flow-node.selected{{border-color:var(--accent);background:#f0d3b1;box-shadow:0 0 0 3px rgba(143,91,46,.18),0 10px 22px rgba(143,91,46,.14)}} .flow-node.decision.selected{{background:#f0c994}} .flow-node.decision.minor.selected{{background:#cfe5d2}} .flow-node.next{{border-color:#5f8f6a;background:#e6f3e7;box-shadow:0 0 0 3px rgba(95,143,106,.13)}} .flow-node.decision.next{{background:#d9ecd9}}
 .edge-layer{{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}} .edge-layer path{{stroke:#b9afa5;stroke-width:1.55;fill:none;transition:stroke .16s ease,stroke-width .16s ease,opacity .16s ease}} .edge-layer.has-selection path.edge{{opacity:.26}} .edge-layer path.active-edge,.edge-layer.has-selection path.edge.active-edge{{stroke:#d6531f;stroke-width:3.2;opacity:1}}
 .reader{{background:#fff;border-left:1px solid var(--hair);display:flex;flex-direction:column;min-width:0;min-height:0}} .reader-head{{height:70px;border-bottom:1px solid var(--hair);padding:17px 24px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px}} .reader-kicker{{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.05em}} .reader-title{{font-size:20px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}} .open-small{{font-size:12px;font-weight:700;color:var(--muted);text-decoration:none;border:1px solid var(--hair);padding:7px 10px;border-radius:999px;white-space:nowrap}}
-.reader-body{{flex:1;min-height:0;overflow:auto;padding:26px 30px 70px;font-size:16px;line-height:1.76}} .reader-body h2{{font-size:15px;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--hair);letter-spacing:-.02em}} .reader-body h3{{font-size:15px;margin:22px 0 8px}} .reader-body p{{margin:0 0 15px}} .reader-body blockquote{{margin:0 0 15px;padding:11px 13px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0}} .reader-body li{{margin:8px 0}} .reader-body a{{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25)}}
+.reader-body{{flex:1;min-height:0;overflow:auto;padding:26px 30px 70px;font-size:16px;line-height:1.76}} .reader-body h2{{font-size:15px;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--hair);letter-spacing:-.02em}} .reader-body h3{{font-size:15px;margin:22px 0 8px}} .reader-body p{{margin:0 0 15px}} .reader-body blockquote{{margin:0 0 15px;padding:11px 13px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0}} .reader-body li{{margin:8px 0}} .reader-body a{{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25)}} .previous-nav{{margin:0 0 22px;padding:13px 14px;border:1px solid var(--hair);border-radius:14px;background:var(--surface-warm)}} .previous-nav strong{{display:block;margin-bottom:8px;color:var(--accent);font-size:13px;letter-spacing:.04em}} .previous-nav div{{display:flex;flex-wrap:wrap;gap:8px}} .previous-nav a,.previous-nav button{{display:inline-flex;gap:6px;align-items:center;padding:7px 10px;border:1px solid var(--hair);border-radius:999px;background:#fff;color:var(--ink);font:800 13px/1.2 Pretendard,sans-serif;text-decoration:none;cursor:pointer}} .previous-nav a small,.previous-nav button small{{color:var(--muted);font-weight:700;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .illust-card{{margin:28px 0 0;padding:16px;border:1px solid var(--hair);background:var(--surface-warm);border-radius:16px}} .illust-card strong{{display:block;font-size:13px;margin-bottom:7px;color:var(--accent)}} .illust-card p{{margin:0;color:var(--muted);font-size:14px;line-height:1.65}}
 .info-panel{{display:none;padding:26px 30px 70px;overflow:auto}} .info-panel.active{{display:block}} .info-panel h2{{font-size:26px;letter-spacing:-.045em;margin:0 0 14px}} .info-panel p{{line-height:1.75;color:var(--muted)}} .info-list{{display:grid;gap:10px;margin-top:22px}} .info-list a{{display:block;padding:14px;border:1px solid var(--hair);border-radius:14px;background:#fff;text-decoration:none}} .info-list small{{display:block;color:var(--muted);margin-top:3px}}
 @media(max-width:1100px){{body{{overflow:auto}}.page-title{{position:static;margin:10px}}.workshop{{grid-template-columns:1fr;height:auto}}.sidebar{{position:sticky;top:0;z-index:5;border-right:0;border-bottom:1px solid var(--hair)}}.reader{{min-height:70vh;border-left:0;border-top:1px solid var(--hair)}}}}
@@ -413,7 +432,7 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
 </div>
 <script type="application/json" id="sectionData">{section_json}</script><script type="application/json" id="edgeData">{edges_json}</script>
 <script>
-const sections=JSON.parse(document.getElementById('sectionData').textContent);const edges=JSON.parse(document.getElementById('edgeData').textContent);const byId=new Map(sections.map(s=>[s.id,s]));const bySmallUrl=new Map(sections.map(s=>[s.smallUrl,s.id]));const nextById=new Map();edges.forEach(e=>{{if(!nextById.has(e.from))nextById.set(e.from,new Set());nextById.get(e.from).add(e.to);}});let selectedId=null;const nodes=[...document.querySelectorAll('.flow-node')];const readerBody=document.getElementById('readerBody');const readerId=document.getElementById('readerId');const readerTitle=document.getElementById('readerTitle');const openSmall=document.getElementById('openSmall');const flowCanvas=document.getElementById('flowCanvas');const edgeLayer=document.getElementById('edgeLayer');
+const sections=JSON.parse(document.getElementById('sectionData').textContent);const edges=JSON.parse(document.getElementById('edgeData').textContent);const byId=new Map(sections.map(s=>[s.id,s]));const bySmallUrl=new Map(sections.map(s=>[s.smallUrl,s.id]));const nextById=new Map();const prevById=new Map();edges.forEach(e=>{{if(!nextById.has(e.from))nextById.set(e.from,new Set());nextById.get(e.from).add(e.to);if(!prevById.has(e.to))prevById.set(e.to,[]);prevById.get(e.to).push(e);}});let selectedId=null;const nodes=[...document.querySelectorAll('.flow-node')];const readerBody=document.getElementById('readerBody');const readerId=document.getElementById('readerId');const readerTitle=document.getElementById('readerTitle');const openSmall=document.getElementById('openSmall');const flowCanvas=document.getElementById('flowCanvas');const edgeLayer=document.getElementById('edgeLayer');
 function renderEdges(){{
   const box=flowCanvas.getBoundingClientRect();
   edgeLayer.setAttribute('width',flowCanvas.scrollWidth);
@@ -484,8 +503,9 @@ function applyFlowHighlight(){{
     p.classList.toggle('active-edge',p.dataset.from===selectedId&&nextSet.has(p.dataset.to));
   }});
 }}
-function selectSection(id){{const s=byId.get(id);if(!s)return;selectedId=id;applyFlowHighlight();readerId.textContent=`${{s.id}} · ${{s.kind==='decision'?'분기발생지점':s.kind==='ending'?'엔딩':'스토리'}}`;readerTitle.textContent=s.title;openSmall.href=s.smallUrl;readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));readerBody.innerHTML=s.html+`<section class="illust-card"><strong>삽화 메모</strong><p>${{s.illustration}}</p></section>`;readerBody.scrollTo({{top:0,behavior:'smooth'}});document.querySelector(`[data-section="${{id}}"]`)?.scrollIntoView({{block:'center',inline:'center',behavior:'smooth'}});requestAnimationFrame(renderEdges);}}
-nodes.forEach(n=>n.addEventListener('click',()=>selectSection(n.dataset.section)));readerBody.addEventListener('click',event=>{{const link=event.target.closest('a.section-ref');if(!link)return;const raw=link.getAttribute('href')||'';const normalized=raw.replace(/^\.\//,'').split('#')[0];const targetId=bySmallUrl.get(normalized);if(!targetId)return;event.preventDefault();selectSection(targetId);}});document.getElementById('fitFlow').addEventListener('click',()=>{{flowCanvas.scrollTo({{left:0,top:0,behavior:'smooth'}});selectSection(sections[0].id);}});document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const view=btn.dataset.view;if(view==='story'){{readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));selectSection(document.querySelector('.flow-node.selected')?.dataset.section||sections[0].id);}}if(view==='world'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('worldPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='세계관';openSmall.href='project/world_rules.html';}}if(view==='character'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('characterPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='캐릭터';openSmall.href='project/character_bible.html';}}}}));
+function previousNavHtml(id){{const prev=prevById.get(id)||[];if(!prev.length)return '';const links=prev.map(e=>{{const source=byId.get(e.from);const label=e.label?`${{e.from}} · ${{e.label}}`:e.from;return `<button type="button" data-prev-section="${{e.from}}"><span>${{label}}</span><small>${{source?source.title:''}}</small></button>`;}}).join('');return `<nav class="previous-nav" aria-label="이전 섹션"><strong>이전 섹션</strong><div>${{links}}</div></nav>`;}}
+function selectSection(id){{const s=byId.get(id);if(!s)return;selectedId=id;applyFlowHighlight();readerId.textContent=`${{s.id}} · ${{s.kind==='decision'?'분기발생지점':s.kind==='ending'?'엔딩':'스토리'}}`;readerTitle.textContent=s.title;openSmall.href=s.smallUrl;readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));readerBody.innerHTML=previousNavHtml(id)+s.html+`<section class="illust-card"><strong>삽화 메모</strong><p>${{s.illustration}}</p></section>`;readerBody.scrollTo({{top:0,behavior:'smooth'}});document.querySelector(`[data-section="${{id}}"]`)?.scrollIntoView({{block:'center',inline:'center',behavior:'smooth'}});requestAnimationFrame(renderEdges);}}
+nodes.forEach(n=>n.addEventListener('click',()=>selectSection(n.dataset.section)));readerBody.addEventListener('click',event=>{{const prevButton=event.target.closest('[data-prev-section]');if(prevButton){{event.preventDefault();selectSection(prevButton.dataset.prevSection);return;}}const link=event.target.closest('a.section-ref');if(!link)return;const raw=link.getAttribute('href')||'';const normalized=raw.replace(/^\.\//,'').split('#')[0];const targetId=bySmallUrl.get(normalized);if(!targetId)return;event.preventDefault();selectSection(targetId);}});document.getElementById('fitFlow').addEventListener('click',()=>{{flowCanvas.scrollTo({{left:0,top:0,behavior:'smooth'}});selectSection(sections[0].id);}});document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const view=btn.dataset.view;if(view==='story'){{readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));selectSection(document.querySelector('.flow-node.selected')?.dataset.section||sections[0].id);}}if(view==='world'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('worldPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='세계관';openSmall.href='project/world_rules.html';}}if(view==='character'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('characterPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='캐릭터';openSmall.href='project/character_bible.html';}}}}));
 window.addEventListener('resize',renderEdges);flowCanvas.addEventListener('scroll',()=>requestAnimationFrame(renderEdges));selectSection(sections[0].id);requestAnimationFrame(renderEdges);
 </script>
 </body>
@@ -515,6 +535,24 @@ def main() -> None:
 
     validate_choice_targets(source_sections, section_links)
 
+    section_meta: dict[str, tuple[str, str]] = {}
+    for section in source_sections:
+        section_id = extract_section_id(section["src"])
+        if section_id:
+            section_meta[section_id] = (section["title"], section["outname"])
+
+    previous_by_id: dict[str, list[tuple[str, str, str]]] = {}
+    for section in source_sections:
+        source_id = extract_section_id(section["src"])
+        if not source_id:
+            continue
+        for edge in extract_all_edges(section["markdown"]):
+            target_id = edge["to"]
+            if target_id not in section_meta:
+                continue
+            title, outname = section_meta[source_id]
+            previous_by_id.setdefault(target_id, []).append((source_id, title, outname))
+
     items: list[tuple[str, str, str]] = []
     for section in source_sections:
         title = section["title"]
@@ -522,7 +560,9 @@ def main() -> None:
         src = section["src"]
         body = md_to_html(section["markdown"], section_links)
         items.append((title, outname, src))
-        page = render_page(title, body, "../assets/style.css", "../index.html", updated_at)
+        section_id = extract_section_id(src)
+        previous_items = previous_by_id.get(section_id or "", [])
+        page = render_page(title, body, "../assets/style.css", "../index.html", updated_at, previous_items)
         write(SECTION_OUT_DIR / outname, page)
 
     big_section_links = {
@@ -588,7 +628,7 @@ def main() -> None:
 a{color:var(--link);text-decoration:none}.section-ref{font-weight:700;border-bottom:1px solid rgba(255,226,163,.45)}.page{width:min(760px,100%);margin:0 auto;padding:28px 18px 64px}.top{position:sticky;top:0;background:rgba(20,19,26,.88);backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding:12px 18px;z-index:5}.top a{font-size:15px;color:var(--muted)}
 .updated-at{position:fixed;top:10px;right:12px;z-index:10;padding:5px 9px;border:1px solid rgba(217,183,111,.35);border-radius:999px;background:rgba(20,19,26,.82);backdrop-filter:blur(10px);color:var(--accent);font-size:12px;line-height:1.2;letter-spacing:-.01em;box-shadow:0 8px 20px rgba(0,0,0,.18)}
 .hero{padding:28px 0 16px}.eyebrow{color:var(--accent);font-size:14px;letter-spacing:.04em;margin:0 0 6px}.hero h1{font-size:34px;line-height:1.2;margin:0 0 14px}.card{background:rgba(32,31,42,.86);border:1px solid var(--line);border-radius:18px;padding:18px;margin:18px 0;box-shadow:0 12px 36px rgba(0,0,0,.18)}.muted{color:var(--muted)}
-h1{font-size:30px;line-height:1.25;margin:24px 0 22px;color:#fff4dc}h2{font-size:20px;margin:30px 0 10px;color:var(--accent);border-top:1px solid var(--line);padding-top:20px}h3{font-size:18px;color:#f6dca0}p{margin:0 0 18px}.workshop-link{display:inline-block;padding:10px 14px;border:1px solid rgba(217,183,111,.45);border-radius:999px;background:rgba(217,183,111,.1);color:var(--link);font-weight:700}blockquote{margin:0 0 18px;padding:12px 14px;border-left:3px solid var(--accent);background:rgba(217,183,111,.08);color:#f7e6c0;border-radius:0 12px 12px 0}pre{background:#0d0c12;border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;white-space:pre-wrap;color:#f7e6c0}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em}.section-list{list-style:none;margin:0;padding:0}.section-list li{border-top:1px solid var(--line)}.section-list li:first-child{border-top:0}.section-list a{display:block;padding:14px 4px}.section-list span{display:block;color:var(--text);font-weight:700}.section-list small{display:block;color:var(--muted);font-size:13px;margin-top:2px}.bottom-nav{margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}li{margin:8px 0}
+h1{font-size:30px;line-height:1.25;margin:24px 0 22px;color:#fff4dc}h2{font-size:20px;margin:30px 0 10px;color:var(--accent);border-top:1px solid var(--line);padding-top:20px}h3{font-size:18px;color:#f6dca0}p{margin:0 0 18px}.workshop-link{display:inline-block;padding:10px 14px;border:1px solid rgba(217,183,111,.45);border-radius:999px;background:rgba(217,183,111,.1);color:var(--link);font-weight:700}blockquote{margin:0 0 18px;padding:12px 14px;border-left:3px solid var(--accent);background:rgba(217,183,111,.08);color:#f7e6c0;border-radius:0 12px 12px 0}pre{background:#0d0c12;border:1px solid var(--line);border-radius:12px;padding:14px;overflow:auto;white-space:pre-wrap;color:#f7e6c0}code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.92em}.section-list{list-style:none;margin:0;padding:0}.section-list li{border-top:1px solid var(--line)}.section-list li:first-child{border-top:0}.section-list a{display:block;padding:14px 4px}.section-list span{display:block;color:var(--text);font-weight:700}.section-list small{display:block;color:var(--muted);font-size:13px;margin-top:2px}.previous-nav{margin:0 0 22px;padding:13px 14px;border:1px solid var(--line);border-radius:16px;background:rgba(32,31,42,.86)}.previous-nav strong{display:block;margin-bottom:8px;color:var(--accent);font-size:14px;letter-spacing:.04em}.previous-nav div{display:flex;flex-wrap:wrap;gap:8px}.previous-nav a{display:inline-flex;gap:7px;align-items:center;padding:8px 11px;border:1px solid rgba(217,183,111,.38);border-radius:999px;background:rgba(217,183,111,.1);color:var(--link);font-weight:800}.previous-nav a small{color:var(--muted);font-size:12px;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bottom-nav{margin-top:40px;padding-top:20px;border-top:1px solid var(--line)}li{margin:8px 0}
 @media (max-width:480px){body{font-size:17px;line-height:1.82}.page{padding:42px 16px 56px}.hero h1{font-size:30px}h1{font-size:26px}h2{font-size:19px}.card{border-radius:16px;padding:16px}.updated-at{top:8px;right:8px;font-size:11px;padding:5px 8px}}
 '''
     write(ASSETS_DIR / "style.css", css)
