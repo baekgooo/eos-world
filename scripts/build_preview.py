@@ -425,7 +425,7 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
     <div class="brand"><small>작업실</small><strong>프로젝트</strong><span>왼쪽 메뉴에서 검토할 범주를 고르는 자리야.</span></div>
     <nav class="nav" aria-label="큰작업실 메뉴"><div class="menu-title">어스름 너머의 세계</div><div class="submenu"><button class="active" data-view="story">스토리</button><button data-view="world" disabled>세계관</button><button data-view="character" disabled>캐릭터</button></div></nav>
     <div class="legend"><b>기호</b><div class="legend-row"><i class="sample"></i>스토리</div><div class="legend-row"><i class="sample decision"></i>큰 분기</div><div class="legend-row"><i class="sample minor"></i>작은 선택</div><div class="legend-row"><i class="sample ending"></i>엔딩</div></div>
-    <a class="small-link" href="index.html">작은작업실로 이동</a>
+    <div style="margin-top:auto;display:grid;gap:8px"><a class="small-link" style="margin-top:0" href="flow-review.html">흐름 검토실로 이동</a><a class="small-link" style="margin-top:0" href="index.html">작은작업실로 이동</a></div>
   </aside>
   <section class="flow-wrap"><header class="flow-header"><div><h1>스토리줄기</h1><p>기호를 누르면 오른쪽에 원고가 열려.</p></div><div class="flow-tools"><button id="fitFlow">처음으로</button></div></header><div class="flow-canvas" id="flowCanvas"><svg class="edge-layer" id="edgeLayer"></svg><div class="flow-grid" id="flowGrid">{nodes}</div></div></section>
   <aside class="reader"><div class="reader-head"><div><div class="reader-kicker" id="readerId">SECTION</div><div class="reader-title" id="readerTitle">섹션을 선택해줘</div></div><a class="open-small" id="openSmall" href="index.html">작은작업실</a></div><div class="reader-body" id="readerBody"></div><div class="info-panel" id="worldPanel"><h2>세계관</h2><p>작은작업실의 세계관 문서로 바로 이동할 수 있어. 큰작업실 안에서도 다음 단계에서 요약 카드를 붙일 수 있게 자리를 잡아두었어.</p><div class="info-list"><a href="project/world_rules.html">사잇별의 땅 규칙<small>world_rules.md</small></a><a href="project/game_rules.html">게임 규칙<small>game_rules.md</small></a><a href="project/concept.html">기획 개념<small>concept.md</small></a></div></div><div class="info-panel" id="characterPanel"><h2>캐릭터</h2><p>주요 인물 설정을 확인하는 자리야. 지금은 캐릭터 바이블로 연결해두었고, 이후 인물별 카드형 보기로 확장할 수 있어.</p><div class="info-list"><a href="project/character_bible.html">캐릭터 바이블<small>character_bible.md</small></a><a href="project/style_guide.html">문체와 분위기<small>style_guide.md</small></a></div></div></aside>
@@ -513,6 +513,361 @@ window.addEventListener('resize',renderEdges);flowCanvas.addEventListener('scrol
     write(DOCS_DIR / 'big-workshop.html', page)
 
 
+def build_flow_review(source_sections: list[dict[str, str]], section_links: dict[str, str], updated_at: str) -> None:
+    '''Build the 흐름 검토실 3-panel narrative flow review page.'''
+    import json
+
+    section_ids = [extract_section_id(s['src']) for s in source_sections]
+    section_ids = [sid for sid in section_ids if sid]
+    id_set = set(section_ids)
+
+    data_sections = []
+    edges = []
+    for section in source_sections:
+        section_id = extract_section_id(section['src'])
+        if not section_id:
+            continue
+        markdown = section['markdown']
+        title = extract_title(markdown)
+        edge_items = [e for e in extract_all_edges(markdown) if e['to'] in id_set]
+        for edge in edge_items:
+            edges.append({'from': section_id, 'to': edge['to'], 'label': edge['label']})
+        body_html = md_to_html(strip_heading(markdown), section_links)
+        data_sections.append({
+            'id': section_id,
+            'title': title,
+            'kind': section_kind(markdown),
+            'tier': decision_tier(section_id, markdown),
+            'src': section['src'],
+            'html': body_html,
+            'smallUrl': f"sections/{section['outname']}",
+        })
+
+    section_json = json.dumps(data_sections, ensure_ascii=False).replace("</", "<\\/")
+    edges_json = json.dumps(edges, ensure_ascii=False).replace("</", "<\\/")
+
+    def render_node(item: dict[str, str]) -> str:
+        classes = ' '.join(p for p in ['flow-node', item['kind'], item.get('tier', '')] if p)
+        return (
+            f'<button class="{html.escape(classes)}" '
+            f'data-section="{html.escape(item["id"])}" '
+            f'aria-label="{html.escape(item["title"])}">'
+            f'<span>{html.escape(item["id"])}</span></button>'
+        )
+
+    rows: list[list[dict[str, str]]] = []
+    index = 0
+    while index < len(data_sections):
+        item = data_sections[index]
+        match = re.match(r"S(\d{3})([A-Z]?)$", item['id'])
+        suffix = match.group(2) if match else ''
+        if suffix:
+            prefix = item['id'][:4]
+            group: list[dict[str, str]] = []
+            while index < len(data_sections) and data_sections[index]['id'].startswith(prefix) and re.match(r"S\d{3}[A-Z]$", data_sections[index]['id']):
+                group.append(data_sections[index])
+                index += 1
+            rows.append(group)
+            continue
+        rows.append([item])
+        index += 1
+
+    def chapter_label(section_id: str) -> str:
+        match = re.match(r"S(\d{3})", section_id)
+        number = int(match.group(1)) if match else 0
+        if number >= 40:
+            return '4장 · 숨은이름 시장'
+        if number >= 31:
+            return '3장 · 거울숲'
+        if number >= 19:
+            return '2장 · 초저녁 정거장'
+        return '1장 · 멈춘 방과 첫 문'
+
+    node_parts: list[str] = []
+    current_chapter = ''
+    for row in rows:
+        label = chapter_label(row[0]['id'])
+        if label != current_chapter:
+            current_chapter = label
+            node_parts.append(f'<div class="chapter-band">{html.escape(label)}</div>')
+        row_class = 'branch-row' if len(row) > 1 else 'single-row'
+        node_parts.append(
+            f'<div class="flow-row {row_class}">'
+            + ''.join(render_node(item) for item in row)
+            + '</div>'
+        )
+    nodes = '\n'.join(node_parts)
+
+    page = f'''<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>흐름 검토실 · 어스름 너머의 세계</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<style>
+:root{{--paper:#fbfaf8;--surface:#ffffff;--surface-warm:#f5f2ee;--ink:#171615;--muted:#69635d;--hair:#dfdbd4;--hair-strong:#c9c2b8;--accent:#8f5b2e;--accent-soft:#f3e6d8;--major:#f0c994;--minor:#e8f0e9;--story:#ffffff;--ending:#f1f1f1;--right-bg:#f7f4f0;}}
+*{{box-sizing:border-box}} html,body{{height:100%}} body{{margin:0;background:var(--paper);color:var(--ink);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",Segoe UI,sans-serif;letter-spacing:-.012em;word-break:keep-all;overflow:hidden}}
+a{{color:inherit}}
+.workshop{{display:grid;grid-template-columns:260px minmax(0,1fr) minmax(0,1fr);height:100vh}}
+.flow-wrap{{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff;border-right:1px solid var(--hair)}}
+.flow-header{{height:60px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--hair);background:rgba(255,255,255,.94);backdrop-filter:blur(14px);z-index:3;gap:8px}}
+.flow-header h1{{margin:0;font-size:15px;font-weight:800;letter-spacing:-.03em;white-space:nowrap}}
+.flow-tools{{display:flex;gap:6px;flex-shrink:0}}
+.flow-tools a,.flow-tools button{{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:6px 10px;font-weight:700;color:var(--muted);font-size:12px;text-decoration:none;cursor:pointer;white-space:nowrap}}
+.flow-tools a:hover,.flow-tools button:hover{{color:var(--ink);border-color:var(--hair-strong)}}
+.flow-canvas{{position:relative;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:20px 12px 60px}}
+.flow-grid{{position:relative;z-index:2;display:flex;flex-direction:column;gap:14px;align-items:center;justify-content:flex-start;min-width:0;width:100%}}
+.chapter-band{{width:min(400px,90%);margin:2px 0 0;padding:6px 12px;border:1px solid var(--hair);border-radius:999px;background:rgba(255,255,255,.82);box-shadow:0 8px 20px rgba(31,25,18,.05);color:var(--muted);font-size:11px;font-weight:900;text-align:center;letter-spacing:.06em}}
+.flow-row{{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:44px}}
+.branch-row{{gap:4px}}
+.flow-node{{position:relative;width:56px;height:32px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 11px/1 Pretendard,sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s,background .12s}}
+.flow-node:hover{{transform:translateY(-2px);box-shadow:0 6px 16px rgba(31,25,18,.10)}}
+.flow-node.decision{{background:var(--major);transform:rotate(45deg);width:38px;height:38px;margin:3px 8px}}
+.flow-node.decision span{{transform:rotate(-45deg);font-size:10px}}
+.flow-node.decision.minor{{transform:none;width:56px;height:28px;margin:0;border-radius:10px;background:var(--minor)}}
+.flow-node.decision.minor span{{transform:none}}
+.flow-node.ending{{background:var(--ending);border-radius:999px}}
+.flow-node.center-selected{{border-color:var(--accent);background:#f0d3b1;box-shadow:0 0 0 3px rgba(143,91,46,.18),0 8px 18px rgba(143,91,46,.14)}}
+.flow-node.decision.center-selected{{background:#e8b86a}}
+.flow-node.right-selected{{border-color:#5f8f6a;background:#e6f3e7;box-shadow:0 0 0 3px rgba(95,143,106,.16)}}
+.flow-node.decision.right-selected{{background:#c6e3c8}}
+.flow-node.next-of-center{{border-color:#5f8f6a;opacity:.8}}
+.edge-layer{{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible}}
+.edge-layer path{{stroke:#c5bfb6;stroke-width:1.4;fill:none;transition:stroke .12s,stroke-width .12s,opacity .12s}}
+.edge-layer.has-center path.edge{{opacity:.22}}
+.edge-layer path.center-edge{{stroke:#c97740;stroke-width:2.8;opacity:1!important}}
+.edge-layer path.right-edge{{stroke:#5f8f6a;stroke-width:2;opacity:1!important}}
+.reader{{background:#fff;border-left:1px solid var(--hair);display:flex;flex-direction:column;min-width:0;min-height:0}}
+.reader.right-panel{{background:var(--right-bg)}}
+.reader-head{{height:60px;border-bottom:1px solid var(--hair);padding:0 20px;background:inherit;display:flex;align-items:center;justify-content:space-between;gap:12px}}
+.reader-kicker{{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.05em;white-space:nowrap}}
+.reader-title{{font-size:17px;font-weight:800;letter-spacing:-.03em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}}
+.head-actions{{display:flex;gap:6px;flex-shrink:0}}
+.head-btn{{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:6px 10px;font-weight:700;color:var(--muted);font-size:12px;text-decoration:none;cursor:pointer;white-space:nowrap}}
+.head-btn:hover{{color:var(--ink);border-color:var(--hair-strong)}}
+.head-btn.advance{{border-color:var(--accent);color:var(--accent)}}
+.head-btn.advance:hover{{background:var(--accent);color:#fff}}
+.reader-body{{flex:1;min-height:0;overflow:auto;padding:22px 26px 60px;font-size:15px;line-height:1.78}}
+.reader-body h2{{font-size:13px;margin:26px 0 8px;padding-top:14px;border-top:1px solid var(--hair);letter-spacing:-.01em;color:var(--muted)}}
+.reader-body p{{margin:0 0 14px}}
+.reader-body blockquote{{margin:0 0 14px;padding:10px 12px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0}}
+.reader-body li{{margin:7px 0}}
+.reader-body a.section-ref{{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25);cursor:pointer}}
+.reader-body a.section-ref:hover{{border-bottom-color:var(--accent)}}
+.reader-placeholder{{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:10px;padding:30px}}
+.reader-placeholder strong{{font-size:15px;color:var(--ink)}}
+.reader-placeholder span{{font-size:13px;text-align:center;line-height:1.7}}
+</style>
+</head>
+<body>
+<div class="workshop">
+  <section class="flow-wrap">
+    <header class="flow-header">
+      <h1>흐름 검토실</h1>
+      <div class="flow-tools">
+        <button id="fitFlow">처음으로</button>
+        <a href="big-workshop.html">큰작업실</a>
+      </div>
+    </header>
+    <div class="flow-canvas" id="flowCanvas">
+      <svg class="edge-layer" id="edgeLayer"></svg>
+      <div class="flow-grid" id="flowGrid">{nodes}</div>
+    </div>
+  </section>
+  <aside class="reader" id="centerPanel">
+    <div class="reader-head">
+      <div style="min-width:0;overflow:hidden">
+        <div class="reader-kicker" id="centerKicker">현재 섹션</div>
+        <div class="reader-title" id="centerTitle">순서도에서 섹션을 골라봐</div>
+      </div>
+      <div class="head-actions">
+        <a class="head-btn" id="centerSmall" href="index.html">작은작업실</a>
+      </div>
+    </div>
+    <div class="reader-body" id="centerBody">
+      <div class="reader-placeholder">
+        <strong>현재 섹션</strong>
+        <span>왼쪽 순서도에서 섹션을 클릭하면<br>여기에 본문이 열려.</span>
+      </div>
+    </div>
+  </aside>
+  <aside class="reader right-panel" id="rightPanel">
+    <div class="reader-head">
+      <div style="min-width:0;overflow:hidden">
+        <div class="reader-kicker" id="rightKicker">다음 섹션</div>
+        <div class="reader-title" id="rightTitle">선택지를 클릭해봐</div>
+      </div>
+      <div class="head-actions">
+        <button class="head-btn" id="backBtn" style="display:none">← 이전</button>
+        <button class="head-btn advance" id="advanceBtn" style="display:none">→ 여기서 계속</button>
+        <a class="head-btn" id="rightSmall" href="index.html" style="display:none">작은작업실</a>
+      </div>
+    </div>
+    <div class="reader-body" id="rightBody">
+      <div class="reader-placeholder">
+        <strong>다음 섹션</strong>
+        <span>현재 섹션의 선택지 링크를 클릭하면<br>이동할 섹션이 여기에 열려.<br>자연스럽게 이어지는지 확인해봐.</span>
+      </div>
+    </div>
+  </aside>
+</div>
+<script type="application/json" id="sectionData">{section_json}</script>
+<script type="application/json" id="edgeData">{edges_json}</script>
+<script>
+const sections=JSON.parse(document.getElementById('sectionData').textContent);
+const edges=JSON.parse(document.getElementById('edgeData').textContent);
+const byId=new Map(sections.map(s=>[s.id,s]));
+const bySmallUrl=new Map(sections.map(s=>[s.smallUrl,s.id]));
+const nextById=new Map();
+edges.forEach(e=>{{if(!nextById.has(e.from))nextById.set(e.from,new Set());nextById.get(e.from).add(e.to);}});
+let centerId=null,rightId=null,rightHistory=[];
+const nodes=[...document.querySelectorAll('.flow-node')];
+const flowCanvas=document.getElementById('flowCanvas');
+const edgeLayer=document.getElementById('edgeLayer');
+const centerKicker=document.getElementById('centerKicker');
+const centerTitle=document.getElementById('centerTitle');
+const centerBody=document.getElementById('centerBody');
+const centerSmall=document.getElementById('centerSmall');
+const rightKicker=document.getElementById('rightKicker');
+const rightTitle=document.getElementById('rightTitle');
+const rightBody=document.getElementById('rightBody');
+const rightSmall=document.getElementById('rightSmall');
+const advanceBtn=document.getElementById('advanceBtn');
+const backBtn=document.getElementById('backBtn');
+
+function renderEdges(){{
+  const box=flowCanvas.getBoundingClientRect();
+  edgeLayer.setAttribute('width',flowCanvas.scrollWidth);
+  edgeLayer.setAttribute('height',flowCanvas.scrollHeight);
+  [...edgeLayer.querySelectorAll('path.edge')].forEach(p=>p.remove());
+  const sideRoutes=new Map();
+  const point=(rect,node,where,side=0)=>{{
+    const cx=rect.left+rect.width/2-box.left+flowCanvas.scrollLeft;
+    const cy=rect.top+rect.height/2-box.top+flowCanvas.scrollTop;
+    if(node.classList.contains('decision')&&where==='side'&&side!==0)
+      return {{x:(side<0?rect.left:rect.right)-box.left+flowCanvas.scrollLeft,y:cy}};
+    return {{x:cx,y:(where==='bottom'?rect.bottom:where==='top'?rect.top:rect.top+rect.height/2)-box.top+flowCanvas.scrollTop}};
+  }};
+  for(const edge of edges){{
+    const a=document.querySelector(`[data-section="${{edge.from}}"]`);
+    const b=document.querySelector(`[data-section="${{edge.to}}"]`);
+    if(!a||!b)continue;
+    const ar=a.getBoundingClientRect(),br=b.getBoundingClientRect();
+    const downward=br.top>=ar.top;
+    const ac=point(ar,a,'center'),bc=point(br,b,'center');
+    const sameCol=Math.abs(ac.x-bc.x)<10,longJump=Math.abs(bc.y-ac.y)>85;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('class','edge');
+    path.dataset.from=edge.from;path.dataset.to=edge.to;
+    const centerNext=nextById.get(centerId)||new Set();
+    const rightNext=nextById.get(rightId)||new Set();
+    if(edge.from===centerId&&centerNext.has(edge.to))path.classList.add('center-edge');
+    else if(edge.from===rightId&&rightNext.has(edge.to))path.classList.add('right-edge');
+    const hasIntermediate=nodes.some(n=>{{
+      if(n===a||n===b)return false;
+      const nr=n.getBoundingClientRect();
+      const nx=nr.left+nr.width/2-box.left+flowCanvas.scrollLeft;
+      const ny=nr.top+nr.height/2-box.top+flowCanvas.scrollTop;
+      return Math.abs(nx-ac.x)<20&&ny>Math.min(ac.y,bc.y)&&ny<Math.max(ac.y,bc.y);
+    }});
+    if(sameCol&&longJump&&hasIntermediate){{
+      const key=`${{Math.round(ac.x)}}:${{downward?'d':'u'}}`;
+      const cnt=sideRoutes.get(key)||0;sideRoutes.set(key,cnt+1);
+      const dir=cnt%2===0?-1:1,off=dir*(46+Math.floor(cnt/2)*24);
+      const s=point(ar,a,a.classList.contains('decision')?'side':downward?'bottom':'top',dir);
+      const e=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
+      path.setAttribute('d',`M ${{s.x}} ${{s.y}} C ${{s.x+off}} ${{s.y+18*(downward?1:-1)}}, ${{e.x+off}} ${{e.y-18*(downward?1:-1)}}, ${{e.x}} ${{e.y}}`);
+    }}else{{
+      const s=point(ar,a,downward?'bottom':'top'),e=point(br,b,downward?'top':'bottom');
+      const my=s.y+(e.y-s.y)*0.55;
+      path.setAttribute('d',`M ${{s.x}} ${{s.y}} C ${{s.x}} ${{my}}, ${{e.x}} ${{my}}, ${{e.x}} ${{e.y}}`);
+    }}
+    edgeLayer.appendChild(path);
+  }}
+  applyHighlight();
+}}
+
+function applyHighlight(){{
+  const centerNext=nextById.get(centerId)||new Set();
+  edgeLayer.classList.toggle('has-center',Boolean(centerId));
+  nodes.forEach(n=>{{
+    const id=n.dataset.section;
+    n.classList.toggle('center-selected',id===centerId);
+    n.classList.toggle('right-selected',id===rightId&&id!==centerId);
+    n.classList.toggle('next-of-center',Boolean(centerId)&&centerNext.has(id)&&id!==rightId&&id!==centerId);
+  }});
+}}
+
+function loadCenter(id){{
+  const s=byId.get(id);if(!s)return;
+  centerId=id;rightId=null;rightHistory=[];
+  centerKicker.textContent=`${{s.id}} · ${{s.kind==='decision'?'분기발생지점':s.kind==='ending'?'엔딩':'스토리'}}`;
+  centerTitle.textContent=s.title;
+  centerSmall.href=s.smallUrl;
+  centerBody.innerHTML=s.html;
+  centerBody.scrollTo({{top:0,behavior:'smooth'}});
+  rightKicker.textContent='다음 섹션';
+  rightTitle.textContent='선택지를 클릭해봐';
+  rightSmall.style.display='none';
+  advanceBtn.style.display='none';
+  backBtn.style.display='none';
+  rightBody.innerHTML='<div class="reader-placeholder"><strong>다음 섹션</strong><span>현재 섹션의 선택지 링크를 클릭하면<br>이동할 섹션이 여기에 열려.</span></div>';
+  requestAnimationFrame(renderEdges);
+}}
+
+function loadRight(id,pushHistory=true){{
+  const s=byId.get(id);if(!s)return;
+  if(pushHistory&&rightId)rightHistory.push(rightId);
+  rightId=id;
+  rightKicker.textContent=`${{s.id}} · ${{s.kind==='decision'?'분기발생지점':s.kind==='ending'?'엔딩':'스토리'}}`;
+  rightTitle.textContent=s.title;
+  rightSmall.href=s.smallUrl;
+  rightSmall.style.display='';
+  advanceBtn.style.display='';
+  backBtn.style.display=rightHistory.length?'':'none';
+  rightBody.innerHTML=s.html;
+  rightBody.scrollTo({{top:0,behavior:'smooth'}});
+  requestAnimationFrame(renderEdges);
+}}
+
+function interceptLinks(bodyEl,loader){{
+  bodyEl.addEventListener('click',e=>{{
+    const link=e.target.closest('a.section-ref');
+    if(!link)return;
+    const raw=link.getAttribute('href')||'';
+    const norm=raw.replace(/^\.\//,'').split('#')[0];
+    const targetId=bySmallUrl.get(norm);
+    if(!targetId)return;
+    e.preventDefault();
+    loader(targetId);
+  }});
+}}
+
+nodes.forEach(n=>n.addEventListener('click',()=>loadCenter(n.dataset.section)));
+interceptLinks(centerBody,loadRight);
+interceptLinks(rightBody,loadRight);
+advanceBtn.addEventListener('click',()=>{{if(rightId)loadCenter(rightId);}});
+backBtn.addEventListener('click',()=>{{
+  if(!rightHistory.length)return;
+  const prevId=rightHistory.pop();
+  loadRight(prevId,false);
+}});
+document.getElementById('fitFlow').addEventListener('click',()=>{{
+  flowCanvas.scrollTo({{left:0,top:0,behavior:'smooth'}});
+  loadCenter(sections[0].id);
+}});
+window.addEventListener('resize',renderEdges);
+flowCanvas.addEventListener('scroll',()=>requestAnimationFrame(renderEdges));
+loadCenter(sections[0].id);
+requestAnimationFrame(renderEdges);
+</script>
+</body>
+</html>'''
+    write(DOCS_DIR / 'flow-review.html', page)
+
+
 def main() -> None:
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
     SECTION_OUT_DIR.mkdir(parents=True, exist_ok=True)
@@ -569,6 +924,7 @@ def main() -> None:
         section_id: f"sections/{outname}" for section_id, outname in section_links.items()
     }
     build_big_workshop(source_sections, big_section_links, updated_at)
+    build_flow_review(source_sections, big_section_links, updated_at)
 
     reference_groups: list[tuple[str, list[tuple[str, str, str]]]] = []
     for label, source_dir, out_dir in REFERENCE_COLLECTIONS:
