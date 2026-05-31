@@ -659,6 +659,16 @@ a{{color:inherit}}
 .reader-placeholder{{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--muted);gap:10px;padding:30px}}
 .reader-placeholder strong{{font-size:15px;color:var(--ink)}}
 .reader-placeholder span{{font-size:13px;text-align:center;line-height:1.7}}
+.flow-node.origin{{border-color:#4a8a60;background:#bfe0cc;box-shadow:0 0 0 3px rgba(74,138,96,.25),0 4px 12px rgba(74,138,96,.15)}}
+.flow-node.decision.origin{{background:#a8d4b5}}
+.flow-node.visited{{border-color:#7a9e5c;background:#daeacc;opacity:.9}}
+.flow-node.decision.visited{{background:#c8e0c0}}
+.edge-layer path.visited-edge{{stroke:#5f8f6a;stroke-width:2.6;opacity:1!important}}
+.path-strip{{display:none;min-height:30px;align-items:center;padding:4px 12px;border-bottom:1px solid var(--hair);background:rgba(95,143,106,.07);font-size:11px;font-weight:700;color:var(--muted);gap:2px;overflow-x:auto;overflow-y:hidden;white-space:nowrap;flex-shrink:0;flex-wrap:nowrap}}
+.path-strip .origin-tag{{color:#4a8a60;background:rgba(74,138,96,.13);padding:2px 7px;border-radius:999px;border:1px solid rgba(74,138,96,.3)}}
+.path-strip .mid-tag{{color:var(--muted);padding:2px 5px}}
+.path-strip .current-tag{{color:var(--accent);background:var(--accent-soft);padding:2px 7px;border-radius:999px;border:1px solid rgba(143,91,46,.3)}}
+.path-strip .arrow{{color:var(--hair-strong);margin:0 2px;flex-shrink:0}}
 </style>
 </head>
 <body>
@@ -671,6 +681,7 @@ a{{color:inherit}}
         <a href="big-workshop.html">큰작업실</a>
       </div>
     </header>
+    <div class="path-strip" id="pathStrip"></div>
     <div class="flow-canvas" id="flowCanvas">
       <svg class="edge-layer" id="edgeLayer"></svg>
       <div class="flow-grid" id="flowGrid">{nodes}</div>
@@ -722,7 +733,7 @@ const byId=new Map(sections.map(s=>[s.id,s]));
 const bySmallUrl=new Map(sections.map(s=>[s.smallUrl,s.id]));
 const nextById=new Map();
 edges.forEach(e=>{{if(!nextById.has(e.from))nextById.set(e.from,new Set());nextById.get(e.from).add(e.to);}});
-let centerId=null,rightId=null,rightHistory=[];
+let centerId=null,rightId=null,rightHistory=[],centerHistory=[];
 const nodes=[...document.querySelectorAll('.flow-node')];
 const flowCanvas=document.getElementById('flowCanvas');
 const edgeLayer=document.getElementById('edgeLayer');
@@ -765,6 +776,8 @@ function renderEdges(){{
     const rightNext=nextById.get(rightId)||new Set();
     if(edge.from===centerId&&centerNext.has(edge.to))path.classList.add('center-edge');
     else if(edge.from===rightId&&rightNext.has(edge.to))path.classList.add('right-edge');
+    const travelPath=[...centerHistory,centerId];
+    for(let i=0;i<travelPath.length-1;i++){{if(edge.from===travelPath[i]&&edge.to===travelPath[i+1]){{path.classList.add('visited-edge');break;}}}}
     const hasIntermediate=nodes.some(n=>{{
       if(n===a||n===b)return false;
       const nr=n.getBoundingClientRect();
@@ -789,19 +802,36 @@ function renderEdges(){{
   applyHighlight();
 }}
 
+function updatePathStrip(){{
+  const strip=document.getElementById('pathStrip');
+  if(!centerHistory.length){{strip.style.display='none';return;}}
+  strip.style.display='flex';
+  const parts=centerHistory.map((id,i)=>{{
+    const cls=i===0?'origin-tag':'mid-tag';
+    return `<span class="${{cls}}">${{id}}</span>`;
+  }});
+  parts.push(`<span class="current-tag">${{centerId}} (지금)</span>`);
+  strip.innerHTML=parts.join('<span class="arrow">→</span>');
+}}
 function applyHighlight(){{
   const centerNext=nextById.get(centerId)||new Set();
   edgeLayer.classList.toggle('has-center',Boolean(centerId));
+  const originId=centerHistory.length?centerHistory[0]:null;
+  const visitedSet=new Set(centerHistory);
   nodes.forEach(n=>{{
     const id=n.dataset.section;
     n.classList.toggle('center-selected',id===centerId);
     n.classList.toggle('right-selected',id===rightId&&id!==centerId);
     n.classList.toggle('next-of-center',Boolean(centerId)&&centerNext.has(id)&&id!==rightId&&id!==centerId);
+    n.classList.toggle('origin',id===originId);
+    n.classList.toggle('visited',visitedSet.has(id)&&id!==originId);
   }});
+  updatePathStrip();
 }}
 
-function loadCenter(id){{
+function loadCenter(id,keepHistory=false){{
   const s=byId.get(id);if(!s)return;
+  if(!keepHistory)centerHistory=[];
   centerId=id;rightId=null;rightHistory=[];
   centerKicker.textContent=`${{s.id}} · ${{s.kind==='decision'?'분기발생지점':s.kind==='ending'?'엔딩':'스토리'}}`;
   centerTitle.textContent=s.title;
@@ -848,7 +878,7 @@ function interceptLinks(bodyEl,loader){{
 nodes.forEach(n=>n.addEventListener('click',()=>loadCenter(n.dataset.section)));
 interceptLinks(centerBody,loadRight);
 interceptLinks(rightBody,loadRight);
-advanceBtn.addEventListener('click',()=>{{if(rightId)loadCenter(rightId);}});
+advanceBtn.addEventListener('click',()=>{{if(rightId){{centerHistory.push(centerId);loadCenter(rightId,true);}}}});
 backBtn.addEventListener('click',()=>{{
   if(!rightHistory.length)return;
   const prevId=rightHistory.pop();
