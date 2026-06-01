@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>《어스름 너머의 세계》 전체 구조 정리</title>
+  <style>
+    :root {
+      --bg: #0f0f14;
+      --surface: #17171f;
+      --surface2: #1e1e2a;
+      --border: #2a2a3a;
+      --text: #d8d8e8;
+      --text-dim: #888899;
+      --accent: #8b7cf6;
+      --accent2: #c4b5fd;
+      --star: #ffd97d;
+      --done: #4ade80;
+      --todo: #94a3b8;
+      --warn: #fb923c;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Pretendard', 'Noto Sans KR', 'Apple SD Gothic Neo', sans-serif;
+      font-size: 15px;
+      line-height: 1.8;
+      word-break: keep-all;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      text-align: center;
+      padding: 48px 0 40px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 48px;
+    }
+    header .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    header h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    header .subtitle {
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    /* ── Section ── */
+    section {
+      margin-bottom: 56px;
+    }
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 10px;
+      margin-bottom: 24px;
+    }
+    h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 28px 0 12px;
+    }
+    h3 .num {
+      color: var(--accent);
+      margin-right: 6px;
+    }
+    p {
+      color: var(--text);
+      margin-bottom: 10px;
+    }
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+    li {
+      margin-bottom: 4px;
+      color: var(--text);
+    }
+    strong {
+      color: #fff;
+      font-weight: 600;
+    }
+    em {
+      color: var(--accent2);
+      font-style: normal;
+    }
+
+    /* ── Flow ── */
+    .flow {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-size: 13.5px;
+      line-height: 2;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .flow .arrow { color: var(--accent); }
+    .flow .highlight { color: var(--star); font-weight: 600; }
+
+    /* ── Progress bar ── */
+    .growth-line {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin: 12px 0;
+    }
+    .growth-step {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+    }
+    .growth-step.active {
+      border-color: var(--accent);
+      color: var(--accent2);
+    }
+    .growth-arrow {
+      color: var(--border);
+      display: flex;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    /* ── Chapter card ── */
+    .chapter-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .chapter-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: start;
+      gap: 8px;
+    }
+    .chapter-card:hover {
+      border-color: var(--accent);
+    }
+    .chapter-card .title {
+      font-weight: 600;
+      color: #fff;
+      font-size: 14.5px;
+    }
+    .chapter-card .sections {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .chapter-card .place {
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+    .badge {
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge.done { background: #14532d; color: var(--done); }
+    .badge.warn { background: #431407; color: var(--warn); }
+    .badge.todo { background: #1e293b; color: var(--todo); }
+
+    /* ── Detail card ── */
+    .detail-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 16px;
+    }
+    .detail-card .chapter-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .detail-card .chapter-num {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .detail-card h3 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+    .star-theme {
+      background: var(--surface2);
+      border-left: 3px solid var(--star);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 13.5px;
+      color: var(--star);
+      font-style: italic;
+    }
+    .quote {
+      background: var(--surface2);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 8px 8px 0;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 13.5px;
+      color: var(--text-dim);
+    }
+    .note-warn {
+      background: #431407;
+      border: 1px solid #7c2d12;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-size: 13px;
+      color: var(--warn);
+      margin-top: 12px;
+    }
+
+    /* ── Table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 12px 0;
+      font-size: 13.5px;
+    }
+    th {
+      background: var(--surface2);
+      color: var(--text-dim);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 9px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: var(--surface2); }
+    td.answer { color: var(--done); font-weight: 600; }
+    td.wrong { color: var(--text-dim); }
+
+    /* ── Ian thread ── */
+    .thread {
+      position: relative;
+      padding-left: 24px;
+    }
+    .thread::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+    .thread-item {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .thread-item::before {
+      content: '';
+      position: absolute;
+      left: -20px;
+      top: 8px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+    .thread-item .chapter-tag {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 2px;
+    }
+    .thread-item p {
+      font-size: 13.5px;
+      color: var(--text);
+      margin: 0;
+    }
+
+    /* ── Endings ── */
+    .ending-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 12px 0;
+    }
+    .ending-card {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .ending-card .code {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .ending-card .name {
+      font-weight: 600;
+      color: #fff;
+      font-size: 13.5px;
+      margin-bottom: 6px;
+    }
+    .ending-card .desc {
+      font-size: 12.5px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+    .ending-card.true { border-color: var(--star); }
+    .ending-card.true .code { color: var(--star); }
+    .ending-card.secret { border-color: var(--accent); }
+
+    .be-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 8px;
+      margin: 12px 0;
+    }
+    .be-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+    }
+    .be-item .be-code { color: var(--warn); font-size: 11px; font-weight: 700; margin-bottom: 2px; }
+    .be-item .be-name { color: var(--text); }
+    .be-item .be-where { color: var(--text-dim); font-size: 11.5px; margin-top: 2px; }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-dim);
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="eyebrow">Story Structure Overview</div>
+    <h1>《어스름 너머의 세계》</h1>
+    <div class="subtitle">전체 스토리 흐름 · 챕터 구성 · 퍼즐/함정 · 엔딩 구조 — 2026-06-01</div>
+  </header>
+
+  <!-- ── 전체 스토리 흐름 ── -->
+  <section>
+    <h2>전체 스토리 흐름</h2>
+
+    <table>
+      <tr>
+        <th>목표 층위</th>
+        <th>내용</th>
+      </tr>
+      <tr>
+        <td><strong>표면 목표</strong></td>
+        <td>현실세계로 돌아가기</td>
+      </tr>
+      <tr>
+        <td><strong>중간 목표</strong></td>
+        <td>사잇별의 땅에 흩어진 세 개의 별조각 찾기</td>
+      </tr>
+      <tr>
+        <td><strong>숨은 목표</strong></td>
+        <td>이안이 누구인지, 왜 돌아가지 못했는지 알아내기</td>
+      </tr>
+      <tr>
+        <td><strong>진짜 목표</strong></td>
+        <td>두려움을 없애는 것이 아니라, 두려움을 인정한 채 앞으로 나아가는 법 배우기</td>
+      </tr>
+    </table>
+
+    <div class="flow">
+      <span class="highlight">현실세계 방</span>
+      <span class="arrow"> → </span>이안 등장, 방이 접힘
+      <span class="arrow"> → </span><span class="highlight">사잇별의 땅 도착</span>
+      <span class="arrow"> → </span>표지판 퍼즐 (세계 규칙 체험)
+      <span class="arrow"> → </span>초저녁 정거장 (함정 + 세 별조각 목표 획득)
+      <span class="arrow"> → </span><span class="highlight">거울숲</span> (별조각 ① / 부족함 인정)
+      <span class="arrow"> → </span><span class="highlight">숨은이름 시장</span> (별조각 ② / 착한 척 인정)
+      <span class="arrow"> → </span><span class="highlight">밤끝탑</span> (별조각 ③ / 실패와 선택 인정)
+      <span class="arrow"> → </span>열리지 않는 문 (이안이 함께 못 돌아감 / 최종 선택)
+      <span class="arrow"> → </span><span class="highlight">어스름의 심장</span> (이안의 진짜 이름과 세계의 진실)
+      <span class="arrow"> → </span><span class="highlight">엔딩 4종</span>
+    </div>
+
+    <p><strong>주인공의 내면 성장선</strong></p>
+    <div class="growth-line">
+      <div class="growth-step active">잘하려는 나</div>
+      <div class="growth-arrow">→</div>
+      <div class="growth-step">의심하는 나</div>
+      <div class="growth-arrow">→</div>
+      <div class="growth-step">마주 보는 나</div>
+      <div class="growth-arrow">→</div>
+      <div class="growth-step">말하는 나</div>
+      <div class="growth-arrow">→</div>
+      <div class="growth-step">선택하는 나</div>
+    </div>
+  </section>
+
+  <!-- ── 챕터 구성 ── -->
+  <section>
+    <h2>챕터 구성</h2>
+    <div class="chapter-grid">
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">프롤로그. 내 방에 없던 문</div>
+          <div class="sections">S001 ~ S010</div>
+          <div class="place">현실세계 방</div>
+        </div>
+        <span class="badge done">완성</span>
+      </div>
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">1장. 사잇별의 땅</div>
+          <div class="sections">S011 ~ S019</div>
+          <div class="place">사잇별의 땅 입구</div>
+        </div>
+        <span class="badge done">완성</span>
+      </div>
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">2장. 초저녁 정거장</div>
+          <div class="sections">S020 ~ S030</div>
+          <div class="place">초저녁 정거장</div>
+        </div>
+        <span class="badge done">완성</span>
+      </div>
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">3장. 거울숲</div>
+          <div class="sections">S031 ~ S039</div>
+          <div class="place">거울숲</div>
+        </div>
+        <span class="badge warn">완성 (수정 필요)</span>
+      </div>
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">4장. 숨은이름 시장</div>
+          <div class="sections">S040 ~ S049 (예정)</div>
+          <div class="place">이름·기억 거래 시장</div>
+        </div>
+        <span class="badge todo">미작성</span>
+      </div>
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">5장. 밤끝탑</div>
+          <div class="sections">S050 ~ S059 (예정)</div>
+          <div class="place">검은 탑</div>
+        </div>
+        <span class="badge todo">미작성</span>
+      </div>
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">6장. 열리지 않는 문</div>
+          <div class="sections">S060 ~ S065 (예정)</div>
+          <div class="place">현실의 문 앞</div>
+        </div>
+        <span class="badge todo">미작성</span>
+      </div>
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">7장. 어스름의 심장</div>
+          <div class="sections">S066 ~ S074 (예정)</div>
+          <div class="place">사잇별의 땅 중심</div>
+        </div>
+        <span class="badge todo">미작성</span>
+      </div>
+
+      <div class="chapter-card">
+        <div>
+          <div class="title">엔딩</div>
+          <div class="sections">E001 ~ E004</div>
+          <div class="place">—</div>
+        </div>
+        <span class="badge todo">미작성</span>
+      </div>
+
+    </div>
+    <p style="margin-top:12px; font-size:13px; color:var(--text-dim);">
+      현재 51개 섹션 완성. 4장~엔딩 미작성.
+      <span style="color:var(--warn);">⚠ S031~S039는 캐릭터 설정 변경(주인공 핵심 믿음 + 별조각 조건)으로 수정 필요.</span>
+    </p>
+  </section>
+
+  <!-- ── 챕터별 상세 ── -->
+  <section>
+    <h2>챕터별 스토리 + 퍼즐/함정</h2>
+
+    <!-- 프롤로그 -->
+    <div class="detail-card">
+      <div class="chapter-header">
+        <span class="chapter-num">Prologue</span>
+        <h3>내 방에 없던 문 <span style="font-size:12px;color:var(--text-dim);">S001~S010</span></h3>
+        <span class="badge done" style="margin-left:auto">완성</span>
+      </div>
+      <p><strong>핵심</strong>: 현실이 어긋나고, 이안이 나타나며, 주인공이 사잇별의 땅으로 넘어간다.</p>
+      <ul>
+        <li>시계가 멈추고, 창밖이 이상해지고, 휴대폰에 알 수 없는 문장이 뜬다.</li>
+        <li>방 안에 없던 문이 생기고, 문틈에서 이안 등장.</li>
+        <li><strong>첫 선택</strong>: 이안을 믿을지 / 문밖을 직접 볼지 / 작은 글씨를 다시 볼지 / 방에 남을지</li>
+        <li>방에 남는 선택 → 방이 접히는 위협 → 결국 본편 합류 (완전 배드엔딩 아님)</li>
+      </ul>
+      <div class="quote">"이안이라고 불러." / "그게 네 이름이야?" / "지금은."</div>
+      <p style="font-size:13px;color:var(--text-dim);">퍼즐/함정: 없음. 도입부 — 선택·관찰 중심.</p>
+    </div>
+
+    <!-- 1장 -->
+    <div class="detail-card">
+      <div class="chapter-header">
+        <span class="chapter-num">Chapter 1</span>
+        <h3>사잇별의 땅 <span style="font-size:12px;color:var(--text-dim);">S011~S019</span></h3>
+        <span class="badge done" style="margin-left:auto">완성</span>
+      </div>
+      <p><strong>핵심</strong>: 돌아가는 문이 사라진 걸 확인하고, 이 세계의 첫 규칙을 체험한다.</p>
+      <p>이안은 길을 아는 사람이 아니라 <em>길을 잃어본 사람</em> — 정답을 대신 알려주지 않는다.</p>
+
+      <h3><span class="num">P001</span>세 갈래 표지판</h3>
+      <table>
+        <tr><th>표지판</th><th>문구</th><th>결과</th></tr>
+        <tr>
+          <td>왼쪽</td>
+          <td>"돌아가고 싶은 자는 왼쪽으로."</td>
+          <td class="wrong">길이 원점으로 돌아옴 → 재도전</td>
+        </tr>
+        <tr>
+          <td>오른쪽</td>
+          <td>"잃어버린 것을 찾는 자는 오른쪽으로."</td>
+          <td class="wrong">가짜 물건들, 그림자가 발목을 잡음 → 재도전</td>
+        </tr>
+        <tr>
+          <td>가운데 낡은 돌 (작은 글씨)</td>
+          <td>"정말로 원하는 길은 크게 쓰이지 않는다."</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td class="answer">정답 C</td>
+          <td class="answer">표지판 뒤쪽의 숨은 좁은 길을 살핀다</td>
+          <td class="answer">초저녁 정거장으로 진행</td>
+        </tr>
+        <tr>
+          <td>D</td>
+          <td>이안에게 전부 맡긴다</td>
+          <td class="wrong">이안: "여기서는 네가 봐야 해." → 재도전</td>
+        </tr>
+      </table>
+      <div class="quote"><strong>핵심 규칙</strong>: 크게 쓰인 말보다 작고 희미한 단서가 진실에 가깝다. — 이후 모든 퍼즐의 원칙.</div>
+      <p style="font-size:13px;color:var(--text-dim);">첫 퍼즐이므로 오답은 회복 가능. 죽이지 않고 단서를 다시 배우게 함.</p>
+    </div>
+
+    <!-- 2장 -->
+    <div class="detail-card">
+      <div class="chapter-header">
+        <span class="chapter-num">Chapter 2</span>
+        <h3>초저녁 정거장 <span style="font-size:12px;color:var(--text-dim);">S020~S030</span></h3>
+        <span class="badge done" style="margin-left:auto">완성</span>
+      </div>
+      <p><strong>핵심</strong>: 첫 공공장소 탐험. 친절한 역무원 함정을 겪고, 세 별조각이라는 전체 목표를 손에 넣는다.</p>
+      <ul>
+        <li>선로 없는 승강장, 말하는 시간표, 너무 친절한 역무원.</li>
+        <li><strong>표지판 수선공</strong> 등장 — 큰 글씨/작은 글씨 세계 규칙 설명. 이안이 모든 설명을 맡지 않게 함.</li>
+        <li>이안도 주인공을 어딘가로 움직이게 한다는 독자의 <em>의심 시작</em>.</li>
+      </ul>
+
+      <h3><span class="num">T001</span>친절한 역무원 사기꾼 함정</h3>
+      <p>너무 안전하고 너무 친절한 역무원 → 믿으면 이름을 빼앗김 (BE001)<br>
+      <span style="font-size:13px;color:var(--text-dim);">단서: 역무원의 이름표에 이름이 없거나 작은 글씨로 경고가 있음.</span></p>
+
+      <h3><span class="num">P002</span>시간표 해독</h3>
+      <p>말하는 시간표의 큰 글씨와 작은 문장을 대조해 진짜 출발 정보를 읽음.<br>
+      정답 루트 → 거울숲 가는 표 + 세 별조각 목표 획득.</p>
+
+      <p style="font-size:13px;color:var(--text-dim);">실패 페이지: BE001 역무원에게 이름을 빼앗기다 / BE002 표지판의 유혹 길에 갇히다</p>
+    </div>
+
+    <!-- 3장 -->
+    <div class="detail-card">
+      <div class="chapter-header">
+        <span class="chapter-num">Chapter 3</span>
+        <h3>거울숲 <span style="font-size:12px;color:var(--text-dim);">S031~S039</span></h3>
+        <span class="badge warn" style="margin-left:auto">수정 필요</span>
+      </div>
+      <p><strong>핵심</strong>: 주인공이 숨기고 싶은 마음과 마주하고, 첫 번째 별조각을 얻는다. 이안의 비밀 암시 시작.</p>
+      <div class="star-theme">별조각 주제 ①: 부족함 — "잘하지 못할까 봐 무서웠어. 실망시키면 사랑받지 못할까 봐 무서웠어."</div>
+      <p>거울들이 얼굴이 아니라 숨기고 싶은 마음을 비춤. 이안 뒤에 숨으면 거울이 이안의 빈 이름을 비추며 이안이 흔들림.</p>
+
+      <h3><span class="num">P003</span>진짜 거울 찾기</h3>
+      <table>
+        <tr><th>선택</th><th>거울</th><th>결과</th></tr>
+        <tr>
+          <td>A</td>
+          <td>웃는 거울 — "걱정하지 않아도 되는 길"</td>
+          <td class="wrong">발밑 그림자 사라짐. 도망이 만든 얼굴. → 재도전</td>
+        </tr>
+        <tr>
+          <td>B</td>
+          <td>빈 거울 — "아무것도 보지 않아도 되는 길" (깨기)</td>
+          <td class="wrong">조각마다 보지 않으려던 표정이 더 날카롭게. → 재도전</td>
+        </tr>
+        <tr>
+          <td class="answer">C (정답)</td>
+          <td class="answer">보기 싫은 거울 — 작은 글씨: "그래도 봐야 지나간다"</td>
+          <td class="answer">거울 뒤 길이 열림 → S037 진행</td>
+        </tr>
+        <tr>
+          <td>D</td>
+          <td>이안 뒤에 숨기</td>
+          <td class="wrong">이안의 빈 이름이 비쳐 이안이 흔들림 → 재도전</td>
+        </tr>
+      </table>
+      <ul>
+        <li><strong>S037</strong>: 이안의 그림자가 본체보다 한 박자 늦게 따라옴 — 이안 의심 강화</li>
+        <li><strong>S038</strong>: 첫 번째 별조각 획득 (젖은 유리 조각에 별빛이 갇힌 느낌)</li>
+        <li><strong>S039</strong>: 마지막 거울 속 목소리 — "그 애를 끝까지 믿지 마" (완전한 거짓말이 아님)</li>
+      </ul>
+      <div class="note-warn">⚠ 캐릭터 설정 변경(주인공 핵심 믿음 → 별조각 조건 갱신)으로 수정 필요.</div>
+    </div>
+
+    <!-- 4장 -->
+    <div class="detail-card">
+      <div class="chapter-header">
+        <span class="chapter-num">Chapter 4</span>
+        <h3>숨은이름 시장 <span style="font-size:12px;color:var(--text-dim);">S040~S049 (예정)</span></h3>
+        <span class="badge todo" style="margin-left:auto">미작성</span>
+      </div>
+      <p><strong>핵심</strong>: 이름과 기억을 거래하는 시장에서 두 번째 별조각을 찾고, 이안의 잃어버린 이름 단서를 얻는다.</p>
+      <div class="star-theme">별조각 주제 ②: 착한 척 — "착한 사람으로 보이고 싶어서 싫다는 말을 삼켰어."</div>
+      <ul>
+        <li>이름 없는 간판들, 기억을 파는 노점, 잊고 싶은 것을 사겠다는 상인.</li>
+        <li>이안의 이름을 안다는 아이 등장.</li>
+        <li><strong>이안은 자기 이름을 모른다</strong>는 사실이 드러남.</li>
+      </ul>
+
+      <h3><span class="num">T002</span>가짜 안내자 함정</h3>
+      <p>너무 친절하게 길을 안내하는 존재 → 시장 뒤편으로 사라짐 (BE005)</p>
+
+      <h3><span class="num">P004</span>거짓말쟁이 상인 찾기</h3>
+      <p>셋 중 진짜 상인과 거짓말쟁이를 구별하는 논리 퍼즐</p>
+
+      <h3><span class="num">P005</span>가격표 규칙 해독</h3>
+      <p>가격표에 적힌 숨은 조항 읽기 — 팔면 안 되는 것이 무엇인지 파악</p>
+
+      <p style="font-size:13px;color:var(--text-dim);">실패 페이지: BE004 중요한 기억을 팔다 / BE005 가짜 안내자를 따라 사라지다</p>
+    </div>
+
+    <!-- 5장 -->
+    <div class="detail-card">
+      <div class="chapter-header">
+        <span class="chapter-num">Chapter 5</span>
+        <h3>밤끝탑 <span style="font-size:12px;color:var(--text-dim);">S050~S059 (예정)</span></h3>
+        <span class="badge todo" style="margin-left:auto">미작성</span>
+      </div>
+      <p><strong>핵심</strong>: 이안이 잠시 사라지고, 주인공이 혼자 두려움과 마주한다. 세 번째 별조각.</p>
+      <div class="star-theme">별조각 주제 ③: 실패와 선택 — "틀릴까 봐 무서워. 하지만 틀리지 않으려고 내 선택을 버리지는 않을 거야."</div>
+      <ul>
+        <li>올라갈수록 아래로 내려가는 계단 (내면 깊은 곳으로).</li>
+        <li>이안이 사라져 독자가 홀로 판단하는 구간.</li>
+        <li>이안의 녹슨 열쇠가 반응함 → 7장 복선.</li>
+      </ul>
+
+      <h3><span class="num">P006</span>세 개의 문 논리 퍼즐</h3>
+      <table>
+        <tr><th>문</th><th>내용</th><th>결과</th></tr>
+        <tr>
+          <td>첫 번째 문</td>
+          <td>두려움이 없는 척하는 길</td>
+          <td class="wrong">BE006 멈추다</td>
+        </tr>
+        <tr>
+          <td>두 번째 문</td>
+          <td>도망치는 길</td>
+          <td class="wrong">BE007 도망치다</td>
+        </tr>
+        <tr>
+          <td class="answer">세 번째 문 (정답)</td>
+          <td class="answer">두려움을 들고 가는 길</td>
+          <td class="answer">세 번째 별조각 획득</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- 6장 -->
+    <div class="detail-card">
+      <div class="chapter-header">
+        <span class="chapter-num">Chapter 6</span>
+        <h3>열리지 않는 문 <span style="font-size:12px;color:var(--text-dim);">S060~S065 (예정)</span></h3>
+        <span class="badge todo" style="margin-left:auto">미작성</span>
+      </div>
+      <p><strong>핵심</strong>: 세 별조각으로 현실의 문을 여는 순간, 이안이 함께 돌아갈 수 없다는 사실이 밝혀진다.</p>
+      <ul>
+        <li>문 앞에서 멈추는 이안.</li>
+        <li>이안이 숨겨온 진실이 드러남.</li>
+      </ul>
+      <p><strong>핵심 선택 분기</strong></p>
+      <ul>
+        <li>혼자 돌아간다 → E001 (엔딩 1)</li>
+        <li>이안의 이름을 찾으러 7장으로 → E002 / E003 / E004 루트</li>
+      </ul>
+    </div>
+
+    <!-- 7장 -->
+    <div class="detail-card">
+      <div class="chapter-header">
+        <span class="chapter-num">Chapter 7</span>
+        <h3>어스름의 심장 <span style="font-size:12px;color:var(--text-dim);">S066~S074 (예정)</span></h3>
+        <span class="badge todo" style="margin-left:auto">미작성</span>
+      </div>
+      <p><strong>핵심</strong>: 사잇별의 땅 중심에서 이안의 이름과 세계의 진실을 마주한다.</p>
+      <ul>
+        <li>무너지는 사잇별의 땅.</li>
+        <li>잊힌 말들이 별이 되는 곳.</li>
+        <li>이안의 기억 조각 수집.</li>
+        <li>세계가 무너지는 이유: 이안의 진짜 이름이 사라진 것과 연결.</li>
+      </ul>
+
+      <h3><span class="num">P007</span>이름 조합 퍼즐</h3>
+      <p>수집한 단서들을 조합해 이안의 진짜 이름을 찾아냄.</p>
+
+      <h3><span class="num">P008</span>기억 조각 맞추기</h3>
+      <p>이안의 기억 조각을 올바른 순서로 연결.</p>
+
+      <div class="quote"><strong>핵심 감정선</strong>: 이안을 대신 구원하는 게 아니라, 서로의 진실을 듣고 각자의 선택을 돌려주는 것.</div>
+      <p style="font-size:13px;color:var(--text-dim);">실패 페이지: BE008 이안의 이름을 잘못 부르다 / BE009 잘못된 별을 고르다 / BE010 문이 닫힌 뒤 혼자가 되다</p>
+    </div>
+
+  </section>
+
+  <!-- ── 엔딩 구조 ── -->
+  <section>
+    <h2>엔딩 구조</h2>
+
+    <h3>주요 엔딩 4종</h3>
+    <div class="ending-grid">
+      <div class="ending-card">
+        <div class="code">E001</div>
+        <div class="name">혼자 돌아온 방</div>
+        <div class="desc">6장에서 혼자 돌아가는 선택. 현실로 돌아왔지만 이안을 두고 온 여운. 열린 결말.</div>
+      </div>
+      <div class="ending-card">
+        <div class="code">E002</div>
+        <div class="name">이름을 되찾은 소년</div>
+        <div class="desc">7장에서 이안의 이름을 찾음. 이안을 구하고 돌아감. 이안의 성장 결말.</div>
+      </div>
+      <div class="ending-card true">
+        <div class="code">E003 ★ 진엔딩</div>
+        <div class="name">별빛이 남은 세계</div>
+        <div class="desc">7장 완전 해결. 주인공도 돌아오고, 사잇별의 땅도 무너지지 않음.</div>
+      </div>
+      <div class="ending-card secret">
+        <div class="code">E004 ✦ 비밀 엔딩</div>
+        <div class="name">어스름에 남은 나</div>
+        <div class="desc">주인공이 사잇별의 땅에 잠시 남는 숨겨진 결말.</div>
+      </div>
+    </div>
+
+    <h3>실패 페이지 10종</h3>
+    <div class="be-list">
+      <div class="be-item">
+        <div class="be-code">BE001</div>
+        <div class="be-name">역무원에게 이름을 빼앗기다</div>
+        <div class="be-where">2장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE002</div>
+        <div class="be-name">표지판의 유혹 길에 갇히다</div>
+        <div class="be-where">1~2장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE003</div>
+        <div class="be-name">거울숲에서 가짜 나를 따라가다</div>
+        <div class="be-where">3장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE004</div>
+        <div class="be-name">중요한 기억을 팔다</div>
+        <div class="be-where">4장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE005</div>
+        <div class="be-name">가짜 안내자를 따라 사라지다</div>
+        <div class="be-where">4장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE006</div>
+        <div class="be-name">밤끝탑 첫 번째 문에서 멈추다</div>
+        <div class="be-where">5장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE007</div>
+        <div class="be-name">밤끝탑 두 번째 문으로 도망치다</div>
+        <div class="be-where">5장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE008</div>
+        <div class="be-name">이안의 이름을 잘못 부르다</div>
+        <div class="be-where">7장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE009</div>
+        <div class="be-name">어스름의 심장에서 잘못된 별을 고르다</div>
+        <div class="be-where">7장</div>
+      </div>
+      <div class="be-item">
+        <div class="be-code">BE010</div>
+        <div class="be-name">문이 닫힌 뒤 혼자가 되다</div>
+        <div class="be-where">6~7장</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 이안의 비밀 스레드 ── -->
+  <section>
+    <h2>이안의 비밀 — 서사 스레드</h2>
+    <p style="margin-bottom:20px;color:var(--text-dim);font-size:13.5px;">이안의 정체는 전체 스토리를 관통하는 숨은 축이다.</p>
+    <div class="thread">
+      <div class="thread-item">
+        <div class="chapter-tag">프롤로그</div>
+        <p>이름 떡밥: <em>"이안이라고 불러."</em> / <em>"그게 네 이름이야?"</em> / <em>"지금은."</em></p>
+      </div>
+      <div class="thread-item">
+        <div class="chapter-tag">1장</div>
+        <p>이안도 완벽한 안내자가 아님 — <em>"여기서는 네가 봐야 해."</em></p>
+      </div>
+      <div class="thread-item">
+        <div class="chapter-tag">2장</div>
+        <p>이안도 주인공을 어딘가로 움직이게 한다는 독자의 의심 시작.</p>
+      </div>
+      <div class="thread-item">
+        <div class="chapter-tag">3장</div>
+        <p>이안의 그림자가 늦게 움직임 / 거울이 이안의 빈 이름을 비춤 / <em>"그 애를 끝까지 믿지 마"</em></p>
+      </div>
+      <div class="thread-item">
+        <div class="chapter-tag">4장</div>
+        <p>이안의 이름을 안다는 아이 등장 / <strong>이안은 자기 이름을 모른다</strong>는 사실 확인.</p>
+      </div>
+      <div class="thread-item">
+        <div class="chapter-tag">5장</div>
+        <p>이안이 사라짐 / 녹슨 열쇠가 반응.</p>
+      </div>
+      <div class="thread-item">
+        <div class="chapter-tag">6장</div>
+        <p>이안이 함께 돌아갈 수 없는 이유 밝혀짐.</p>
+      </div>
+      <div class="thread-item">
+        <div class="chapter-tag">7장 (진실)</div>
+        <p><em>"이안"</em>은 동행자가 찢어진 문장 <em>"이 안에 있어"</em>에서 따준 빌린 이름.<br>
+        이안의 침묵이 동행자를 잃게 했고, 이름도 잃었다.<br>
+        이안은 선의와 자기 목적이 섞여 있다 — 주인공을 구하고 싶지만, 동시에 주인공을 통해 자기 이름과 돌아갈 가능성을 찾고 싶은 마음도 있다.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    생성일: 2026-06-01 &nbsp;·&nbsp; 정본: <code>03_sections/</code> &nbsp;·&nbsp; 이 문서는 개요 참고용이며 원고 수정은 정본 파일에서만 진행할 것.
+  </footer>
+
+</div>
+</body>
+</html>
