@@ -4,11 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>흐름 검토실 · 어스름 너머의 세계</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap">
 <style>
 :root{--paper:#fbfaf8;--surface:#ffffff;--surface-warm:#f5f2ee;--ink:#171615;--muted:#69635d;--hair:#dfdbd4;--hair-strong:#c9c2b8;--accent:#8f5b2e;--accent-soft:#f3e6d8;--major:#f0c994;--minor:#e8f0e9;--story:#ffffff;--ending:#f1f1f1;--right-bg:#f7f4f0;}
-*{box-sizing:border-box} html,body{height:100%} body{margin:0;background:var(--paper);color:var(--ink);font-family:Pretendard,-apple-system,BlinkMacSystemFont,"Noto Sans KR","Apple SD Gothic Neo",Segoe UI,sans-serif;letter-spacing:-.012em;word-break:keep-all;overflow:hidden}
+*{box-sizing:border-box;word-break:keep-all;overflow-wrap:normal;hyphens:none} html,body{height:100%} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",Segoe UI,sans-serif;letter-spacing:-.012em;line-break:strict;overflow:hidden}
 a{color:inherit}
 .workshop{display:grid;grid-template-columns:260px minmax(0,1fr) minmax(0,1fr);height:100vh}
 .flow-wrap{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff;border-right:1px solid var(--hair)}
@@ -22,7 +25,7 @@ a{color:inherit}
 .chapter-band{width:min(400px,90%);margin:2px 0 0;padding:6px 12px;border:1px solid var(--hair);border-radius:999px;background:rgba(255,255,255,.82);box-shadow:0 8px 20px rgba(31,25,18,.05);color:var(--muted);font-size:11px;font-weight:900;text-align:center;letter-spacing:.06em}
 .flow-row{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;min-height:44px}
 .branch-row{gap:4px}
-.flow-node{position:relative;width:56px;height:32px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 11px/1 Pretendard,sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s,background .12s}
+.flow-node{position:relative;width:56px;height:32px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 11px/1 "Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .12s,box-shadow .12s,border-color .12s,background .12s}
 .flow-node:hover{transform:translateY(-2px);box-shadow:0 6px 16px rgba(31,25,18,.10)}
 .flow-node.decision{background:var(--major);transform:rotate(45deg);width:38px;height:38px;margin:3px 8px}
 .flow-node.decision span{transform:rotate(-45deg);font-size:10px}
