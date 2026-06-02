@@ -1,0 +1,153 @@
+# 삽화 제작 스펙
+
+## 확정된 전체 방향
+
+| 항목 | 결정 |
+|------|------|
+| 이미지 비율 | 1:1 (정방형). 나중에 PDF 레이아웃 확정 후 크롭/여백으로 조정 가능 |
+| 화풍 | 어두운 수채화 + 먹선 (Dark watercolor + ink line) |
+| 인물 실루엣 | 청년 체형 (young adult). 성별 미지정 유지 |
+| 배경 톤 | 짙은 남색·인디고·다크 퍼플 기조 |
+| 별빛·키 포인트 | 따뜻한 금백색 |
+| 금지 | bright colors, cute, anime/chibi, photorealistic, text/watermark |
+
+---
+
+## 공통 네거티브 프롬프트
+
+```
+bright colors, cheerful, cute, child, childlike, cartoon, anime style, chibi, manga,
+photorealistic, 3D render, horror, gore, text, watermark, signature, white background, daytime
+```
+
+---
+
+## 플랫폼별 suffix
+
+| 플랫폼 | suffix |
+|--------|--------|
+| Midjourney | `--ar 1:1 --style raw --stylize 200` |
+| DALL·E 3 | 해상도 1024×1024 선택 |
+| Stable Diffusion | 768×768, DPM++ 2M |
+
+---
+
+## S002 — 멈춘 시계와 이상한 창밖
+
+**파일**: `05_image/S002.png`  
+**구도 핵심**: 방 안 + 창문(역광 아래→위) + 창가에 가까이 떠 있는 별 + 청년 손·실루엣(하단)
+
+### 메인 프롬프트
+
+```
+Dark watercolor and ink illustration, square format, atmospheric literary fantasy.
+
+Interior of a bedroom at night. Deep navy and indigo watercolor washes bleed into darkness.
+Center: a wooden window with ink-drawn cross-frame dividers. Outside, light rises upward
+from the ground — cold pale blue-white illumination ascending, not descending, casting the
+room in reverse shadow. Just beyond the glass, a single small star hovers at eye level,
+impossibly close to the pane, glowing warm gold-white, its light trembling softly like a
+held breath. Background right: a round wall clock barely visible, ink outline only, ghostly
+dim, hands stopped. Bottom foreground: a slender young adult's dark silhouette from behind,
+only the reaching hand visible — fingertips pressed against the cold glass, caught at the
+boundary between dark room and strange ascending light.
+
+Mood: quiet wonder, eerie beauty, gentle dread. Not horror.
+Technique: loose wet-on-wet watercolor washes, expressive ink linework, soft bleeding edges,
+deep shadows. No hard outlines on backgrounds. No text, no letters, no watermark.
+```
+
+---
+
+## S005 — 문틈에서 나타난 이안
+
+**파일**: `05_image/S005.png`  
+**구도 핵심**: 이안(반쪽 얼굴 조명, 흐릿한 윤곽, 녹슨 열쇠) + 바닥에 뻗은 주인공의 그림자
+
+### 메인 프롬프트
+
+```
+Dark watercolor and ink illustration, square format, atmospheric literary fantasy.
+
+A mysterious boy stands in a partially open doorway, caught in the cold light seeping
+through the gap. He looks adolescent in age but carries an ancient, weathered feeling —
+like someone who stepped out of a forgotten old photograph, or a traveler lost from very
+far away who barely made it here. His hair tips glow faintly with twilight light, pale
+gold-indigo. Inside his eyes, tiny points of starlight flicker, unstable, searching.
+In his hand he grips a rust-covered old key, holding it so long his knuckles are white.
+
+The room light cannot fully illuminate him — his shoulder and arm outlines blur softly
+at the edges, dissolving slightly into watercolor, never quite solid. The door gap pours
+cold silver-white light across exactly half his face, the other half deep in shadow.
+He is not looking at the viewer directly; his gaze drops slightly downward, reading
+something on the dark floor: a shadow that stretches toward him, the faint edge of someone
+standing just out of frame.
+
+Mood: ancient, quietly unsettling, still. He has been searching for a long time.
+Not threatening — but the calm in his expression is not entirely reassuring.
+Technique: loose wet-on-wet watercolor washes, expressive ink linework, soft bleeding
+edges, deep shadows. Color: deep navy and indigo room; door light is cold silver; key is
+warm rust-brown; hair glow is pale gold. No text, no letters, no watermark.
+```
+
+---
+
+## 이안 캐릭터 시트
+
+**파일**: `05_image/ian_character_sheet.png`  
+**용도**: 전체 삽화 제작 시 이안의 외형·표정 일관성 기준  
+**생성 플랫폼**: GPT (DALL·E)
+
+→ 프롬프트는 아래 별도 항목 참고.
+
+### 이안 외형 기준
+
+| 항목 | 내용 |
+|------|------|
+| 체형 | 청소년기 외모, 날씬하고 가벼운 체형. 발소리가 없을 것 같은 느낌 |
+| 얼굴 | 섬세한 이목구비, 약간 중성적. 항상 조용히 경계하는 표정 |
+| 머리카락 | 어두운색, 귀·턱선까지 오는 길이, 약간 헝클어짐. 끝부분에 옅은 금·인디고 어스름빛 |
+| 눈동자 | 어두운 홍채, 안쪽에서 작은 별빛이 흔들림 |
+| 손 | 항상 녹슨 열쇠를 쥠. 마디가 약간 하얗게 굳은 상태 |
+| 복장 | 단순하고 약간 구식. 어두운 남색·회색 계열 레이어드. 오래된 느낌 |
+| 윤곽 | 어깨·팔 경계가 수채로 살짝 번짐 (완전히 존재하지 않는 느낌) |
+
+### 캐릭터 시트 프롬프트 (GPT용)
+
+```
+Character reference sheet for a single character named Ian. Multiple views arranged in a
+clean grid layout on a pale cream/off-white parchment background.
+
+CHARACTER DESCRIPTION:
+A boy who appears adolescent in age (roughly 15–17 in appearance) but carries an ancient,
+weathered quality — like someone from a forgotten old photograph, or a traveler who has
+been lost for a very long time. Slender, slight build; moves as if weightless.
+- Face: delicate features, slightly androgynous, pale. Expression always quietly alert —
+  perpetually searching or listening for something far away.
+- Hair: dark, medium length (reaching just past the ears/jawline), slightly unkempt from
+  long travel. The very tips glow faintly with a pale gold-indigo twilight shimmer.
+- Eyes: dark irises, deep-set. Tiny points of starlight flicker faintly inside — something
+  luminous trapped deep within.
+- Hands: slightly tense. Almost always gripping a rust-covered old key in his right hand —
+  knuckles perpetually slightly white from holding it too long.
+- Clothing: simple layered garments, slightly old-fashioned. Dark navy/gray tones. Long
+  high-collared jacket or coat over a simple shirt. Worn, as if from another era. Nothing bright.
+- Body outlines blur softly at shoulders and arms (as if not entirely present) — show this
+  subtly in at least two views.
+
+SHEET LAYOUT (arrange in grid):
+Row 1 — Face close-ups: front / 3/4 left / 3/4 right / side profile
+Row 2 — Body shots: full body front / full body 3/4 / bust-up front (larger)
+Row 3 — Expressions (bust-size, 5 panels):
+  [1] Neutral / quietly searching
+  [2] Alert urgency ("don't make a sound")
+  [3] Slight pain, hesitation (the moment before saying "call me Ian" — eyes flicker)
+  [4] Sudden sharp alertness ("we're late")
+  [5] Rare, brief softness (a moment of almost-warmth)
+Bottom corner — prop detail: the rusty old key (close-up sketch) + color palette swatches:
+  deep navy / indigo / pale gold (hair tips + star) / rust-brown (key) / dark grey
+
+STYLE: dark watercolor and ink illustration, expressive ink linework, loose watercolor
+washes. Sheet background: clean pale cream so all character details are clearly visible.
+No text labels, no words, no numbers, no watermark anywhere on the image.
+```
