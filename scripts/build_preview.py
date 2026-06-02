@@ -12,9 +12,11 @@ SECTIONS_DIR = ROOT / "03_sections"
 PROJECT_DIR = ROOT / "00_project"
 OUTLINE_DIR = ROOT / "01_outline"
 PUZZLES_DIR = ROOT / "04_puzzles"
+IMAGES_DIR = ROOT / "05_image"
 DOCS_DIR = ROOT / "docs"
 ASSETS_DIR = DOCS_DIR / "assets"
 SECTION_OUT_DIR = DOCS_DIR / "sections"
+IMAGES_OUT_DIR = DOCS_DIR / "images"
 REFERENCE_COLLECTIONS = [
     ("설정집", PROJECT_DIR, DOCS_DIR / "project"),
     ("구성 노트", OUTLINE_DIR, DOCS_DIR / "outline"),
@@ -313,9 +315,210 @@ def extract_illustration_note(markdown: str) -> str:
     return block or '삽화 위치만 표시되어 있고 상세 설명은 아직 비어 있어.'
 
 
-def build_big_workshop(source_sections: list[dict[str, str]], section_links: dict[str, str], updated_at: str) -> None:
+def copy_illustration_images() -> dict[str, str]:
+    """Copy images from 05_image/ to docs/images/ and return {stem: relative_url}."""
+    IMAGES_OUT_DIR.mkdir(parents=True, exist_ok=True)
+    import shutil
+    available: dict[str, str] = {}
+    if not IMAGES_DIR.exists():
+        return available
+    for img in IMAGES_DIR.glob("*.png"):
+        dest = IMAGES_OUT_DIR / img.name
+        shutil.copy2(img, dest)
+        available[img.stem] = f"images/{img.name}"
+    return available
+
+
+def _parse_prompts_from_spec() -> dict[str, str]:
+    """Read illustration_spec.md and extract per-section prompts."""
+    spec = PROJECT_DIR / "illustration_spec.md"
+    if not spec.exists():
+        return {}
+    text = spec.read_text(encoding="utf-8")
+    prompts: dict[str, str] = {}
+    # Find sections like "## S002 — ..." then grab the first ```...``` code block after "### 메인 프롬프트"
+    for match in re.finditer(r"## (S\d{3}[A-Z]?) —", text):
+        sid = match.group(1)
+        after = text[match.end():]
+        prompt_start = after.find("### 메인 프롬프트")
+        if prompt_start == -1:
+            continue
+        prompt_section = after[prompt_start:]
+        code_match = re.search(r"```\s*\n(.*?)```", prompt_section, re.DOTALL)
+        if code_match:
+            prompts[sid] = code_match.group(1).strip()
+    return prompts
+
+
+def collect_illustration_items(
+    source_sections: list[dict[str, str]],
+    available_images: dict[str, str],
+    prompts: dict[str, str],
+) -> list[dict[str, str]]:
+    """Return illustration data for all sections that have a ## 삽화 필요 block."""
+    items = []
+    for section in source_sections:
+        markdown = section["markdown"]
+        if "## 삽화 필요" not in markdown:
+            continue
+        block = markdown.split("## 삽화 필요", 1)[1].split("## ", 1)[0].strip()
+        if not block or block.startswith("없음") or block.startswith("삽화 없음"):
+            continue
+        section_id = extract_section_id(section["src"]) or ""
+        title = extract_title(markdown)
+        image_url = available_images.get(section_id, "")
+        prompt = prompts.get(section_id, "")
+        items.append({
+            "id": section_id,
+            "title": title,
+            "note": block,
+            "image_url": image_url,
+            "prompt": prompt,
+        })
+    return items
+
+
+def build_big_workshop(
+    source_sections: list[dict[str, str]],
+    section_links: dict[str, str],
+    updated_at: str,
+    illustration_items: list[dict[str, str]] | None = None,
+    available_images: dict[str, str] | None = None,
+) -> None:
     '''Build the desktop-first 큰작업실 flow review page.'''
     import json
+
+    illustration_items = illustration_items or []
+    available_images = available_images or {}
+
+    # ── 캐릭터 패널 HTML ──────────────────────────────────────────
+    character_panel_html = '''<div class="info-panel" id="characterPanel">
+<div class="char-panel-inner">
+<h2 style="margin:0 0 4px;font-size:22px;letter-spacing:-.04em">캐릭터</h2>
+<p style="margin:0 0 24px;color:var(--muted);font-size:13px">주요 인물의 핵심 설정. 원고 작업 전 반드시 확인해.</p>
+<div class="char-grid">
+
+<div class="char-card">
+  <div class="char-img-wrap"><img src="images/S002.png" alt="창문에 손을 댄 주인공의 실루엣" class="char-img" onerror="this.style.display=\'none\'"></div>
+  <div class="char-info">
+    <div class="char-name">주인공 <span class="char-name-sub">/ 나</span></div>
+    <div class="char-note">성별·이름·외형 미지정 — 독자 자신</div>
+    <div class="char-stat-block">
+      <div class="char-stat"><span class="stat-label">핵심 믿음</span><span class="stat-val">"잘해야만 사랑받는다"</span></div>
+      <div class="char-stat"><span class="stat-label">별빛</span><span class="stat-val">"내가 애쓰지 않아도 이 모습 그대로 인정받고 싶다."</span></div>
+      <div class="char-stat"><span class="stat-label">성장</span><span class="stat-val">"부족한 나를 먼저 버리지 않는다."</span></div>
+    </div>
+    <div class="char-tag-row">
+      <span class="char-tag">다른 사람 반응을 의식</span>
+      <span class="char-tag">착한 척 컴플렉스</span>
+      <span class="char-tag">실망시키는 것 두려움</span>
+      <span class="char-tag">결정적 순간엔 나아감</span>
+    </div>
+    <div class="char-conflict-block">
+      <div class="conflict-title">핵심 갈등</div>
+      <div class="conflict-row">잘해야 한다는 강박 <span class="vs">vs</span> 이미 지쳐 있는 마음</div>
+      <div class="conflict-row">착한 척하고 싶은 마음 <span class="vs">vs</span> 사실 싫다는 마음</div>
+      <div class="conflict-row">인정받고 싶은 마음 <span class="vs">vs</span> 그 마음을 들키기 싫은 마음</div>
+    </div>
+  </div>
+</div>
+
+<div class="char-card">
+  <div class="char-img-wrap"><img src="images/Character_sheet_ian.png" alt="이안 캐릭터 시트" class="char-img" onerror="this.style.display=\'none\'"></div>
+  <div class="char-info">
+    <div class="char-name">이안 <span class="char-name-sub">/ Ian</span></div>
+    <div class="char-note">"이안이라고 불러." — 빌린 이름. 진짜 이름이 아님</div>
+    <div class="char-stat-block">
+      <div class="char-stat"><span class="stat-label">핵심 믿음</span><span class="stat-val">"말해봤자 이해받지 못한다"</span></div>
+      <div class="char-stat"><span class="stat-label">별빛</span><span class="stat-val">"나도 누군가에게 내 진심을 털어놓고 싶다."</span></div>
+      <div class="char-stat"><span class="stat-label">성장</span><span class="stat-val">"말하면 싫어할 수도 있어. 그래도 말할게."</span></div>
+      <div class="char-stat"><span class="stat-label">소품</span><span class="stat-val">녹슨 열쇠 — 동행자가 남긴 약속이자 상처</span></div>
+    </div>
+    <div class="char-tag-row">
+      <span class="char-tag secret-tag">이름은 빌린 것</span>
+      <span class="char-tag">어깨 윤곽이 흐려짐</span>
+      <span class="char-tag">그림자가 늦게 움직임</span>
+      <span class="char-tag">발소리 없음</span>
+    </div>
+    <div class="char-conflict-block">
+      <div class="conflict-title">숨은 진실</div>
+      <div class="conflict-row">진짜 이름을 잃은 아이. "이안"은 동행자가 찢어진 문장 "이 안에 있어"에서 따준 이름.</div>
+      <div class="conflict-row" style="margin-top:6px">보호하고 싶은 마음 <span class="vs">vs</span> 또 침묵하는 습관</div>
+      <div class="conflict-row">말해야 한다는 양심 <span class="vs">vs</span> 말하면 잃을 것이라는 공포</div>
+    </div>
+  </div>
+</div>
+
+</div>
+<a href="project/character_bible.html" style="display:inline-block;margin-top:18px;font-size:12px;color:var(--muted);border:1px solid var(--hair);padding:6px 12px;border-radius:999px;text-decoration:none">캐릭터 바이블 전문 보기</a>
+</div>
+</div>'''
+
+    # ── 이미지 패널 HTML ──────────────────────────────────────────
+    cover_url = available_images.get("cover", "")
+    cover_html = ""
+    if cover_url:
+        cover_html = f'''<div class="illust-cover-section">
+  <div class="illust-section-label">북 커버</div>
+  <img src="{cover_url}" alt="북 커버 이미지" class="cover-img">
+</div>'''
+
+    char_sheet_url = available_images.get("Character_sheet_ian", "")
+    char_sheet_html = ""
+    if char_sheet_url:
+        char_sheet_html = f'''<div class="illust-cover-section" style="margin-top:20px">
+  <div class="illust-section-label">이안 캐릭터 시트</div>
+  <img src="{char_sheet_url}" alt="이안 캐릭터 시트" class="cover-img" style="max-height:320px">
+</div>'''
+
+    illust_rows_html = ""
+    for item in illustration_items:
+        sid = html.escape(item["id"])
+        title = html.escape(item["title"])
+        note = html.escape(item["note"])
+        img_url = item.get("image_url", "")
+        prompt = item.get("prompt", "")
+
+        img_html = ""
+        if img_url:
+            img_html = f'<img src="{html.escape(img_url)}" alt="{sid} 삽화" class="illust-thumb">'
+        else:
+            img_html = '<div class="illust-thumb-empty">이미지 없음</div>'
+
+        if prompt:
+            status_badge = '<span class="illust-badge has-prompt">프롬프트 있음</span>'
+            prompt_html = f'<details class="prompt-details"><summary>프롬프트 보기</summary><pre class="prompt-pre">{html.escape(prompt)}</pre></details>'
+        else:
+            status_badge = '<span class="illust-badge needs-gen">이미지 생성 필요</span>'
+            prompt_html = ""
+
+        if img_url:
+            has_img_badge = '<span class="illust-badge has-image">이미지 있음</span>'
+        else:
+            has_img_badge = ""
+
+        illust_rows_html += f'''<div class="illust-row">
+  <div class="illust-thumb-col">{img_html}</div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">{sid}</span>{has_img_badge}{status_badge}</div>
+    <div class="illust-title">{title}</div>
+    <div class="illust-note">{note}</div>
+    {prompt_html}
+  </div>
+</div>'''
+
+    image_panel_html = f'''<div class="info-panel" id="imagePanel">
+<div class="char-panel-inner">
+<h2 style="margin:0 0 4px;font-size:22px;letter-spacing:-.04em">이미지</h2>
+<p style="margin:0 0 20px;color:var(--muted);font-size:13px">삽화가 필요한 씬과 생성 현황. 프롬프트는 <code>00_project/illustration_spec.md</code> 참고.</p>
+{cover_html}
+{char_sheet_html}
+<div style="margin-top:24px">
+  <div class="illust-section-label">씬별 삽화</div>
+  <div class="illust-list">{illust_rows_html}</div>
+</div>
+</div>
+</div>'''
 
     section_ids = [extract_section_id(section['src']) for section in source_sections]
     section_ids = [section_id for section_id in section_ids if section_id]
@@ -422,6 +625,24 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
 .reader-body{{flex:1;min-height:0;overflow:auto;padding:26px 30px 70px;font-size:16px;line-height:1.76}} .reader-body h2{{font-size:15px;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--hair);letter-spacing:-.02em}} .reader-body h3{{font-size:15px;margin:22px 0 8px}} .reader-body p{{margin:0 0 15px}} .reader-body .choice-line{{margin:0 0 10px;padding:10px 12px;border:1px solid var(--hair);border-radius:12px;background:var(--surface-warm)}} .reader-body blockquote{{margin:0 0 15px;padding:11px 13px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0}} .reader-body li{{margin:8px 0}} .reader-body a{{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25)}} .previous-nav{{margin:0 0 22px;padding:13px 14px;border:1px solid var(--hair);border-radius:14px;background:var(--surface-warm)}} .previous-nav strong{{display:block;margin-bottom:8px;color:var(--accent);font-size:13px;letter-spacing:.04em}} .previous-nav div{{display:flex;flex-wrap:wrap;gap:8px}} .previous-nav a,.previous-nav button{{display:inline-flex;gap:6px;align-items:center;padding:7px 10px;border:1px solid var(--hair);border-radius:999px;background:#fff;color:var(--ink);font:800 13px/1.2 "Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif;text-decoration:none;cursor:pointer}} .previous-nav a small,.previous-nav button small{{color:var(--muted);font-weight:700;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}}
 .illust-card{{margin:28px 0 0;padding:16px;border:1px solid var(--hair);background:var(--surface-warm);border-radius:16px}} .illust-card strong{{display:block;font-size:13px;margin-bottom:7px;color:var(--accent)}} .illust-card p{{margin:0;color:var(--muted);font-size:14px;line-height:1.65}}
 .info-panel{{display:none;padding:26px 30px 70px;overflow:auto}} .info-panel.active{{display:block}} .info-panel h2{{font-size:26px;letter-spacing:-.045em;margin:0 0 14px}} .info-panel p{{line-height:1.75;color:var(--muted)}} .info-list{{display:grid;gap:10px;margin-top:22px}} .info-list a{{display:block;padding:14px;border:1px solid var(--hair);border-radius:14px;background:#fff;text-decoration:none}} .info-list small{{display:block;color:var(--muted);margin-top:3px}}
+.char-panel-inner{{max-width:900px}} .char-grid{{display:grid;grid-template-columns:1fr 1fr;gap:20px}}
+.char-card{{border:1px solid var(--hair);border-radius:16px;background:#fff;overflow:hidden;display:flex;flex-direction:column}}
+.char-img-wrap{{background:var(--surface-warm);padding:12px;display:flex;align-items:center;justify-content:center;min-height:140px;border-bottom:1px solid var(--hair)}}
+.char-img{{max-width:100%;max-height:200px;object-fit:contain;border-radius:8px}}
+.char-info{{padding:16px 18px 20px;flex:1;display:flex;flex-direction:column;gap:10px}}
+.char-name{{font-size:18px;font-weight:800;letter-spacing:-.03em}} .char-name-sub{{color:var(--muted);font-weight:600;font-size:15px}}
+.char-note{{font-size:12px;color:var(--muted);padding:5px 9px;background:var(--surface-warm);border-radius:8px;border:1px solid var(--hair)}}
+.char-stat-block{{display:flex;flex-direction:column;gap:6px}} .char-stat{{display:grid;grid-template-columns:72px 1fr;gap:6px;align-items:baseline;font-size:13px}}
+.stat-label{{color:var(--accent);font-weight:700;font-size:11px;letter-spacing:.02em}} .stat-val{{color:var(--ink);line-height:1.5}}
+.char-tag-row{{display:flex;flex-wrap:wrap;gap:5px}} .char-tag{{background:var(--surface-warm);border:1px solid var(--hair);border-radius:999px;padding:3px 9px;font-size:11px;color:var(--muted)}} .char-tag.secret-tag{{background:#f3e6d8;border-color:#d9b08c;color:var(--accent)}}
+.char-conflict-block{{background:var(--surface-warm);border:1px solid var(--hair);border-radius:10px;padding:12px 14px}} .conflict-title{{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.04em;margin-bottom:8px}} .conflict-row{{font-size:12px;color:var(--muted);line-height:1.6;padding:3px 0;border-top:1px solid var(--hair)}} .conflict-row:first-of-type{{border-top:0}} .vs{{color:var(--accent);font-weight:700;font-size:11px;margin:0 4px}}
+.illust-section-label{{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px}}
+.cover-img{{max-width:100%;max-height:260px;object-fit:contain;border-radius:10px;border:1px solid var(--hair)}}
+.illust-list{{display:flex;flex-direction:column;gap:14px}} .illust-row{{display:grid;grid-template-columns:100px 1fr;gap:14px;padding:14px;border:1px solid var(--hair);border-radius:12px;background:#fff;align-items:start}}
+.illust-thumb-col{{display:flex;align-items:flex-start;justify-content:center}} .illust-thumb{{width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--hair)}} .illust-thumb-empty{{width:90px;height:90px;border:1px dashed var(--hair);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-align:center;line-height:1.4}}
+.illust-meta{{display:flex;flex-direction:column;gap:5px}} .illust-id-row{{display:flex;align-items:center;gap:6px;flex-wrap:wrap}} .illust-sid{{font-size:13px;font-weight:800;color:var(--accent)}} .illust-title{{font-size:14px;font-weight:700;color:var(--ink)}} .illust-note{{font-size:12px;color:var(--muted);line-height:1.55}}
+.illust-badge{{font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700}} .illust-badge.has-image{{background:#e6f3e7;color:#2d6a40;border:1px solid #a8d4b5}} .illust-badge.has-prompt{{background:#f3e6d8;color:var(--accent);border:1px solid #d9b08c}} .illust-badge.needs-gen{{background:#f1f1f1;color:#888;border:1px solid #ddd}}
+.prompt-details{{margin-top:6px}} .prompt-details summary{{font-size:11px;color:var(--muted);cursor:pointer;font-weight:700;user-select:none}} .prompt-pre{{margin:8px 0 0;background:var(--surface-warm);border:1px solid var(--hair);border-radius:8px;padding:10px;font-size:11px;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--ink);max-height:200px;overflow:auto}}
 @media(max-width:1100px){{body{{overflow:auto}}.page-title{{position:static;margin:10px}}.workshop{{grid-template-columns:1fr;height:auto}}.sidebar{{position:sticky;top:0;z-index:5;border-right:0;border-bottom:1px solid var(--hair)}}.reader{{min-height:70vh;border-left:0;border-top:1px solid var(--hair)}}}}
 </style>
 </head>
@@ -430,12 +651,12 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
 <div class="workshop">
   <aside class="sidebar">
     <div class="brand"><small>작업실</small><strong>프로젝트</strong><span>왼쪽 메뉴에서 검토할 범주를 고르는 자리야.</span></div>
-    <nav class="nav" aria-label="큰작업실 메뉴"><div class="menu-title">어스름 너머의 세계</div><div class="submenu"><button class="active" data-view="story">스토리</button><button data-view="world" disabled>세계관</button><button data-view="character" disabled>캐릭터</button></div></nav>
+    <nav class="nav" aria-label="큰작업실 메뉴"><div class="menu-title">어스름 너머의 세계</div><div class="submenu"><button class="active" data-view="story">스토리</button><button data-view="world" disabled>세계관</button><button data-view="character">캐릭터</button><button data-view="images">이미지</button></div></nav>
     <div class="legend"><b>기호</b><div class="legend-row"><i class="sample"></i>스토리</div><div class="legend-row"><i class="sample decision"></i>큰 분기</div><div class="legend-row"><i class="sample minor"></i>작은 선택</div><div class="legend-row"><i class="sample ending"></i>엔딩</div></div>
     <div style="margin-top:auto;display:grid;gap:8px"><a class="small-link" style="margin-top:0" href="flow-review.html">흐름 검토실로 이동</a><a class="small-link" style="margin-top:0" href="index.html">작은작업실로 이동</a></div>
   </aside>
   <section class="flow-wrap"><header class="flow-header"><div><h1>스토리줄기</h1><p>기호를 누르면 오른쪽에 원고가 열려.</p></div><div class="flow-tools"><button id="fitFlow">처음으로</button></div></header><div class="flow-canvas" id="flowCanvas"><svg class="edge-layer" id="edgeLayer"></svg><div class="flow-grid" id="flowGrid">{nodes}</div></div></section>
-  <aside class="reader"><div class="reader-head"><div><div class="reader-kicker" id="readerId">SECTION</div><div class="reader-title" id="readerTitle">섹션을 선택해줘</div></div><a class="open-small" id="openSmall" href="index.html">작은작업실</a></div><div class="reader-body" id="readerBody"></div><div class="info-panel" id="worldPanel"><h2>세계관</h2><p>작은작업실의 세계관 문서로 바로 이동할 수 있어. 큰작업실 안에서도 다음 단계에서 요약 카드를 붙일 수 있게 자리를 잡아두었어.</p><div class="info-list"><a href="project/world_rules.html">사잇별의 땅 규칙<small>world_rules.md</small></a><a href="project/game_rules.html">게임 규칙<small>game_rules.md</small></a><a href="project/concept.html">기획 개념<small>concept.md</small></a></div></div><div class="info-panel" id="characterPanel"><h2>캐릭터</h2><p>주요 인물 설정을 확인하는 자리야. 지금은 캐릭터 바이블로 연결해두었고, 이후 인물별 카드형 보기로 확장할 수 있어.</p><div class="info-list"><a href="project/character_bible.html">캐릭터 바이블<small>character_bible.md</small></a><a href="project/style_guide.html">문체와 분위기<small>style_guide.md</small></a></div></div></aside>
+  <aside class="reader"><div class="reader-head"><div><div class="reader-kicker" id="readerId">SECTION</div><div class="reader-title" id="readerTitle">섹션을 선택해줘</div></div><a class="open-small" id="openSmall" href="index.html">작은작업실</a></div><div class="reader-body" id="readerBody"></div><div class="info-panel" id="worldPanel"><h2>세계관</h2><p>작은작업실의 세계관 문서로 바로 이동할 수 있어.</p><div class="info-list"><a href="project/world_rules.html">사잇별의 땅 규칙<small>world_rules.md</small></a><a href="project/game_rules.html">게임 규칙<small>game_rules.md</small></a><a href="project/concept.html">기획 개념<small>concept.md</small></a></div></div>{character_panel_html}{image_panel_html}</aside>
 </div>
 <script type="application/json" id="sectionData">{section_json}</script><script type="application/json" id="edgeData">{edges_json}</script>
 <script>
@@ -512,7 +733,7 @@ function applyFlowHighlight(){{
 }}
 function previousNavHtml(id){{const prev=prevById.get(id)||[];if(!prev.length)return '';const links=prev.map(e=>{{const source=byId.get(e.from);const label=e.label?`${{e.from}} · ${{e.label}}`:e.from;return `<button type="button" data-prev-section="${{e.from}}"><span>${{label}}</span><small>${{source?source.title:''}}</small></button>`;}}).join('');return `<nav class="previous-nav" aria-label="이전 섹션"><strong>이전 섹션</strong><div>${{links}}</div></nav>`;}}
 function selectSection(id){{const s=byId.get(id);if(!s)return;selectedId=id;applyFlowHighlight();readerId.textContent=`${{s.id}} · ${{s.kind==='decision'?'분기발생지점':s.kind==='ending'?'엔딩':'스토리'}}`;readerTitle.textContent=s.title;openSmall.href=s.smallUrl;readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));readerBody.innerHTML=previousNavHtml(id)+s.html+`<section class="illust-card"><strong>삽화 메모</strong><p>${{s.illustration}}</p></section>`;readerBody.scrollTo({{top:0,behavior:'smooth'}});document.querySelector(`[data-section="${{id}}"]`)?.scrollIntoView({{block:'center',inline:'center',behavior:'smooth'}});requestAnimationFrame(renderEdges);}}
-nodes.forEach(n=>n.addEventListener('click',()=>selectSection(n.dataset.section)));readerBody.addEventListener('click',event=>{{const prevButton=event.target.closest('[data-prev-section]');if(prevButton){{event.preventDefault();selectSection(prevButton.dataset.prevSection);return;}}const link=event.target.closest('a.section-ref');if(!link)return;const raw=link.getAttribute('href')||'';const normalized=raw.replace(/^\.\//,'').split('#')[0];const targetId=bySmallUrl.get(normalized);if(!targetId)return;event.preventDefault();selectSection(targetId);}});document.getElementById('fitFlow').addEventListener('click',()=>{{flowCanvas.scrollTo({{left:0,top:0,behavior:'smooth'}});selectSection(sections[0].id);}});document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const view=btn.dataset.view;if(view==='story'){{readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));selectSection(document.querySelector('.flow-node.selected')?.dataset.section||sections[0].id);}}if(view==='world'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('worldPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='세계관';openSmall.href='project/world_rules.html';}}if(view==='character'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('characterPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='캐릭터';openSmall.href='project/character_bible.html';}}}}));
+nodes.forEach(n=>n.addEventListener('click',()=>selectSection(n.dataset.section)));readerBody.addEventListener('click',event=>{{const prevButton=event.target.closest('[data-prev-section]');if(prevButton){{event.preventDefault();selectSection(prevButton.dataset.prevSection);return;}}const link=event.target.closest('a.section-ref');if(!link)return;const raw=link.getAttribute('href')||'';const normalized=raw.replace(/^\.\//,'').split('#')[0];const targetId=bySmallUrl.get(normalized);if(!targetId)return;event.preventDefault();selectSection(targetId);}});document.getElementById('fitFlow').addEventListener('click',()=>{{flowCanvas.scrollTo({{left:0,top:0,behavior:'smooth'}});selectSection(sections[0].id);}});document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const view=btn.dataset.view;if(view==='story'){{readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));selectSection(document.querySelector('.flow-node.selected')?.dataset.section||sections[0].id);}}if(view==='world'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('worldPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='세계관';openSmall.href='project/world_rules.html';}}if(view==='character'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('characterPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='캐릭터';openSmall.href='project/character_bible.html';}}if(view==='images'){{readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('imagePanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='이미지';openSmall.href='index.html';}}}}));
 window.addEventListener('resize',renderEdges);flowCanvas.addEventListener('scroll',()=>requestAnimationFrame(renderEdges));selectSection(sections[0].id);requestAnimationFrame(renderEdges);
 </script>
 </body>
@@ -964,7 +1185,10 @@ def main() -> None:
     big_section_links = {
         section_id: f"sections/{outname}" for section_id, outname in section_links.items()
     }
-    build_big_workshop(source_sections, big_section_links, updated_at)
+    available_images = copy_illustration_images()
+    prompts = _parse_prompts_from_spec()
+    illustration_items = collect_illustration_items(source_sections, available_images, prompts)
+    build_big_workshop(source_sections, big_section_links, updated_at, illustration_items, available_images)
     build_flow_review(source_sections, big_section_links, updated_at)
 
     reference_groups: list[tuple[str, list[tuple[str, str, str]]]] = []
