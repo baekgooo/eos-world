@@ -394,7 +394,6 @@ def build_big_workshop(
     # ── 캐릭터 패널 HTML ──────────────────────────────────────────
     character_panel_html = '''<div class="info-panel" id="characterPanel">
 <div class="char-panel-inner">
-<h2 style="margin:0 0 4px;font-size:22px;letter-spacing:-.04em">캐릭터</h2>
 <p style="margin:0 0 24px;color:var(--muted);font-size:13px">주요 인물의 핵심 설정. 원고 작업 전 반드시 확인해.</p>
 <div class="char-grid">
 
@@ -509,7 +508,6 @@ def build_big_workshop(
 
     image_panel_html = f'''<div class="info-panel" id="imagePanel">
 <div class="char-panel-inner">
-<h2 style="margin:0 0 4px;font-size:22px;letter-spacing:-.04em">이미지</h2>
 <p style="margin:0 0 20px;color:var(--muted);font-size:13px">삽화가 필요한 씬과 생성 현황. 프롬프트는 <code>00_project/illustration_spec.md</code> 참고.</p>
 {cover_html}
 {char_sheet_html}
