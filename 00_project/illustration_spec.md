@@ -92,6 +92,105 @@ warm rust-brown; hair glow is pale gold. No text, no letters, no watermark.
 
 ---
 
+## 7장 기억 조각 삽화 (S068A / S068B / S068C)
+
+**용도**: 7장 어스름의 심장에서 주인공이 목격하는 이안의 얼어붙은 기억 장면들.  
+독자가 주인공과 함께 장면을 "보면서" 이안이 무엇을 삼켰는지 알아보는 구조이므로 삽화가 필수.
+
+### 공통 설정
+
+| 항목 | 내용 |
+|------|------|
+| 장소 분위기 | 어스름의 심장 안 — 짙은 어둠 속에 장면이 흐릿하게 떠 있는 느낌. 다른 삽화보다 수채 번짐이 더 강하고 몽환적 |
+| 동행자 | **실루엣 또는 흐릿한 윤곽으로만 표현. 얼굴·특징 미지정.** 이름을 잃어가던 존재이므로 독자가 투영할 수 있어야 함 |
+| 이안 | 말하려다 멈춘 순간 — 입이 반쯤 열렸거나, 손이 뻗으려다 굳은 상태 |
+| 전체 톤 | "얼어붙음". 움직임이 없다. 정적이고 무겁다. 셋 중 S068C가 가장 어둡고 무거워야 함 |
+
+### S068A — 함께 걷던 시절
+
+**파일**: `05_image/S068A.png`  
+**구도 핵심**: 두 인물 나란히 걷는 중 / 동행자는 앞을 보며 말하고 / 이안은 말하려다 입을 다물고 있다 / 동행자의 시선은 이안에게 향하지 않음
+
+```
+Dark watercolor and ink illustration, square format, deeply atmospheric memory scene.
+
+Two figures walking side by side in a dim, indigo space — as if suspended inside a
+faded memory rather than a real place. Loose watercolor washes, edges dissolving.
+
+Left figure (the companion): silhouette only, indistinct features, slightly translucent,
+facing forward, clearly speaking or gesturing — animated, unaware. Their outline is
+soft, as if already beginning to fade.
+
+Right figure (Ian): the detailed, familiar boy — dark hair with faint gold-indigo tips,
+rust-colored key still gripped in hand. His head is slightly turned toward the companion.
+His lips are parted — mouth half-open, caught in the instant before a word that was
+never spoken. His body language is a held breath.
+
+Mood: quiet, unresolved, suspended in time. Not threatening. Aching.
+Background: deep indigo void with faint drifting star-particles, soft and distant.
+Technique: loose wet watercolor with expressive ink accents. Blurred edges everywhere.
+No text, no watermark.
+```
+
+---
+
+### S068B — 말해야 했던 순간
+
+**파일**: `05_image/S068B.png`  
+**구도 핵심**: 동행자가 잘못된 방향으로 / 이안이 손을 뻗으려다 멈춘 상태 / 이안의 몸 전체가 "멈춤"의 긴장
+
+```
+Dark watercolor and ink illustration, square format, deeply atmospheric memory scene.
+
+A moment frozen mid-decision. The composition is split by direction.
+
+Right side: the companion (silhouette, fading, translucent) walking away toward a dark
+passage — their silhouette shrinking, turned away.
+
+Left side: Ian — closer to the viewer, his arm partially extended toward the companion,
+fingers spread, as if he was about to say something or reach out. But his arm stops
+in mid-air. Frozen. His whole body is a single held-back impulse. His expression:
+not passive, not relieved — a quiet, painful restraint. The weight of not-speaking.
+
+Between them: empty indigo air. Distance that shouldn't be there.
+
+Mood: tension held too long. The moment before it becomes irreversible.
+Technique: loose watercolor washes, expressive ink lines. Companion entirely silhouette.
+Ian's extended hand drawn with particular care — the gesture is the whole story.
+No text, no watermark.
+```
+
+---
+
+### S068C — 마지막 문 앞에서
+
+**파일**: `05_image/S068C.png`  
+**구도 핵심**: 문이 있고 동행자의 형체가 사라지고 있다 / 이안이 입을 열지 않은 채 서 있다 / 셋 중 가장 어둡고 정적인 장면
+
+```
+Dark watercolor and ink illustration, square format, the darkest and most still of the
+three memory scenes.
+
+Center-background: a door — tall, dark, slightly open. Through the gap, only emptiness
+or faint light. At the threshold, the companion's silhouette is dissolving — already
+half-gone, watercolor ink bleeding away into the darkness, as if erased mid-step.
+
+Foreground: Ian stands facing the door. His back is not fully to the viewer — we can
+see the side of his face. His mouth is closed. His hand still grips the rusty key,
+knuckles white. He is not reaching out. He is not moving. He is simply standing, as
+the last moment passes, and doing nothing.
+
+The space around him is heavier than the other two scenes — deeper navy, fewer stars,
+the watercolor darker and more pooled. Silence made visible.
+
+Mood: the weight of the unsaid. Not horror. Not violence. The specific quiet of a
+moment that cannot be taken back.
+Technique: the companion must be nearly gone — more absence than presence. Ian's
+stillness is the subject of the image. No text, no watermark.
+```
+
+---
+
 ## 이안 캐릭터 시트
 
 **파일**: `05_image/ian_character_sheet.png`  
