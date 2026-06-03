@@ -384,6 +384,8 @@ def build_big_workshop(
     updated_at: str,
     illustration_items: list[dict[str, str]] | None = None,
     available_images: dict[str, str] | None = None,
+    output_path: Path | None = None,
+    chapter_label_fn=None,
 ) -> None:
     '''Build the desktop-first 큰작업실 flow review page.'''
     import json
@@ -574,6 +576,8 @@ def build_big_workshop(
         index += 1
 
     def chapter_label(section_id: str) -> str:
+        if chapter_label_fn is not None:
+            return chapter_label_fn(section_id)
         match = re.match(r"S(\d{3})", section_id)
         number = int(match.group(1)) if match else 0
         if number >= 60:
@@ -763,7 +767,7 @@ window.addEventListener('resize',renderEdges);flowCanvas.addEventListener('scrol
 </script>
 </body>
 </html>'''
-    write(DOCS_DIR / 'big-workshop.html', page)
+    write(output_path or (DOCS_DIR / 'big-workshop.html'), page)
 
 
 def build_flow_review(source_sections: list[dict[str, str]], section_links: dict[str, str], updated_at: str) -> None:
