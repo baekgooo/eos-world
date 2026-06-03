@@ -7,7 +7,7 @@
 <link rel="stylesheet" href="../assets/style.css">
 </head>
 <body>
-<div class="updated-at" aria-label="최종 업데이트">최종 업데이트 2026.06.03 15:03</div>
+<div class="updated-at" aria-label="최종 업데이트">최종 업데이트 2026.06.03 15:28</div>
 <header class="top"><a href="../index.html">← 작업실</a></header>
 <main class="page section-page">
 
@@ -109,48 +109,82 @@
 <h2>목표</h2>
 <p>이름과 기억을 거래하는 시장에서 두 번째 별조각을 찾고, 이안의 잃어버린 이름에 대한 단서를 얻는다.</p>
 <h2>별조각 주제</h2>
-<p><strong>착한 척</strong> — 주인공 인정 말: &quot;나는 싫다는 말을 못 한 게 아니야. 안 한 거야. 착한 사람처럼 보이고 싶어서. 근데 그게 나를 지워온 거였어.&quot;</p>
+<p><strong>착한 척</strong> — 주인공 인정 말: &quot;나도 그런 적 있어. 말 안 해도 되면, 안 했어. 싫은데도 괜찮다고 했어. 내가 참으면 조용해질 거라고 생각했어. 근데 그게 쌓이면 나중엔 뭘 말하고 싶은지도 모르게 돼.&quot;</p>
 <h2>섹션 구조 (확정)</h2>
 <pre><code>
 S040. 이름 없는 간판들
 
-  ├─ A → S040A. 가까운 노점부터 살핀다 → S041
+  ├─ A → S040A → S041
 
-  └─ B → S040B. 이안에게 여기가 어떤 곳이냐고 묻는다 → S041
+  └─ B → S040B → S041
 
 S041. 기억을 파는 노점
 
 S042. 잊고 싶은 것을 사겠다는 상인 (웃는 가면 상인)
 
-  ├─ A → S042A. &quot;얼마예요?&quot; 가격표를 요청한다 → S043
+  ├─ A → S042A → S043
 
-  ├─ B → S042B. &quot;됐어요.&quot; 거절한다 → S043
+  ├─ B → S042B → S043
 
-  └─ C → S042C. &quot;어떻게 알았어요?&quot; 묻는다 → S043
+  └─ C → S042C → S043
 
-S043. 이름 수집가 아이 (이안 이름 조각 발견)
+S043. 이름 수집가 아이
 
 S044. 별조각 거래 연쇄 추적 [P005]
 
-  ├─ A → S045 (정답: 말없는 여자)
+  ├─ A → S045 (정답 방향)
 
-  ├─ B → S044 재시도 (잿빛 손 상인 부재)
+  ├─ B → S044B → S044 (재시도)
 
-  └─ C → S044 힌트 후 재시도
+  └─ C → S044C → S045 (힌트)
 
 S045. 거짓말쟁이 상인 셋 [P004]
 
-  ├─ A → S046B (정답: 조용한 여자 → 클라이맥스)
+  ├─ A → S046 (정답: 클라이맥스)
 
-  ├─ B → S046A (웃는 가면 이름 도용 함정)
+  ├─ B → S045A (상인 함정 1차)
 
-  └─ C → S046C (가짜 안내자 함정)
+  └─ C → S045D (아이 함정 1차)
 
-S046A. 거짓말쟁이의 덫
 
-S046B. 팔면 안 되는 것 (감정 클라이맥스)
 
-S046C. 가짜 안내자 배드엔딩
+[소거형 분기 — 함정을 거칠수록 선택지가 줄어드는 씬들]
+
+S045A. 거짓말쟁이의 덫 (상인 함정 1차)
+
+  ├─ A(이름 말함) → S045B
+
+  └─ B(이름 거부) → S045C (여자+아이)
+
+S045B. 이름을 빼앗기다 [BE] → S045H
+
+S045C. 여자와 아이 (상인 배제)
+
+  ├─ A → S046 (정답)
+
+  └─ B → S045G (아이 함정 2차)
+
+S045D. 가짜 안내자의 함정 (아이 함정 1차) → S045E
+
+S045E. 여자와 상인 (아이 배제)
+
+  ├─ A → S046 (정답)
+
+  └─ B → S045F (상인 함정 2차)
+
+S045F. 거짓말쟁이의 덫 (상인 함정 2차)
+
+  ├─ A(이름 말함) → S045B → S045H
+
+  └─ B(이름 거부) → S045H
+
+S045G. 가짜 안내자의 함정 (아이 함정 2차) → S045H
+
+S045H. 여자만 남아 있다 → S046 (정답)
+
+
+
+S046. 팔면 안 되는 것 (감정 클라이맥스)
 
 S047. 두 번째 별조각
 
@@ -168,18 +202,25 @@ S048. 이안은 자기 이름을 모른다
 <li><a class="section-ref" href="../sections/S042C_how_did_you_know.html">S042C. &quot;어떻게 알았어요?&quot; — 상인의 답, 이안이 자리 뜸</a></li>
 <li><a class="section-ref" href="../sections/S043_name_collector_child.html">S043. 이름 수집가 아이 — 이안 이름 조각 발견, 착한 척 복선, S044 안내</a></li>
 <li><a class="section-ref" href="../sections/S044_trade_record_tracking.html">S044. 별조각 거래 연쇄 추적 [P005] — 거래 기록판 논리 추적</a></li>
-<li><a class="section-ref" href="../sections/S045_three_merchants.html">S045. 거짓말쟁이 상인 셋 [P004] — 3분기 (A→S046B, B→S046A, C→S046C)</a></li>
-<li><a class="section-ref" href="../sections/S046A_liars_trap.html">S046A. 거짓말쟁이의 덫 — 이름 도용 지연 함정, S045로 복귀</a></li>
-<li><a class="section-ref" href="../sections/S046B_what_must_not_be_sold.html">S046B. 팔면 안 되는 것 — 이안+주인공 동시 거래 제안, 주인공 고백, 별조각 출현</a></li>
-<li><a class="section-ref" href="../sections/S046C_fake_guide_ending.html">S046C. 가짜 안내자 배드엔딩 [T002] — 골목에서 길 잃음, S045로 복귀</a></li>
-<li><a class="section-ref" href="../sections/S047_second_star_shard.html">S047. 두 번째 별조각 — 획득, 이안 시선 돌림</a></li>
+<li><a class="section-ref" href="../sections/S044B_looking_for_ashen_merchant.html">S044B. 잿빛 손 상인을 찾아서 — 오답 루프 (빈 가판대 확인 후 재시도)</a></li>
+<li><a class="section-ref" href="../sections/S044C_reread_record.html">S044C. 기록을 다시 살핀다 — 힌트 루프 후 S045 진행</a></li>
+<li><a class="section-ref" href="../sections/S045_three_merchants.html">S045. 거짓말쟁이 상인 셋 [P004] — 3분기 (A→S046, B→S045A, C→S045D)</a></li>
+<li><a class="section-ref" href="../sections/S045A_liars_trap.html">S045A. 거짓말쟁이의 덫 (상인 1차) — 이름 요구 함정. A→S045B / B→S045C</a></li>
+<li><a class="section-ref" href="../sections/S045B_name_stolen.html">S045B. 이름을 빼앗기다 [BE] — 이름 말하면 흐릿해지는 배드엔딩 → S045H</a></li>
+<li><a class="section-ref" href="../sections/S045C_woman_and_child.html">S045C. 여자와 아이 (상인 배제) — 소거형 재선택. A→S046 / B→S045G</a></li>
+<li><a class="section-ref" href="../sections/S045D_fake_guide_ending.html">S045D. 가짜 안내자의 함정 (아이 1차) — 가짜 빛 종이 드러남 → S045E</a></li>
+<li><a class="section-ref" href="../sections/S045E_woman_and_merchant.html">S045E. 여자와 상인 (아이 배제) — 소거형 재선택. A→S046 / B→S045F</a></li>
+<li><a class="section-ref" href="../sections/S045F_liars_trap_second.html">S045F. 거짓말쟁이의 덫 (상인 2차) — 같은 덫. A→S045B / B→S045H</a></li>
+<li><a class="section-ref" href="../sections/S045G_fake_guide_second.html">S045G. 가짜 안내자의 함정 (아이 2차) — 더 빨리 알아차림 → S045H</a></li>
+<li><a class="section-ref" href="../sections/S045H_woman_alone.html">S045H. 여자만 남아 있다 — 소거 완료, 정답으로 안내 → S046</a></li>
+<li><a class="section-ref" href="../sections/S046_what_must_not_be_sold.html">S046. 팔면 안 되는 것 — 이안+주인공 동시 거래 제안, 주인공 고백, 별조각 응고 (클라이맥스)</a></li>
+<li><a class="section-ref" href="../sections/S047_second_star_shard.html">S047. 두 번째 별조각 — 바닥 응고 조각 건네받음, 이안 시선 돌림</a></li>
 <li><a class="section-ref" href="../sections/S048_ian_doesnt_know_his_name.html">S048. 이안은 자기 이름을 모른다 — &quot;지금은.&quot; 챕터 마감</a></li>
 <h2>게임 요소</h2>
-<li>P004. 거짓말쟁이 상인 찾기 — 말없는 여자 vs 웃는 가면 vs 가짜 안내자. 친절하게 말 거는 쪽이 가짜.</li>
+<li>P004. 거짓말쟁이 상인 찾기 — 말없는 여자 vs 웃는 가면 vs 가짜 안내자. 먼저 말 거는 쪽이 가짜.</li>
 <li>P005. 별조각 거래 연쇄 추적 — 거래 기록판 + 시장 관찰 단서 조합, 현재 보유자 논리 추론</li>
-<li>T002. 가짜 안내자 함정 — 불쌍한 아이를 따라가면 골목에서 길을 잃음 (→S046C)</li>
-<li>BE004. 이름을 빼앗기다 — S046A 본문에 통합 (이름 말하면 빼앗기는 서사)</li>
-<li>BE005. 가짜 안내자를 따라 시장 뒤편으로 사라지다 — S047</li>
+<li>T002. 가짜 안내자 함정 — 불쌍한 아이를 따라가면 골목에서 길을 잃음 (S045D, S045G)</li>
+<li>소거형 분기 — S045A~H: 함정을 체험할수록 남은 선택지가 줄어드는 구조</li>
 <p>---</p>
 <h1>5장. 밤끝탑</h1>
 <h2>목표</h2>
