@@ -1,121 +1,525 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<title>4장 재번호 미리보기</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>재번호 미리보기 · 어스름 너머의 세계</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600;700;800;900&display=swap">
 <style>
-  body { font-family: 'Noto Sans KR', sans-serif; background: #1a1a2e; color: #e0e0e0; padding: 32px; }
-  h1 { color: #f0c040; } h2 { color: #a0c4ff; border-bottom: 1px solid #333; padding-bottom: 6px; }
-  table { border-collapse: collapse; width: 100%; margin-bottom: 32px; }
-  tr:hover { background: rgba(255,255,255,0.04); }
-  td { border-bottom: 1px solid #2a2a3e; vertical-align: middle; }
-  .note { background: #2a1a0e; border-left: 4px solid #ff9500; padding: 12px 16px; border-radius: 4px; margin: 16px 0; color: #ffc; }
+:root{--paper:#fbfaf8;--surface:#ffffff;--surface-warm:#f5f2ee;--ink:#171615;--muted:#69635d;--hair:#dfdbd4;--hair-strong:#c9c2b8;--accent:#8f5b2e;--accent-soft:#f3e6d8;--major:#f0c994;--minor:#e8f0e9;--story:#ffffff;--decision:#fff7e8;--ending:#f1f1f1;}
+*{box-sizing:border-box;word-break:keep-all;overflow-wrap:normal;hyphens:none} html,body{height:100%} body{margin:0;background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,"Noto Sans KR",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",Segoe UI,sans-serif;letter-spacing:-.012em;line-break:strict;overflow:hidden}
+a{color:inherit} .page-title{position:fixed;top:16px;right:22px;z-index:20;padding:7px 12px;border:1px solid var(--hair);border-radius:999px;background:rgba(255,255,255,.88);backdrop-filter:blur(12px);font-size:13px;font-weight:700;color:var(--ink);box-shadow:0 8px 24px rgba(31,25,18,.06)} .workshop{display:grid;grid-template-columns:220px minmax(0,1fr) minmax(0,1fr);height:100vh}
+.sidebar{border-right:1px solid var(--hair);background:#fff;padding:24px 18px;display:flex;flex-direction:column;gap:22px}
+.brand small{display:block;color:var(--muted);font-size:12px;font-weight:600;margin-bottom:6px} .brand strong{display:block;font-size:20px;line-height:1.15;letter-spacing:-.04em} .brand span{display:block;margin-top:8px;color:var(--muted);font-size:13px;line-height:1.45}
+.nav{display:grid;gap:6px} .menu-title{margin:2px 0 8px;padding:11px;border:1px solid var(--hair);border-radius:12px;background:var(--surface-warm);font-size:14px;font-weight:800;color:var(--ink)} .submenu{display:grid;gap:4px;padding-left:8px;border-left:1px solid var(--hair)} .nav button,.small-link{border:0;background:transparent;text-align:left;border-radius:10px;padding:10px 11px;color:var(--muted);font:600 15px/1 "Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif;text-decoration:none;cursor:pointer} .nav button.active,.nav button:hover,.small-link:hover{background:var(--surface-warm);color:var(--ink)} .nav button:disabled{color:#b8b2aa;cursor:not-allowed;background:transparent} .small-link{display:block;margin-top:auto;border:1px solid var(--hair);text-align:center;color:var(--ink);background:#fff}
+.legend{border-top:1px solid var(--hair);padding-top:16px;color:var(--muted);font-size:12px;line-height:1.7} .legend b{color:var(--ink)} .legend-row{display:flex;align-items:center;gap:8px;margin:6px 0} .sample{width:18px;height:13px;border:1px solid var(--hair-strong);background:#fff;display:inline-block} .sample.decision{transform:rotate(45deg);background:var(--major)} .sample.minor{transform:none;border-radius:7px;background:var(--minor)} .sample.ending{border-radius:999px;background:var(--ending)}
+.flow-wrap{position:relative;display:flex;flex-direction:column;min-width:0;min-height:0;background:#fff}
+.flow-header{height:70px;display:flex;align-items:center;justify-content:space-between;padding:0 28px;border-bottom:1px solid var(--hair);background:rgba(255,255,255,.94);backdrop-filter:blur(14px);z-index:3} .flow-header h1{margin:0;font-size:21px;letter-spacing:-.04em} .flow-header p{margin:4px 0 0;color:var(--muted);font-size:13px} .flow-tools button{border:1px solid var(--hair);background:#fff;border-radius:999px;padding:8px 12px;font-weight:700;color:var(--muted);cursor:pointer}
+.flow-canvas{position:relative;flex:1;min-height:0;overflow:auto;padding:32px 34px 64px} .flow-grid{position:relative;z-index:2;display:flex;flex-direction:column;gap:18px;align-items:center;justify-content:flex-start;min-width:360px} .chapter-band{width:min(420px,82%);margin:2px 0 0;padding:7px 14px;border:1px solid var(--hair);border-radius:999px;background:rgba(255,255,255,.82);box-shadow:0 8px 20px rgba(31,25,18,.05);color:var(--muted);font-size:12px;font-weight:900;text-align:center;letter-spacing:.06em} .flow-row{display:flex;align-items:center;justify-content:center;gap:16px;width:100%;min-height:52px} .branch-row{gap:14px}
+.flow-node{position:relative;width:78px;height:38px;border:1px solid var(--hair-strong);background:var(--story);color:var(--ink);display:flex;align-items:center;justify-content:center;font:800 12px/1 "Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif;box-shadow:0 2px 0 rgba(0,0,0,.04);cursor:pointer;transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease,opacity .16s ease} .flow-node:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(31,25,18,.10)} .flow-node.decision{background:var(--major);transform:rotate(45deg);width:46px;height:46px;margin:3px 12px} .flow-node.decision span{transform:rotate(-45deg);font-size:11px} .flow-node.decision.minor{transform:none;width:70px;height:34px;margin:0 4px;border-radius:12px;background:var(--minor)} .flow-node.decision.minor span{transform:none;font-size:11px} .flow-node.ending{background:var(--ending);border-radius:999px} .flow-node.selected{border-color:var(--accent);background:#f0d3b1;box-shadow:0 0 0 3px rgba(143,91,46,.18),0 10px 22px rgba(143,91,46,.14)} .flow-node.decision.selected{background:#f0c994} .flow-node.decision.minor.selected{background:#cfe5d2} .flow-node.next{border-color:#5f8f6a;background:#e6f3e7;box-shadow:0 0 0 3px rgba(95,143,106,.13)} .flow-node.decision.next{background:#d9ecd9}
+.edge-layer{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:visible} .edge-layer path{stroke:#b9afa5;stroke-width:1.55;fill:none;transition:stroke .16s ease,stroke-width .16s ease,opacity .16s ease} .edge-layer.has-selection path.edge{opacity:.26} .edge-layer path.active-edge,.edge-layer.has-selection path.edge.active-edge{stroke:#d6531f;stroke-width:3.2;opacity:1}
+.reader{background:#fff;border-left:1px solid var(--hair);display:flex;flex-direction:column;min-width:0;min-height:0} .reader-head{height:70px;border-bottom:1px solid var(--hair);padding:17px 24px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:16px} .reader-kicker{color:var(--accent);font-size:12px;font-weight:800;letter-spacing:.05em} .reader-title{font-size:20px;font-weight:800;letter-spacing:-.035em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis} .open-small{font-size:12px;font-weight:700;color:var(--muted);text-decoration:none;border:1px solid var(--hair);padding:7px 10px;border-radius:999px;white-space:nowrap}
+.reader-body{flex:1;min-height:0;overflow:auto;padding:26px 30px 70px;font-size:16px;line-height:1.76} .reader-body h2{font-size:15px;margin:30px 0 10px;padding-top:16px;border-top:1px solid var(--hair);letter-spacing:-.02em} .reader-body h3{font-size:15px;margin:22px 0 8px} .reader-body p{margin:0 0 15px} .reader-body .choice-line{margin:0 0 10px;padding:10px 12px;border:1px solid var(--hair);border-radius:12px;background:var(--surface-warm)} .reader-body blockquote{margin:0 0 15px;padding:11px 13px;border-left:3px solid var(--accent);background:var(--surface-warm);border-radius:0 10px 10px 0} .reader-body li{margin:8px 0} .reader-body a{color:var(--accent);font-weight:700;text-decoration:none;border-bottom:1px solid rgba(143,91,46,.25)} .previous-nav{margin:0 0 22px;padding:13px 14px;border:1px solid var(--hair);border-radius:14px;background:var(--surface-warm)} .previous-nav strong{display:block;margin-bottom:8px;color:var(--accent);font-size:13px;letter-spacing:.04em} .previous-nav div{display:flex;flex-wrap:wrap;gap:8px} .previous-nav a,.previous-nav button{display:inline-flex;gap:6px;align-items:center;padding:7px 10px;border:1px solid var(--hair);border-radius:999px;background:#fff;color:var(--ink);font:800 13px/1.2 "Pretendard Variable",Pretendard,"Noto Sans KR",sans-serif;text-decoration:none;cursor:pointer} .previous-nav a small,.previous-nav button small{color:var(--muted);font-weight:700;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.illust-card{margin:28px 0 0;padding:16px;border:1px solid var(--hair);background:var(--surface-warm);border-radius:16px} .illust-card strong{display:block;font-size:13px;margin-bottom:7px;color:var(--accent)} .illust-card p{margin:0;color:var(--muted);font-size:14px;line-height:1.65}
+.info-panel{display:none;padding:26px 30px 70px;overflow:auto} .info-panel.active{display:block} .info-panel h2{font-size:26px;letter-spacing:-.045em;margin:0 0 14px} .info-panel p{line-height:1.75;color:var(--muted)} .info-list{display:grid;gap:10px;margin-top:22px} .info-list a{display:block;padding:14px;border:1px solid var(--hair);border-radius:14px;background:#fff;text-decoration:none} .info-list small{display:block;color:var(--muted);margin-top:3px}
+.char-panel-inner{max-width:900px} .char-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.char-card{border:1px solid var(--hair);border-radius:16px;background:#fff;overflow:hidden;display:flex;flex-direction:column}
+.char-img-wrap{background:var(--surface-warm);padding:12px;display:flex;align-items:center;justify-content:center;min-height:140px;border-bottom:1px solid var(--hair)}
+.char-img{max-width:100%;max-height:200px;object-fit:contain;border-radius:8px}
+.char-info{padding:16px 18px 20px;flex:1;display:flex;flex-direction:column;gap:10px}
+.char-name{font-size:18px;font-weight:800;letter-spacing:-.03em} .char-name-sub{color:var(--muted);font-weight:600;font-size:15px}
+.char-note{font-size:12px;color:var(--muted);padding:5px 9px;background:var(--surface-warm);border-radius:8px;border:1px solid var(--hair)}
+.char-stat-block{display:flex;flex-direction:column;gap:6px} .char-stat{display:grid;grid-template-columns:72px 1fr;gap:6px;align-items:baseline;font-size:13px}
+.stat-label{color:var(--accent);font-weight:700;font-size:11px;letter-spacing:.02em} .stat-val{color:var(--ink);line-height:1.5}
+.char-tag-row{display:flex;flex-wrap:wrap;gap:5px} .char-tag{background:var(--surface-warm);border:1px solid var(--hair);border-radius:999px;padding:3px 9px;font-size:11px;color:var(--muted)} .char-tag.secret-tag{background:#f3e6d8;border-color:#d9b08c;color:var(--accent)}
+.char-conflict-block{background:var(--surface-warm);border:1px solid var(--hair);border-radius:10px;padding:12px 14px} .conflict-title{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.04em;margin-bottom:8px} .conflict-row{font-size:12px;color:var(--muted);line-height:1.6;padding:3px 0;border-top:1px solid var(--hair)} .conflict-row:first-of-type{border-top:0} .vs{color:var(--accent);font-weight:700;font-size:11px;margin:0 4px}
+.illust-section-label{font-size:11px;font-weight:800;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px}
+.cover-img{max-width:100%;max-height:260px;object-fit:contain;border-radius:10px;border:1px solid var(--hair)}
+.illust-list{display:flex;flex-direction:column;gap:14px} .illust-row{display:grid;grid-template-columns:100px 1fr;gap:14px;padding:14px;border:1px solid var(--hair);border-radius:12px;background:#fff;align-items:start}
+.illust-thumb-col{display:flex;align-items:flex-start;justify-content:center} .illust-thumb{width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--hair)} .illust-thumb-empty{width:90px;height:90px;border:1px dashed var(--hair);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-align:center;line-height:1.4}
+.illust-meta{display:flex;flex-direction:column;gap:5px} .illust-id-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap} .illust-sid{font-size:13px;font-weight:800;color:var(--accent)} .illust-title{font-size:14px;font-weight:700;color:var(--ink)} .illust-note{font-size:12px;color:var(--muted);line-height:1.55}
+.illust-badge{font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700} .illust-badge.has-image{background:#e6f3e7;color:#2d6a40;border:1px solid #a8d4b5} .illust-badge.has-prompt{background:#f3e6d8;color:var(--accent);border:1px solid #d9b08c} .illust-badge.needs-gen{background:#f1f1f1;color:#888;border:1px solid #ddd}
+.prompt-details{margin-top:6px} .prompt-details summary{font-size:11px;color:var(--muted);cursor:pointer;font-weight:700;user-select:none} .prompt-pre{margin:8px 0 0;background:var(--surface-warm);border:1px solid var(--hair);border-radius:8px;padding:10px;font-size:11px;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--ink);max-height:200px;overflow:auto}
+.workshop.hide-flow{grid-template-columns:220px minmax(0,1fr)}.workshop.hide-flow .flow-wrap{display:none}
+#imgModal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.88);align-items:center;justify-content:center;cursor:zoom-out;padding:24px}
+#imgModal.open{display:flex}
+#imgModal img{max-width:90vw;max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 24px 64px rgba(0,0,0,.6);cursor:default}
+.char-img{cursor:zoom-in}.illust-thumb{cursor:zoom-in}.cover-img{cursor:zoom-in}
+@media(max-width:1100px){body{overflow:auto}.page-title{position:static;margin:10px}.workshop{grid-template-columns:1fr;height:auto}.sidebar{position:sticky;top:0;z-index:5;border-right:0;border-bottom:1px solid var(--hair)}.reader{min-height:70vh;border-left:0;border-top:1px solid var(--hair)}}
 </style>
 </head>
 <body>
-<h1>4장 섹션 재번호 미리보기</h1>
-<div class="note">
-  ⚠ <strong>영향 범위:</strong> S046(클라이맥스)→S051, S047→S052, S048→S053, 5장 S049~S058→S054~S063으로 전부 밀립니다.
-  이 미리보기를 확인 후 OK 하시면 실제 파일 작업을 진행합니다.
+<div class="page-title">재번호 미리보기 (S045A~H → S046A/B, S047A/B 등)</div>
+<div class="workshop">
+  <aside class="sidebar">
+    <div class="brand"><small>작업실</small><strong>프로젝트</strong><span>왼쪽 메뉴에서 검토할 범주를 고르는 자리야.</span></div>
+    <nav class="nav" aria-label="큰작업실 메뉴"><div class="menu-title">어스름 너머의 세계</div><div class="submenu"><button class="active" data-view="story">스토리</button><button data-view="world" disabled>세계관</button><button data-view="character">캐릭터</button><button data-view="images">이미지</button></div></nav>
+    <div class="legend"><b>기호</b><div class="legend-row"><i class="sample"></i>스토리</div><div class="legend-row"><i class="sample decision"></i>큰 분기</div><div class="legend-row"><i class="sample minor"></i>작은 선택</div><div class="legend-row"><i class="sample ending"></i>엔딩</div></div>
+    <div style="margin-top:auto;display:grid;gap:8px"><a class="small-link" style="margin-top:0" href="flow-review.html">흐름 검토실로 이동</a><a class="small-link" style="margin-top:0" href="index.html">작은작업실로 이동</a></div>
+  </aside>
+  <section class="flow-wrap"><header class="flow-header"><div><h1>스토리줄기</h1><p>기호를 누르면 오른쪽에 원고가 열려.</p></div><div class="flow-tools"><button id="fitFlow">처음으로</button></div></header><div class="flow-canvas" id="flowCanvas"><svg class="edge-layer" id="edgeLayer"></svg><div class="flow-grid" id="flowGrid"><div class="chapter-band">프롤로그 · 1장 · 사잇별의 땅</div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S001" aria-label="S001. 평범한 밤의 방"><span>S001</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S002" aria-label="S002. 멈춘 시계와 이상한 창밖"><span>S002</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S003" aria-label="S003. 휴대폰 화면에 뜬 알 수 없는 문장"><span>S003</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S004" aria-label="S004. 방 안에 없던 문"><span>S004</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S005" aria-label="S005. 문틈에서 나타난 이안"><span>S005</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S006" aria-label="S006. 그림자가 방 안으로 들어오다"><span>S006</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S007" aria-label="S007. 첫 선택: 이안을 믿을 것인가"><span>S007</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S008A" aria-label="S008A. 이안에게 사실을 묻는다"><span>S008A</span></button><button class="flow-node story" data-section="S008B" aria-label="S008B. 문밖을 직접 살핀다"><span>S008B</span></button><button class="flow-node story" data-section="S008C" aria-label="S008C. 작은 글씨를 다시 본다"><span>S008C</span></button><button class="flow-node story" data-section="S008D" aria-label="S008D. 망설임의 결과: 방이 접히기 시작한다"><span>S008D</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S010" aria-label="S010. 낮은 별 아래로 떨어지다"><span>S010</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S011" aria-label="S011. 사라진 문"><span>S011</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S012" aria-label="S012. 이안의 설명은 부족하다"><span>S012</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S013" aria-label="S013. 사잇별의 땅 첫 규칙"><span>S013</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S014" aria-label="S014. 낮은 별이 가리키는 길"><span>S014</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S015" aria-label="S015. 세 갈래 표지판"><span>S015</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S016" aria-label="S016. 첫 퍼즐: 크게 쓰인 말과 작은 문장"><span>S016</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S017" aria-label="S017. 작은 문장을 다시 읽는다"><span>S017</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S018A" aria-label="S018A. 왼쪽 길의 결과"><span>S018A</span></button><button class="flow-node story" data-section="S018B" aria-label="S018B. 오른쪽 길의 결과"><span>S018B</span></button><button class="flow-node story" data-section="S018C" aria-label="S018C. 표지판 뒤쪽의 좁은 길"><span>S018C</span></button><button class="flow-node story" data-section="S018D" aria-label="S018D. 이안에게 맡긴 결과"><span>S018D</span></button></div>
+<div class="chapter-band">2장 · 초저녁 정거장</div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S019" aria-label="S019. 초저녁 정거장의 불빛"><span>S019</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S020" aria-label="S020. 말하는 시간표"><span>S020</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S021" aria-label="S021. 이안의 짧은 경고"><span>S021</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S022" aria-label="S022. 너무 안전하다는 말"><span>S022</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S023" aria-label="S023. 누구에게 도움을 받을까"><span>S023</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S024" aria-label="S024. 역무원을 따른다"><span>S024</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision minor" data-section="S025" aria-label="S025. 매표소 안쪽의 작은 목소리"><span>S025</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S025B" aria-label="S025B. 이안에게 글씨가 안 보이는 이유를 묻는다"><span>S025B</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision minor" data-section="S026" aria-label="S026. 시간표를 직접 살핀다"><span>S026</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S027A" aria-label="S027A. 역무원 함정에서 빠져나오다"><span>S027A</span></button><button class="flow-node story" data-section="S027B" aria-label="S027B. 이름을 말한 뒤"><span>S027B</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S028" aria-label="S028. 시간표 해독"><span>S028</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S028A" aria-label="S028A. 안전 승강장으로 간다"><span>S028A</span></button><button class="flow-node story" data-section="S028B" aria-label="S028B. 분실물 보관소로 간다"><span>S028B</span></button><button class="flow-node story" data-section="S028C" aria-label="S028C. 세 개의 별조각"><span>S028C</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S029" aria-label="S029. 거울숲으로 가는 표"><span>S029</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S030" aria-label="S030. 표지판 수선공"><span>S030</span></button></div>
+<div class="chapter-band">3장 · 거울숲</div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S031" aria-label="S031. 거울이 매달린 숲"><span>S031</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S032" aria-label="S032. 나를 따라오는 다른 나"><span>S032</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S033" aria-label="S033. 얼굴이 아닌 마음을 비추는 거울"><span>S033</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S034" aria-label="S034. 세 개의 거울"><span>S034</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S035A" aria-label="S035A. 웃는 거울을 따라간다"><span>S035A</span></button><button class="flow-node story" data-section="S035B" aria-label="S035B. 아무것도 비추지 않는 거울을 깬다"><span>S035B</span></button><button class="flow-node story" data-section="S035C" aria-label="S035C. 보기 싫은 거울 앞에 선다"><span>S035C</span></button><button class="flow-node story" data-section="S035D" aria-label="S035D. 이안 뒤에 숨는다"><span>S035D</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S037" aria-label="S037. 이안의 그림자가 늦게 움직이다"><span>S037</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S038" aria-label="S038. 첫 번째 별조각"><span>S038</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S039" aria-label="S039. 거울 속 경고: 그 애를 끝까지 믿지 마"><span>S039</span></button></div>
+<div class="chapter-band">4장 · 숨은이름 시장</div>
+<div class="flow-row single-row"><button class="flow-node decision minor" data-section="S040" aria-label="S040. 이름 없는 간판들"><span>S040</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S040A" aria-label="S040A. 가까운 노점부터 살핀다"><span>S040A</span></button><button class="flow-node story" data-section="S040B" aria-label="S040B. 이안에게 여기가 어떤 곳이냐고 묻는다"><span>S040B</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S041" aria-label="S041. 기억을 파는 노점"><span>S041</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S042" aria-label="S042. 잊고 싶은 것을 사겠다는 상인"><span>S042</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S042A" aria-label="S042A. &quot;얼마예요?&quot; — 가격표를 요청한다"><span>S042A</span></button><button class="flow-node story" data-section="S042B" aria-label="S042B. &quot;됐어요.&quot; — 거절한다"><span>S042B</span></button><button class="flow-node story" data-section="S042C" aria-label="S042C. &quot;어떻게 알았어요?&quot; — 묻는다"><span>S042C</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S043" aria-label="S043. 이름 수집가 아이"><span>S043</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S044" aria-label="S044. 별조각 거래 연쇄 추적"><span>S044</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S044B" aria-label="S044B. 잿빛 손 상인을 찾아서"><span>S044B</span></button><button class="flow-node story" data-section="S044C" aria-label="S044C. 기록을 다시 살핀다"><span>S044C</span></button></div>
+<div class="flow-row single-row"><button class="flow-node decision major" data-section="S045" aria-label="S045. 거짓말쟁이 상인 셋"><span>S045</span></button></div>
+<div class="chapter-band">4장 · 숨은이름 시장 (분기)</div>
+<div class="flow-row branch-row"><button class="flow-node decision minor" data-section="S046A" aria-label="S061A. 거짓말쟁이의 덫"><span>S046A</span></button><button class="flow-node story" data-section="S046B" aria-label="S061B. 가짜 안내자의 함정"><span>S046B</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node decision minor" data-section="S047A" aria-label="S062A. 남은 두 명"><span>S047A</span></button><button class="flow-node decision minor" data-section="S047B" aria-label="S062B. 여자와 상인만 남아 있다"><span>S047B</span></button></div>
+<div class="flow-row branch-row"><button class="flow-node story" data-section="S048A" aria-label="S063A. 가짜 안내자의 함정 (두 번째)"><span>S048A</span></button><button class="flow-node decision minor" data-section="S048B" aria-label="S063B. 거짓말쟁이의 덫 (두 번째)"><span>S048B</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S049" aria-label="S059. 이름을 빼앗기다"><span>S049</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S050" aria-label="S060. 여자만 남아 있다"><span>S050</span></button></div>
+<div class="chapter-band">4장 · 숨은이름 시장 (분기 후반)</div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S051" aria-label="S061. 팔면 안 되는 것"><span>S051</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S052" aria-label="S062. 두 번째 별조각"><span>S052</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S053" aria-label="S063. 이안은 자기 이름을 모른다"><span>S053</span></button></div>
+<div class="chapter-band">6장 · 열리지 않는 문</div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S074" aria-label="S074. 마지막 선택"><span>S074</span></button></div>
+<div class="flow-row single-row"><button class="flow-node story" data-section="S075" aria-label="S075. 별빛 균열"><span>S075</span></button></div></div></div></section>
+  <aside class="reader"><div class="reader-head"><div><div class="reader-kicker" id="readerId">SECTION</div><div class="reader-title" id="readerTitle">섹션을 선택해줘</div></div><a class="open-small" id="openSmall" href="index.html">작은작업실</a></div><div class="reader-body" id="readerBody"></div><div class="info-panel" id="worldPanel"><h2>세계관</h2><p>작은작업실의 세계관 문서로 바로 이동할 수 있어.</p><div class="info-list"><a href="project/world_rules.html">사잇별의 땅 규칙<small>world_rules.md</small></a><a href="project/game_rules.html">게임 규칙<small>game_rules.md</small></a><a href="project/concept.html">기획 개념<small>concept.md</small></a></div></div><div class="info-panel" id="characterPanel">
+<div class="char-panel-inner">
+<p style="margin:0 0 24px;color:var(--muted);font-size:13px">주요 인물의 핵심 설정. 원고 작업 전 반드시 확인해.</p>
+<div class="char-grid">
+
+<div class="char-card">
+  <div class="char-img-wrap"><img src="images/S002.png" alt="창문에 손을 댄 주인공의 실루엣" class="char-img" onerror="this.style.display='none'"></div>
+  <div class="char-info">
+    <div class="char-name">주인공 <span class="char-name-sub">/ 나</span></div>
+    <div class="char-note">성별·이름·외형 미지정 — 독자 자신</div>
+    <div class="char-stat-block">
+      <div class="char-stat"><span class="stat-label">핵심 믿음</span><span class="stat-val">"잘해야만 사랑받는다"</span></div>
+      <div class="char-stat"><span class="stat-label">별빛</span><span class="stat-val">"내가 애쓰지 않아도 이 모습 그대로 인정받고 싶다."</span></div>
+      <div class="char-stat"><span class="stat-label">성장</span><span class="stat-val">"부족한 나를 먼저 버리지 않는다."</span></div>
+    </div>
+    <div class="char-tag-row">
+      <span class="char-tag">다른 사람 반응을 의식</span>
+      <span class="char-tag">착한 척 컴플렉스</span>
+      <span class="char-tag">실망시키는 것 두려움</span>
+      <span class="char-tag">결정적 순간엔 나아감</span>
+    </div>
+    <div class="char-conflict-block">
+      <div class="conflict-title">핵심 갈등</div>
+      <div class="conflict-row">잘해야 한다는 강박 <span class="vs">vs</span> 이미 지쳐 있는 마음</div>
+      <div class="conflict-row">착한 척하고 싶은 마음 <span class="vs">vs</span> 사실 싫다는 마음</div>
+      <div class="conflict-row">인정받고 싶은 마음 <span class="vs">vs</span> 그 마음을 들키기 싫은 마음</div>
+    </div>
+  </div>
 </div>
 
-<h2>4장 분기 구조 — 새 번호 기준</h2>
-<table>
-  <thead>
-    <tr>
-      <th style="padding:6px 8px;text-align:left;color:#888">레벨</th>
-      <th style="padding:6px 8px;text-align:left;color:#a0c4ff">새 번호</th>
-      <th style="padding:6px 8px;text-align:left;color:#555">현재 번호</th>
-      <th style="padding:6px 8px;text-align:left">역할</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV1</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#d8f3dc;color:#2d6a4f;border-radius:4px;white-space:nowrap">S045</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045)</td>
-      <td style="padding:6px 8px;padding-left:32px">세 명 만남</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV2</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#ffe8d6;color:#c1440e;border-radius:4px;white-space:nowrap">S046A</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045A)</td>
-      <td style="padding:6px 8px;padding-left:56px">거짓말쟁이의 덫 (상인 1차)</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV2</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#ffe8d6;color:#c1440e;border-radius:4px;white-space:nowrap">S046B</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045D)</td>
-      <td style="padding:6px 8px;padding-left:56px">가짜 안내자의 함정 (아이 1차)</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV3</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#caf0f8;color:#0077b6;border-radius:4px;white-space:nowrap">S047A</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045C)</td>
-      <td style="padding:6px 8px;padding-left:80px">여자와 아이 (상인 배제)</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV3</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#caf0f8;color:#0077b6;border-radius:4px;white-space:nowrap">S047B</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045E)</td>
-      <td style="padding:6px 8px;padding-left:80px">여자와 상인 (아이 배제)</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV4</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#ffe8d6;color:#c1440e;border-radius:4px;white-space:nowrap">S048A</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045G)</td>
-      <td style="padding:6px 8px;padding-left:104px">가짜 안내자의 함정 (아이 2차)</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV4</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#ffe8d6;color:#c1440e;border-radius:4px;white-space:nowrap">S048B</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045F)</td>
-      <td style="padding:6px 8px;padding-left:104px">거짓말쟁이의 덫 (상인 2차)</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV5</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#e9d8fd;color:#6d2b9f;border-radius:4px;white-space:nowrap">S049</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045B)</td>
-      <td style="padding:6px 8px;padding-left:128px">이름을 빼앗기다 [BE]</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV6</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#caf0f8;color:#0077b6;border-radius:4px;white-space:nowrap">S050</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S045H)</td>
-      <td style="padding:6px 8px;padding-left:152px">여자만 남아 있다</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap">LV7</td>
-      <td style="padding:6px 8px;font-family:monospace;background:#d8f3dc;color:#2d6a4f;border-radius:4px;white-space:nowrap">S051</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S046)</td>
-      <td style="padding:6px 8px;padding-left:176px">팔면 안 되는 것 (클라이맥스)</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap"></td>
-      <td style="padding:6px 8px;font-family:monospace;background:#d8f3dc;color:#2d6a4f;border-radius:4px;white-space:nowrap">S052</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S047)</td>
-      <td style="padding:6px 8px;padding-left:8px">두 번째 별조각</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 8px;color:#888;font-size:12px;white-space:nowrap"></td>
-      <td style="padding:6px 8px;font-family:monospace;background:#d8f3dc;color:#2d6a4f;border-radius:4px;white-space:nowrap">S053</td>
-      <td style="padding:6px 8px;font-family:monospace;color:#aaa;white-space:nowrap">(현재: S048)</td>
-      <td style="padding:6px 8px;padding-left:8px">이안은 자기 이름을 모른다</td>
-    </tr></tbody>
-</table>
+<div class="char-card">
+  <div class="char-img-wrap"><img src="images/Character_sheet_ian.png" alt="이안 캐릭터 시트" class="char-img" onerror="this.style.display='none'"></div>
+  <div class="char-info">
+    <div class="char-name">이안 <span class="char-name-sub">/ Ian</span></div>
+    <div class="char-note">"이안이라고 불러." — 빌린 이름. 진짜 이름이 아님</div>
+    <div class="char-stat-block">
+      <div class="char-stat"><span class="stat-label">핵심 믿음</span><span class="stat-val">"말해봤자 이해받지 못한다"</span></div>
+      <div class="char-stat"><span class="stat-label">별빛</span><span class="stat-val">"나도 누군가에게 내 진심을 털어놓고 싶다."</span></div>
+      <div class="char-stat"><span class="stat-label">성장</span><span class="stat-val">"말하면 싫어할 수도 있어. 그래도 말할게."</span></div>
+      <div class="char-stat"><span class="stat-label">소품</span><span class="stat-val">녹슨 열쇠 — 동행자가 남긴 약속이자 상처</span></div>
+    </div>
+    <div class="char-tag-row">
+      <span class="char-tag secret-tag">이름은 빌린 것</span>
+      <span class="char-tag">어깨 윤곽이 흐려짐</span>
+      <span class="char-tag">그림자가 늦게 움직임</span>
+      <span class="char-tag">발소리 없음</span>
+    </div>
+    <div class="char-conflict-block">
+      <div class="conflict-title">숨은 진실</div>
+      <div class="conflict-row">진짜 이름을 잃은 아이. "이안"은 동행자가 찢어진 문장 "이 안에 있어"에서 따준 이름.</div>
+      <div class="conflict-row" style="margin-top:6px">보호하고 싶은 마음 <span class="vs">vs</span> 또 침묵하는 습관</div>
+      <div class="conflict-row">말해야 한다는 양심 <span class="vs">vs</span> 말하면 잃을 것이라는 공포</div>
+    </div>
+  </div>
+</div>
 
-<h2>5장 이후 번호 변경</h2>
-<table>
-  <thead><tr>
-    <th style="padding:4px 8px;text-align:left;color:#555">현재</th>
-    <th style="padding:4px 8px;text-align:left;color:#a0c4ff">새 번호</th>
-    <th style="padding:4px 8px;text-align:left">섹션</th>
-  </tr></thead>
-  <tbody><tr><td style="padding:4px 8px;font-family:monospace;color:#aaa">S049</td><td style="padding:4px 8px;font-family:monospace;font-weight:bold">S054</td><td style="padding:4px 8px;color:#666">하늘로 솟은 검은 탑 (5장~)</td></tr><tr><td style="padding:4px 8px;font-family:monospace;color:#aaa">S050~S058</td><td style="padding:4px 8px;font-family:monospace;font-weight:bold">S055~S063</td><td style="padding:4px 8px;color:#666">5장 나머지 섹션들</td></tr></tbody>
-</table>
+</div>
+<a href="project/character_bible.html" style="display:inline-block;margin-top:18px;font-size:12px;color:var(--muted);border:1px solid var(--hair);padding:6px 12px;border-radius:999px;text-decoration:none">캐릭터 바이블 전문 보기</a>
+</div>
+</div><div class="info-panel" id="imagePanel">
+<div class="char-panel-inner">
+<p style="margin:0 0 20px;color:var(--muted);font-size:13px">삽화가 필요한 씬과 생성 현황. 프롬프트는 <code>00_project/illustration_spec.md</code> 참고.</p>
+<div class="illust-cover-section">
+  <div class="illust-section-label">북 커버</div>
+  <img src="images/cover.png" alt="북 커버 이미지" class="cover-img">
+</div>
+<div class="illust-cover-section" style="margin-top:20px">
+  <div class="illust-section-label">이안 캐릭터 시트</div>
+  <img src="images/Character_sheet_ian.png" alt="이안 캐릭터 시트" class="cover-img" style="max-height:320px">
+</div>
+<div style="margin-top:24px">
+  <div class="illust-section-label">씬별 삽화</div>
+  <div class="illust-list"><div class="illust-row">
+  <div class="illust-thumb-col"><img src="images/S002.png" alt="S002 삽화" class="illust-thumb"></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S002</span><span class="illust-badge has-image">이미지 있음</span><span class="illust-badge has-prompt">프롬프트 있음</span></div>
+    <div class="illust-title">S002. 멈춘 시계와 이상한 창밖</div>
+    <div class="illust-note">I001 후보: 창문 앞의 방, 낮게 떠 있는 별, 멈춘 시계.</div>
+    <details class="prompt-details"><summary>프롬프트 보기</summary><pre class="prompt-pre">Dark watercolor and ink illustration, square format, atmospheric literary fantasy.
 
-<h2>큰작업실 스토리줄기 변화</h2>
-<p style="color:#aaa">현재: S045 → S045A~H → S046(클라이맥스) → S047 → S048</p>
-<p style="color:#f0c040">변경: S045 → S046A/B → S047A/B → S048A/B → S049 → S050 → S051(클라이맥스) → S052 → S053</p>
+Interior of a bedroom at night. Deep navy and indigo watercolor washes bleed into darkness.
+Center: a wooden window with ink-drawn cross-frame dividers. Outside, light rises upward
+from the ground — cold pale blue-white illumination ascending, not descending, casting the
+room in reverse shadow. Just beyond the glass, a single small star hovers at eye level,
+impossibly close to the pane, glowing warm gold-white, its light trembling softly like a
+held breath. Background right: a round wall clock barely visible, ink outline only, ghostly
+dim, hands stopped. Bottom foreground: a slender young adult&#x27;s dark silhouette from behind,
+only the reaching hand visible — fingertips pressed against the cold glass, caught at the
+boundary between dark room and strange ascending light.
+
+Mood: quiet wonder, eerie beauty, gentle dread. Not horror.
+Technique: loose wet-on-wet watercolor washes, expressive ink linework, soft bleeding edges,
+deep shadows. No hard outlines on backgrounds. No text, no letters, no watermark.</pre></details>
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S004</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S004. 방 안에 없던 문</div>
+    <div class="illust-note">I002 후보: 방 안에 없던 문, 문틈의 별빛.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><img src="images/S005.png" alt="S005 삽화" class="illust-thumb"></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S005</span><span class="illust-badge has-image">이미지 있음</span><span class="illust-badge has-prompt">프롬프트 있음</span></div>
+    <div class="illust-title">S005. 문틈에서 나타난 이안</div>
+    <div class="illust-note">I003 후보: 문틈에서 나타난 이안, 녹슨 열쇠, 어스름빛.</div>
+    <details class="prompt-details"><summary>프롬프트 보기</summary><pre class="prompt-pre">Dark watercolor and ink illustration, square format, atmospheric literary fantasy.
+
+A mysterious boy stands in a partially open doorway, caught in the cold light seeping
+through the gap. He looks adolescent in age but carries an ancient, weathered feeling —
+like someone who stepped out of a forgotten old photograph, or a traveler lost from very
+far away who barely made it here. His hair tips glow faintly with twilight light, pale
+gold-indigo. Inside his eyes, tiny points of starlight flicker, unstable, searching.
+In his hand he grips a rust-covered old key, holding it so long his knuckles are white.
+
+The room light cannot fully illuminate him — his shoulder and arm outlines blur softly
+at the edges, dissolving slightly into watercolor, never quite solid. The door gap pours
+cold silver-white light across exactly half his face, the other half deep in shadow.
+He is not looking at the viewer directly; his gaze drops slightly downward, reading
+something on the dark floor: a shadow that stretches toward him, the faint edge of someone
+standing just out of frame.
+
+Mood: ancient, quietly unsettling, still. He has been searching for a long time.
+Not threatening — but the calm in his expression is not entirely reassuring.
+Technique: loose wet-on-wet watercolor washes, expressive ink linework, soft bleeding
+edges, deep shadows. Color: deep navy and indigo room; door light is cold silver; key is
+warm rust-brown; hair glow is pale gold. No text, no letters, no watermark.</pre></details>
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S008B</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S008B. 문밖을 직접 살핀다</div>
+    <div class="illust-note">I004 후보: 문틈 너머 낮은 별과 어스름 풀밭.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S010</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S010. 낮은 별 아래로 떨어지다</div>
+    <div class="illust-note">I005 후보: 낮은 별 아래 풀밭에 떨어진 주인공과 이안.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S014</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S014. 낮은 별이 가리키는 길</div>
+    <div class="illust-note">I006 후보: 세 갈래 길 앞에 선 주인공과 이안, 낮은 별, 두 표지판.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S015</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S015. 세 갈래 표지판</div>
+    <div class="illust-note">I006 후보: 세 갈래 표지판, 작은 돌, 표지판 뒤쪽의 희미한 반짝임.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S019</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S019. 초저녁 정거장의 불빛</div>
+    <div class="illust-note">I007 후보: 선로 없는 초저녁 정거장, 여러 개의 시계, 친절한 역무원 실루엣.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S020</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S020. 말하는 시간표</div>
+    <div class="illust-note">I008 후보: 말하는 시간표 앞에 선 주인공, 웃는 역무원, 경계하는 이안.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S022</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S022. 너무 안전하다는 말</div>
+    <div class="illust-note">I009 후보: 웃는 역무원과 굳은 이안, 바닥 물에 비친 새장 그림자.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S024</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S024. 역무원을 따른다</div>
+    <div class="illust-note">I010 후보: 이름 빈칸이 입처럼 벌어지는 임시 보관표.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S025</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S025. 매표소 안쪽의 작은 목소리</div>
+    <div class="illust-note">I011 후보: 닫힌 매표소 틈으로 나온 작은 종이표.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S028</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S028. 시간표 해독</div>
+    <div class="illust-note">I012 후보: 세 승강장 안내가 적힌 말하는 시간표.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S029</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S029. 거울숲으로 가는 표</div>
+    <div class="illust-note">I013 후보: 검은 물길 위에 떠내려온 거울 손잡이 문.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S030</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S030. 표지판 수선공</div>
+    <div class="illust-note">I014 후보: 승강장 기둥 아래에서 작은 글씨를 고치는 표지판 수선공.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S031</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S031. 거울이 매달린 숲</div>
+    <div class="illust-note">I015 후보: 비 젖은 숲속 나뭇가지마다 거울들이 매달려 있고, 가장 가까운 거울 속에는 숲이 아니라 늦게 웃는 주인공의 얼굴이 겹쳐 보이는 장면.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S032</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S032. 나를 따라오는 다른 나</div>
+    <div class="illust-note">I016 후보: 젖은 숲길 양쪽의 작은 거울들 속에서 서로 다른 순간의 주인공이 다른 표정으로 따라오는 장면.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S034</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S034. 세 개의 거울</div>
+    <div class="illust-note">I017 후보: 세 개의 거울 앞에 선 주인공과 한 걸음 물러선 이안. 왼쪽은 밝고 매끈한 거울, 가운데는 검은 빈 거울, 오른쪽은 금이 간 흐린 거울.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S038</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S038. 첫 번째 별조각</div>
+    <div class="illust-note">I018 후보: 젖은 유리 조각 같은 별조각이 주인공 손바닥 위에 내려앉고, 숲의 거울들이 희미하게 빛나는 장면.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S040</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S040. 이름 없는 간판들</div>
+    <div class="illust-note">I019 후보: 이름이 긁혀 나간 간판들이 늘어선 시장 골목. 별빛이 바닥에 낮게 고여 있음. 중경에 윤곽이 흐릿한 사람들이 서성거리는 모습. 어둡고 공기가 무거운 분위기.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S043</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S043. 이름 수집가 아이</div>
+    <div class="illust-note">I020 후보: 이름 수집가 아이가 이안에게 별빛 조각을 보여주는 장면. 이안의 측면 또는 뒷모습. 아이는 작고 조심스럽다.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S044</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S044. 별조각 거래 연쇄 추적</div>
+    <div class="illust-note">I021 후보: 낡은 거래 기록판 앞에 선 주인공. 복잡한 기록들이 담긴 게시판.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S046</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S046. 팔면 안 되는 것</div>
+    <div class="illust-note">I022 후보: 말없는 여자의 가판대 앞, 이안이 쪽지 쪽으로 손을 뻗으려는 순간. 주인공이 이안의 옆에서 입을 열려는 찰나. 빛이 낮게 깔린 어두운 분위기.</div>
+    
+  </div>
+</div><div class="illust-row">
+  <div class="illust-thumb-col"><div class="illust-thumb-empty">이미지 없음</div></div>
+  <div class="illust-meta">
+    <div class="illust-id-row"><span class="illust-sid">S075</span><span class="illust-badge needs-gen">이미지 생성 필요</span></div>
+    <div class="illust-title">S075. 별빛 균열</div>
+    <div class="illust-note">선택적. 균열에서 새어 나오는 따뜻한 빛, 이안이 열쇠를 들어 문을 여는 순간. 잔잔하고 조용한 빛의 장면.</div>
+    
+  </div>
+</div></div>
+</div>
+</div>
+</div></aside>
+</div>
+<div id="imgModal" role="dialog" aria-modal="true"><img id="imgModalImg" src="" alt=""></div>
+<script type="application/json" id="sectionData">[{"id": "S001", "title": "S001. 평범한 밤의 방", "kind": "story", "tier": "", "src": "S001_prologue_room.md", "html": "", "illustration": "", "smallUrl": "sections/S001_prologue_room.html"}, {"id": "S002", "title": "S002. 멈춘 시계와 이상한 창밖", "kind": "story", "tier": "", "src": "S002_clock_stops.md", "html": "", "illustration": "", "smallUrl": "sections/S002_clock_stops.html"}, {"id": "S003", "title": "S003. 휴대폰 화면에 뜬 알 수 없는 문장", "kind": "story", "tier": "", "src": "S003_phone_message.md", "html": "", "illustration": "", "smallUrl": "sections/S003_phone_message.html"}, {"id": "S004", "title": "S004. 방 안에 없던 문", "kind": "story", "tier": "", "src": "S004_impossible_door.md", "html": "", "illustration": "", "smallUrl": "sections/S004_impossible_door.html"}, {"id": "S005", "title": "S005. 문틈에서 나타난 이안", "kind": "story", "tier": "", "src": "S005_ian_appears.md", "html": "", "illustration": "", "smallUrl": "sections/S005_ian_appears.html"}, {"id": "S006", "title": "S006. 그림자가 방 안으로 들어오다", "kind": "story", "tier": "", "src": "S006_shadow_enters.md", "html": "", "illustration": "", "smallUrl": "sections/S006_shadow_enters.html"}, {"id": "S007", "title": "S007. 첫 선택: 이안을 믿을 것인가", "kind": "decision", "tier": "major", "src": "S007_first_choice.md", "html": "", "illustration": "", "smallUrl": "sections/S007_first_choice.html"}, {"id": "S008A", "title": "S008A. 이안에게 사실을 묻는다", "kind": "story", "tier": "", "src": "S008A_question_ian.md", "html": "", "illustration": "", "smallUrl": "sections/S008A_question_ian.html"}, {"id": "S008B", "title": "S008B. 문밖을 직접 살핀다", "kind": "story", "tier": "", "src": "S008B_look_outside.md", "html": "", "illustration": "", "smallUrl": "sections/S008B_look_outside.html"}, {"id": "S008C", "title": "S008C. 작은 글씨를 다시 본다", "kind": "story", "tier": "", "src": "S008C_check_phone.md", "html": "", "illustration": "", "smallUrl": "sections/S008C_check_phone.html"}, {"id": "S008D", "title": "S008D. 망설임의 결과: 방이 접히기 시작한다", "kind": "story", "tier": "", "src": "S008D_room_folds.md", "html": "", "illustration": "", "smallUrl": "sections/S008D_room_folds.html"}, {"id": "S010", "title": "S010. 낮은 별 아래로 떨어지다", "kind": "story", "tier": "", "src": "S010_arrival_under_low_stars.md", "html": "", "illustration": "", "smallUrl": "sections/S010_arrival_under_low_stars.html"}, {"id": "S011", "title": "S011. 사라진 문", "kind": "story", "tier": "", "src": "S011_missing_door.md", "html": "", "illustration": "", "smallUrl": "sections/S011_missing_door.html"}, {"id": "S012", "title": "S012. 이안의 설명은 부족하다", "kind": "story", "tier": "", "src": "S012_ian_explains_poorly.md", "html": "", "illustration": "", "smallUrl": "sections/S012_ian_explains_poorly.html"}, {"id": "S013", "title": "S013. 사잇별의 땅 첫 규칙", "kind": "story", "tier": "", "src": "S013_first_rule.md", "html": "", "illustration": "", "smallUrl": "sections/S013_first_rule.html"}, {"id": "S014", "title": "S014. 낮은 별이 가리키는 길", "kind": "story", "tier": "", "src": "S014_low_star_path.md", "html": "", "illustration": "", "smallUrl": "sections/S014_low_star_path.html"}, {"id": "S015", "title": "S015. 세 갈래 표지판", "kind": "story", "tier": "", "src": "S015_three_signs.md", "html": "", "illustration": "", "smallUrl": "sections/S015_three_signs.html"}, {"id": "S016", "title": "S016. 첫 퍼즐: 크게 쓰인 말과 작은 문장", "kind": "decision", "tier": "major", "src": "S016_first_puzzle.md", "html": "", "illustration": "", "smallUrl": "sections/S016_first_puzzle.html"}, {"id": "S017", "title": "S017. 작은 문장을 다시 읽는다", "kind": "story", "tier": "", "src": "S017_read_the_small_sentence_again.md", "html": "", "illustration": "", "smallUrl": "sections/S017_read_the_small_sentence_again.html"}, {"id": "S018A", "title": "S018A. 왼쪽 길의 결과", "kind": "story", "tier": "", "src": "S018A_left_path_result.md", "html": "", "illustration": "", "smallUrl": "sections/S018A_left_path_result.html"}, {"id": "S018B", "title": "S018B. 오른쪽 길의 결과", "kind": "story", "tier": "", "src": "S018B_right_path_result.md", "html": "", "illustration": "", "smallUrl": "sections/S018B_right_path_result.html"}, {"id": "S018C", "title": "S018C. 표지판 뒤쪽의 좁은 길", "kind": "story", "tier": "", "src": "S018C_narrow_path.md", "html": "", "illustration": "", "smallUrl": "sections/S018C_narrow_path.html"}, {"id": "S018D", "title": "S018D. 이안에게 맡긴 결과", "kind": "story", "tier": "", "src": "S018D_let_ian_choose.md", "html": "", "illustration": "", "smallUrl": "sections/S018D_let_ian_choose.html"}, {"id": "S019", "title": "S019. 초저녁 정거장의 불빛", "kind": "story", "tier": "", "src": "S019_dusk_station_lights.md", "html": "", "illustration": "", "smallUrl": "sections/S019_dusk_station_lights.html"}, {"id": "S020", "title": "S020. 말하는 시간표", "kind": "decision", "tier": "major", "src": "S020_talking_timetable.md", "html": "", "illustration": "", "smallUrl": "sections/S020_talking_timetable.html"}, {"id": "S021", "title": "S021. 이안의 짧은 경고", "kind": "decision", "tier": "major", "src": "S021_ian_short_warning.md", "html": "", "illustration": "", "smallUrl": "sections/S021_ian_short_warning.html"}, {"id": "S022", "title": "S022. 너무 안전하다는 말", "kind": "decision", "tier": "major", "src": "S022_too_safe.md", "html": "", "illustration": "", "smallUrl": "sections/S022_too_safe.html"}, {"id": "S023", "title": "S023. 누구에게 도움을 받을까", "kind": "decision", "tier": "major", "src": "S023_who_to_trust.md", "html": "", "illustration": "", "smallUrl": "sections/S023_who_to_trust.html"}, {"id": "S024", "title": "S024. 역무원을 따른다", "kind": "decision", "tier": "major", "src": "S024_follow_stationmaster.md", "html": "", "illustration": "", "smallUrl": "sections/S024_follow_stationmaster.html"}, {"id": "S025", "title": "S025. 매표소 안쪽의 작은 목소리", "kind": "decision", "tier": "minor", "src": "S025_small_voice_ticket_booth.md", "html": "", "illustration": "", "smallUrl": "sections/S025_small_voice_ticket_booth.html"}, {"id": "S025B", "title": "S025B. 이안에게 글씨가 안 보이는 이유를 묻는다", "kind": "story", "tier": "", "src": "S025B_ask_ian_unreadable_letters.md", "html": "", "illustration": "", "smallUrl": "sections/S025B_ask_ian_unreadable_letters.html"}, {"id": "S026", "title": "S026. 시간표를 직접 살핀다", "kind": "decision", "tier": "minor", "src": "S026_read_timetable.md", "html": "", "illustration": "", "smallUrl": "sections/S026_read_timetable.html"}, {"id": "S027A", "title": "S027A. 역무원 함정에서 빠져나오다", "kind": "story", "tier": "", "src": "S027A_escape_stationmaster_trap.md", "html": "", "illustration": "", "smallUrl": "sections/S027A_escape_stationmaster_trap.html"}, {"id": "S027B", "title": "S027B. 이름을 말한 뒤", "kind": "story", "tier": "", "src": "S027B_name_almost_taken.md", "html": "", "illustration": "", "smallUrl": "sections/S027B_name_almost_taken.html"}, {"id": "S028", "title": "S028. 시간표 해독", "kind": "decision", "tier": "major", "src": "S028_timetable_puzzle.md", "html": "", "illustration": "", "smallUrl": "sections/S028_timetable_puzzle.html"}, {"id": "S028A", "title": "S028A. 안전 승강장으로 간다", "kind": "story", "tier": "", "src": "S028A_safety_platform.md", "html": "", "illustration": "", "smallUrl": "sections/S028A_safety_platform.html"}, {"id": "S028B", "title": "S028B. 분실물 보관소로 간다", "kind": "story", "tier": "", "src": "S028B_lost_property_office.md", "html": "", "illustration": "", "smallUrl": "sections/S028B_lost_property_office.html"}, {"id": "S028C", "title": "S028C. 세 개의 별조각", "kind": "story", "tier": "", "src": "S028C_three_star_shards.md", "html": "", "illustration": "", "smallUrl": "sections/S028C_three_star_shards.html"}, {"id": "S029", "title": "S029. 거울숲으로 가는 표", "kind": "story", "tier": "", "src": "S029_ticket_to_mirror_forest.md", "html": "", "illustration": "", "smallUrl": "sections/S029_ticket_to_mirror_forest.html"}, {"id": "S030", "title": "S030. 표지판 수선공", "kind": "story", "tier": "", "src": "S030_sign_mender.md", "html": "", "illustration": "", "smallUrl": "sections/S030_sign_mender.html"}, {"id": "S031", "title": "S031. 거울이 매달린 숲", "kind": "story", "tier": "", "src": "S031_mirror_hung_forest.md", "html": "", "illustration": "", "smallUrl": "sections/S031_mirror_hung_forest.html"}, {"id": "S032", "title": "S032. 나를 따라오는 다른 나", "kind": "story", "tier": "", "src": "S032_following_reflection.md", "html": "", "illustration": "", "smallUrl": "sections/S032_following_reflection.html"}, {"id": "S033", "title": "S033. 얼굴이 아닌 마음을 비추는 거울", "kind": "story", "tier": "", "src": "S033_mirrors_of_the_heart.md", "html": "", "illustration": "", "smallUrl": "sections/S033_mirrors_of_the_heart.html"}, {"id": "S034", "title": "S034. 세 개의 거울", "kind": "decision", "tier": "major", "src": "S034_three_mirrors.md", "html": "", "illustration": "", "smallUrl": "sections/S034_three_mirrors.html"}, {"id": "S035A", "title": "S035A. 웃는 거울을 따라간다", "kind": "story", "tier": "", "src": "S035A_smiling_mirror_result.md", "html": "", "illustration": "", "smallUrl": "sections/S035A_smiling_mirror_result.html"}, {"id": "S035B", "title": "S035B. 아무것도 비추지 않는 거울을 깬다", "kind": "story", "tier": "", "src": "S035B_break_empty_mirror_result.md", "html": "", "illustration": "", "smallUrl": "sections/S035B_break_empty_mirror_result.html"}, {"id": "S035C", "title": "S035C. 보기 싫은 거울 앞에 선다", "kind": "story", "tier": "", "src": "S035C_face_unwanted_mirror.md", "html": "", "illustration": "", "smallUrl": "sections/S035C_face_unwanted_mirror.html"}, {"id": "S035D", "title": "S035D. 이안 뒤에 숨는다", "kind": "story", "tier": "", "src": "S035D_hide_behind_ian_result.md", "html": "", "illustration": "", "smallUrl": "sections/S035D_hide_behind_ian_result.html"}, {"id": "S037", "title": "S037. 이안의 그림자가 늦게 움직이다", "kind": "story", "tier": "", "src": "S037_ians_shadow_lags.md", "html": "", "illustration": "", "smallUrl": "sections/S037_ians_shadow_lags.html"}, {"id": "S038", "title": "S038. 첫 번째 별조각", "kind": "story", "tier": "", "src": "S038_first_star_shard.md", "html": "", "illustration": "", "smallUrl": "sections/S038_first_star_shard.html"}, {"id": "S039", "title": "S039. 거울 속 경고: 그 애를 끝까지 믿지 마", "kind": "story", "tier": "", "src": "S039_mirror_warning_dont_trust_him.md", "html": "", "illustration": "", "smallUrl": "sections/S039_mirror_warning_dont_trust_him.html"}, {"id": "S040", "title": "S040. 이름 없는 간판들", "kind": "decision", "tier": "minor", "src": "S040_nameless_signs.md", "html": "", "illustration": "", "smallUrl": "sections/S040_nameless_signs.html"}, {"id": "S040A", "title": "S040A. 가까운 노점부터 살핀다", "kind": "story", "tier": "", "src": "S040A_nearest_stall.md", "html": "", "illustration": "", "smallUrl": "sections/S040A_nearest_stall.html"}, {"id": "S040B", "title": "S040B. 이안에게 여기가 어떤 곳이냐고 묻는다", "kind": "story", "tier": "", "src": "S040B_asking_ian.md", "html": "", "illustration": "", "smallUrl": "sections/S040B_asking_ian.html"}, {"id": "S041", "title": "S041. 기억을 파는 노점", "kind": "story", "tier": "", "src": "S041_memory_stalls.md", "html": "", "illustration": "", "smallUrl": "sections/S041_memory_stalls.html"}, {"id": "S042", "title": "S042. 잊고 싶은 것을 사겠다는 상인", "kind": "decision", "tier": "major", "src": "S042_smiling_mask_merchant.md", "html": "", "illustration": "", "smallUrl": "sections/S042_smiling_mask_merchant.html"}, {"id": "S042A", "title": "S042A. \"얼마예요?\" — 가격표를 요청한다", "kind": "story", "tier": "", "src": "S042A_asking_price.md", "html": "", "illustration": "", "smallUrl": "sections/S042A_asking_price.html"}, {"id": "S042B", "title": "S042B. \"됐어요.\" — 거절한다", "kind": "story", "tier": "", "src": "S042B_refusing.md", "html": "", "illustration": "", "smallUrl": "sections/S042B_refusing.html"}, {"id": "S042C", "title": "S042C. \"어떻게 알았어요?\" — 묻는다", "kind": "story", "tier": "", "src": "S042C_how_did_you_know.md", "html": "", "illustration": "", "smallUrl": "sections/S042C_how_did_you_know.html"}, {"id": "S043", "title": "S043. 이름 수집가 아이", "kind": "story", "tier": "", "src": "S043_name_collector_child.md", "html": "", "illustration": "", "smallUrl": "sections/S043_name_collector_child.html"}, {"id": "S044", "title": "S044. 별조각 거래 연쇄 추적", "kind": "decision", "tier": "major", "src": "S044_trade_record_tracking.md", "html": "", "illustration": "", "smallUrl": "sections/S044_trade_record_tracking.html"}, {"id": "S044B", "title": "S044B. 잿빛 손 상인을 찾아서", "kind": "story", "tier": "", "src": "S044B_looking_for_ashen_merchant.md", "html": "", "illustration": "", "smallUrl": "sections/S044B_looking_for_ashen_merchant.html"}, {"id": "S044C", "title": "S044C. 기록을 다시 살핀다", "kind": "story", "tier": "", "src": "S044C_reread_record.md", "html": "", "illustration": "", "smallUrl": "sections/S044C_reread_record.html"}, {"id": "S045", "title": "S045. 거짓말쟁이 상인 셋", "kind": "decision", "tier": "major", "src": "S045_three_merchants.md", "html": "", "illustration": "", "smallUrl": "sections/S045_three_merchants.html"}, {"id": "S046A", "title": "S061A. 거짓말쟁이의 덫", "kind": "decision", "tier": "minor", "src": "S046A_liars_trap.md", "html": "", "illustration": "", "smallUrl": "sections/S046A_liars_trap.html"}, {"id": "S046B", "title": "S061B. 가짜 안내자의 함정", "kind": "story", "tier": "", "src": "S046B_fake_guide_ending.md", "html": "", "illustration": "", "smallUrl": "sections/S046B_fake_guide_ending.html"}, {"id": "S047A", "title": "S062A. 남은 두 명", "kind": "decision", "tier": "minor", "src": "S047A_woman_and_child.md", "html": "", "illustration": "", "smallUrl": "sections/S047A_woman_and_child.html"}, {"id": "S047B", "title": "S062B. 여자와 상인만 남아 있다", "kind": "decision", "tier": "minor", "src": "S047B_woman_and_merchant.md", "html": "", "illustration": "", "smallUrl": "sections/S047B_woman_and_merchant.html"}, {"id": "S048A", "title": "S063A. 가짜 안내자의 함정 (두 번째)", "kind": "story", "tier": "", "src": "S048A_fake_guide_second.md", "html": "", "illustration": "", "smallUrl": "sections/S048A_fake_guide_second.html"}, {"id": "S048B", "title": "S063B. 거짓말쟁이의 덫 (두 번째)", "kind": "decision", "tier": "minor", "src": "S048B_liars_trap_second.md", "html": "", "illustration": "", "smallUrl": "sections/S048B_liars_trap_second.html"}, {"id": "S049", "title": "S059. 이름을 빼앗기다", "kind": "story", "tier": "", "src": "S049_name_stolen.md", "html": "", "illustration": "", "smallUrl": "sections/S049_name_stolen.html"}, {"id": "S050", "title": "S060. 여자만 남아 있다", "kind": "story", "tier": "", "src": "S050_woman_alone.md", "html": "", "illustration": "", "smallUrl": "sections/S050_woman_alone.html"}, {"id": "S051", "title": "S061. 팔면 안 되는 것", "kind": "story", "tier": "", "src": "S051_what_must_not_be_sold.md", "html": "", "illustration": "", "smallUrl": "sections/S051_what_must_not_be_sold.html"}, {"id": "S052", "title": "S062. 두 번째 별조각", "kind": "story", "tier": "", "src": "S052_second_star_shard.md", "html": "", "illustration": "", "smallUrl": "sections/S052_second_star_shard.html"}, {"id": "S053", "title": "S063. 이안은 자기 이름을 모른다", "kind": "story", "tier": "", "src": "S053_ian_doesnt_know_his_name.md", "html": "", "illustration": "", "smallUrl": "sections/S053_ian_doesnt_know_his_name.html"}, {"id": "S074", "title": "S074. 마지막 선택", "kind": "story", "tier": "", "src": "S074_last_choice.md", "html": "", "illustration": "", "smallUrl": "sections/S074_last_choice.html"}, {"id": "S075", "title": "S075. 별빛 균열", "kind": "story", "tier": "", "src": "S075_starlight_crack.md", "html": "", "illustration": "", "smallUrl": "sections/S075_starlight_crack.html"}]</script><script type="application/json" id="edgeData">[{"from": "S001", "to": "S002", "label": ""}, {"from": "S002", "to": "S003", "label": ""}, {"from": "S003", "to": "S004", "label": ""}, {"from": "S004", "to": "S005", "label": ""}, {"from": "S005", "to": "S006", "label": ""}, {"from": "S006", "to": "S007", "label": ""}, {"from": "S007", "to": "S008A", "label": "A. “전부 말해. 네가 뭔데 나한테 따라오라는 거야?” 하고 묻는다."}, {"from": "S007", "to": "S008B", "label": "B. 이안을 지나쳐 문밖을 직접 확인한다."}, {"from": "S007", "to": "S008C", "label": "C. 휴대폰에 떴던 문장을 다시 확인한다."}, {"from": "S007", "to": "S008D", "label": "D. 이안을 믿지 않고 방 안에 남는다."}, {"from": "S008A", "to": "S010", "label": ""}, {"from": "S008B", "to": "S010", "label": ""}, {"from": "S008C", "to": "S010", "label": ""}, {"from": "S008D", "to": "S010", "label": ""}, {"from": "S010", "to": "S011", "label": ""}, {"from": "S011", "to": "S012", "label": ""}, {"from": "S012", "to": "S013", "label": ""}, {"from": "S013", "to": "S014", "label": ""}, {"from": "S014", "to": "S015", "label": ""}, {"from": "S015", "to": "S016", "label": ""}, {"from": "S016", "to": "S018A", "label": "A. 왼쪽 길로 간다."}, {"from": "S016", "to": "S018B", "label": "B. 오른쪽 길로 간다."}, {"from": "S016", "to": "S018C", "label": "C. 표지판 뒤쪽의 좁은 길을 살핀다."}, {"from": "S016", "to": "S018D", "label": "D. 이안에게 전부 맡긴다."}, {"from": "S017", "to": "S018C", "label": ""}, {"from": "S018A", "to": "S017", "label": ""}, {"from": "S018B", "to": "S017", "label": ""}, {"from": "S018C", "to": "S019", "label": ""}, {"from": "S018D", "to": "S017", "label": ""}, {"from": "S019", "to": "S020", "label": ""}, {"from": "S020", "to": "S024", "label": "A. 역무원에게 이름을 알려주고 대신 확인해 달라고 한다."}, {"from": "S020", "to": "S021", "label": "B. 이안에게 어떻게 해야 하는지 묻는다."}, {"from": "S020", "to": "S025", "label": "C. 시간표 아래쪽의 작은 소리를 더 들어본다."}, {"from": "S020", "to": "S026", "label": "D. 시간표를 직접 읽어본다."}, {"from": "S021", "to": "S022", "label": "A. 이안을 더 추궁한다."}, {"from": "S021", "to": "S026", "label": "B. 시간표를 직접 읽어본다."}, {"from": "S021", "to": "S025", "label": "C. 작은 목소리가 난 곳을 찾아본다."}, {"from": "S022", "to": "S024", "label": "A. 역무원의 안내를 따라간다."}, {"from": "S022", "to": "S023", "label": "B. 이안에게 오래 머물렀다는 말이 무슨 뜻인지 묻는다."}, {"from": "S022", "to": "S026", "label": "C. 작은 글씨를 믿고 시간표를 직접 확인한다."}, {"from": "S023", "to": "S024", "label": "A. 역무원에게 이름을 알려준다."}, {"from": "S023", "to": "S025", "label": "B. 작은 목소리를 따라 매표소 안쪽을 확인한다."}, {"from": "S023", "to": "S026", "label": "C. 누구에게도 맡기지 않고 시간표를 직접 읽는다."}, {"from": "S024", "to": "S027A", "label": "A. 빈칸이 있는 표를 찢는다."}, {"from": "S024", "to": "S027B", "label": "B. 그래도 이름을 말한다."}, {"from": "S025", "to": "S028", "label": "A. 세 별조각이 무엇인지 묻는다."}, {"from": "S025", "to": "S025B", "label": "B. 이안에게 왜 글씨가 안 보이는지 묻는다."}, {"from": "S025B", "to": "S026", "label": ""}, {"from": "S026", "to": "S028", "label": "A. 세 별조각에 대해 더 알아본다."}, {"from": "S026", "to": "S028C", "label": "B. 이안에게 왜 처음부터 말하지 않았냐고 따진다."}, {"from": "S027A", "to": "S026", "label": ""}, {"from": "S027B", "to": "S026", "label": ""}, {"from": "S028", "to": "S028A", "label": "A. 1번 안전 승강장을 고른다."}, {"from": "S028", "to": "S028B", "label": "B. 2번 분실물 보관소를 고른다."}, {"from": "S028", "to": "S028C", "label": "C. 3번 거울숲 승강장을 고른다."}, {"from": "S028A", "to": "S028C", "label": ""}, {"from": "S028B", "to": "S028C", "label": ""}, {"from": "S028C", "to": "S029", "label": ""}, {"from": "S029", "to": "S030", "label": ""}, {"from": "S030", "to": "S031", "label": ""}, {"from": "S031", "to": "S032", "label": ""}, {"from": "S032", "to": "S033", "label": ""}, {"from": "S033", "to": "S034", "label": ""}, {"from": "S034", "to": "S035A", "label": "A. 웃는 거울을 따라간다."}, {"from": "S034", "to": "S035B", "label": "B. 아무것도 비추지 않는 거울을 깬다."}, {"from": "S034", "to": "S035C", "label": "C. 보기 싫은 거울 앞에 선다."}, {"from": "S034", "to": "S035D", "label": "D. 이안 뒤에 숨는다."}, {"from": "S035A", "to": "S034", "label": ""}, {"from": "S035B", "to": "S034", "label": ""}, {"from": "S035C", "to": "S037", "label": ""}, {"from": "S035D", "to": "S034", "label": ""}, {"from": "S037", "to": "S038", "label": ""}, {"from": "S038", "to": "S039", "label": ""}, {"from": "S039", "to": "S040", "label": ""}, {"from": "S040", "to": "S040A", "label": "A. 가장 가까운 노점부터 살핀다."}, {"from": "S040", "to": "S040B", "label": "B. 이안에게 여기가 어떤 곳이냐고 묻는다."}, {"from": "S040A", "to": "S041", "label": ""}, {"from": "S040B", "to": "S041", "label": ""}, {"from": "S041", "to": "S042", "label": ""}, {"from": "S042", "to": "S042A", "label": "A. \"얼마예요?\" — 가격표를 요청한다."}, {"from": "S042", "to": "S042B", "label": "B. \"됐어요.\" — 거절한다."}, {"from": "S042", "to": "S042C", "label": "C. \"어떻게 알았어요?\" — 묻는다."}, {"from": "S042A", "to": "S043", "label": ""}, {"from": "S042B", "to": "S043", "label": ""}, {"from": "S042C", "to": "S043", "label": ""}, {"from": "S043", "to": "S044", "label": ""}, {"from": "S044", "to": "S045", "label": "A. 동쪽 끝 말없는 여자를 찾아간다."}, {"from": "S044", "to": "S044B", "label": "B. 잿빛 손 상인을 찾아간다."}, {"from": "S044", "to": "S044C", "label": "C. 기록을 다시 한 번 살핀다."}, {"from": "S044B", "to": "S044", "label": "A. 기록판으로 돌아가 다시 살펴본다."}, {"from": "S044C", "to": "S045", "label": "A. 동쪽 끝 말없는 여자를 찾아간다."}, {"from": "S074", "to": "S075", "label": "B. 발이 멈춘다. 뭔가가 아직 나한테 할 말을 찾고 있는 것 같다."}]</script>
+<script>
+const sections=JSON.parse(document.getElementById('sectionData').textContent);const edges=JSON.parse(document.getElementById('edgeData').textContent);const byId=new Map(sections.map(s=>[s.id,s]));const bySmallUrl=new Map(sections.map(s=>[s.smallUrl,s.id]));const nextById=new Map();const prevById=new Map();edges.forEach(e=>{if(!nextById.has(e.from))nextById.set(e.from,new Set());nextById.get(e.from).add(e.to);if(!prevById.has(e.to))prevById.set(e.to,[]);prevById.get(e.to).push(e);});let selectedId=null;const nodes=[...document.querySelectorAll('.flow-node')];const readerBody=document.getElementById('readerBody');const readerId=document.getElementById('readerId');const readerTitle=document.getElementById('readerTitle');const openSmall=document.getElementById('openSmall');const flowCanvas=document.getElementById('flowCanvas');const edgeLayer=document.getElementById('edgeLayer');
+function renderEdges(){
+  const box=flowCanvas.getBoundingClientRect();
+  edgeLayer.setAttribute('width',flowCanvas.scrollWidth);
+  edgeLayer.setAttribute('height',flowCanvas.scrollHeight);
+  [...edgeLayer.querySelectorAll('path.edge')].forEach(p=>p.remove());
+  const sideRoutes=new Map();
+  const point=(rect,node,where,side=0)=>{
+    const centerX=rect.left+rect.width/2-box.left+flowCanvas.scrollLeft;
+    const centerY=rect.top+rect.height/2-box.top+flowCanvas.scrollTop;
+    const isDecision=node.classList.contains('decision');
+    if(isDecision&&where==='side'&&side!==0){
+      return {x:(side<0?rect.left:rect.right)-box.left+flowCanvas.scrollLeft,y:centerY};
+    }
+    return {
+      x:centerX,
+      y:(where==='bottom'?rect.bottom:where==='top'?rect.top:rect.top+rect.height/2)-box.top+flowCanvas.scrollTop
+    };
+  };
+  for(const edge of edges){
+    const a=document.querySelector(`[data-section="${edge.from}"]`);
+    const b=document.querySelector(`[data-section="${edge.to}"]`);
+    if(!a||!b)continue;
+    const ar=a.getBoundingClientRect();
+    const br=b.getBoundingClientRect();
+    const downward=br.top>=ar.top;
+    const ac=point(ar,a,'center');
+    const bc=point(br,b,'center');
+    const ax=ac.x;
+    const bx=bc.x;
+    const sameColumn=Math.abs(ax-bx)<10;
+    const longJump=Math.abs(bc.y-ac.y)>85;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('class','edge');
+    path.dataset.from=edge.from;
+    path.dataset.to=edge.to;
+    path.dataset.label=edge.label||'';
+    const edgeTitle=document.createElementNS('http://www.w3.org/2000/svg','title');
+    edgeTitle.textContent=edge.label?`${edge.from} → ${edge.to} · ${edge.label}`:`${edge.from} → ${edge.to}`;
+    path.appendChild(edgeTitle);
+    if(sameColumn&&longJump){
+      const routeKey=`${Math.round(ax)}:${downward?'down':'up'}`;
+      const count=sideRoutes.get(routeKey)||0;
+      sideRoutes.set(routeKey,count+1);
+      const dir=count%2===0?-1:1;
+      const offset=dir*(46+Math.floor(count/2)*24);
+      const start=point(ar,a,a.classList.contains('decision')?'side':downward?'bottom':'top',dir);
+      const end=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
+      path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x+offset} ${start.y+18*(downward?1:-1)}, ${end.x+offset} ${end.y-18*(downward?1:-1)}, ${end.x} ${end.y}`);
+    }else{
+      const start=point(ar,a,downward?'bottom':'top');
+      const end=point(br,b,downward?'top':'bottom');
+      const midY=start.y+(end.y-start.y)*0.55;
+      path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x} ${midY}, ${end.x} ${midY}, ${end.x} ${end.y}`);
+    }
+    edgeLayer.appendChild(path);
+  }
+  applyFlowHighlight();
+}
+function applyFlowHighlight(){
+  const nextSet=nextById.get(selectedId)||new Set();
+  edgeLayer.classList.toggle('has-selection',Boolean(selectedId));
+  nodes.forEach(n=>{
+    const id=n.dataset.section;
+    n.classList.toggle('selected',id===selectedId);
+    n.classList.toggle('next',nextSet.has(id));
+  });
+  edgeLayer.querySelectorAll('path.edge').forEach(p=>{
+    p.classList.toggle('active-edge',p.dataset.from===selectedId&&nextSet.has(p.dataset.to));
+  });
+}
+function previousNavHtml(id){const prev=prevById.get(id)||[];if(!prev.length)return '';const links=prev.map(e=>{const source=byId.get(e.from);const label=e.label?`${e.from} · ${e.label}`:e.from;return `<button type="button" data-prev-section="${e.from}"><span>${label}</span><small>${source?source.title:''}</small></button>`;}).join('');return `<nav class="previous-nav" aria-label="이전 섹션"><strong>이전 섹션</strong><div>${links}</div></nav>`;}
+function selectSection(id){const s=byId.get(id);if(!s)return;selectedId=id;applyFlowHighlight();readerId.textContent=`${s.id} · ${s.kind==='decision'?'분기발생지점':s.kind==='ending'?'엔딩':'스토리'}`;readerTitle.textContent=s.title;openSmall.href=s.smallUrl;readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));readerBody.innerHTML=previousNavHtml(id)+s.html+`<section class="illust-card"><strong>삽화 메모</strong><p>${s.illustration}</p></section>`;readerBody.scrollTo({top:0,behavior:'smooth'});document.querySelector(`[data-section="${id}"]`)?.scrollIntoView({block:'center',inline:'center',behavior:'smooth'});requestAnimationFrame(renderEdges);}
+nodes.forEach(n=>n.addEventListener('click',()=>selectSection(n.dataset.section)));readerBody.addEventListener('click',event=>{const prevButton=event.target.closest('[data-prev-section]');if(prevButton){event.preventDefault();selectSection(prevButton.dataset.prevSection);return;}const link=event.target.closest('a.section-ref');if(!link)return;const raw=link.getAttribute('href')||'';const normalized=raw.replace(/^\.\//,'').split('#')[0];const targetId=bySmallUrl.get(normalized);if(!targetId)return;event.preventDefault();selectSection(targetId);});document.getElementById('fitFlow').addEventListener('click',()=>{flowCanvas.scrollTo({left:0,top:0,behavior:'smooth'});selectSection(sections[0].id);});const workshop=document.querySelector('.workshop');
+const modal=document.getElementById('imgModal');
+const modalImg=document.getElementById('imgModalImg');
+function openImgModal(src,alt){modalImg.src=src;modalImg.alt=alt||'';modal.classList.add('open');}
+modal.addEventListener('click',()=>modal.classList.remove('open'));
+modalImg.addEventListener('click',e=>e.stopPropagation());
+document.addEventListener('keydown',e=>{if(e.key==='Escape')modal.classList.remove('open');});
+['characterPanel','imagePanel'].forEach(id=>{
+  document.getElementById(id).addEventListener('click',e=>{
+    const img=e.target.closest('img');
+    if(img)openImgModal(img.src,img.alt);
+  });
+});
+document.querySelectorAll('.nav button').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.nav button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');const view=btn.dataset.view;const hideFlow=view==='character'||view==='images';workshop.classList.toggle('hide-flow',hideFlow);if(view==='story'){readerBody.style.display='block';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));selectSection(document.querySelector('.flow-node.selected')?.dataset.section||sections[0].id);}if(view==='world'){readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('worldPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='세계관';openSmall.href='project/world_rules.html';}if(view==='character'){readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('characterPanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='캐릭터';openSmall.href='project/character_bible.html';}if(view==='images'){readerBody.style.display='none';document.querySelectorAll('.info-panel').forEach(p=>p.classList.remove('active'));document.getElementById('imagePanel').classList.add('active');readerId.textContent='REFERENCE';readerTitle.textContent='이미지';openSmall.href='index.html';}}));
+window.addEventListener('resize',renderEdges);flowCanvas.addEventListener('scroll',()=>requestAnimationFrame(renderEdges));selectSection(sections[0].id);requestAnimationFrame(renderEdges);
+</script>
 </body>
 </html>
