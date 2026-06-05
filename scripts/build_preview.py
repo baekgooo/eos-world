@@ -580,9 +580,9 @@ def build_big_workshop(
             return chapter_label_fn(section_id)
         match = re.match(r"S(\d{3})", section_id)
         number = int(match.group(1)) if match else 0
-        if number >= 60:
+        if number >= 64:
             return '6장 · 열리지 않는 문'
-        if number >= 50:
+        if number >= 54:
             return '5장 · 밤끝탑'
         if number >= 40:
             return '4장 · 숨은이름 시장'
@@ -832,13 +832,17 @@ def build_flow_review(source_sections: list[dict[str, str]], section_links: dict
     def chapter_label(section_id: str) -> str:
         match = re.match(r"S(\d{3})", section_id)
         number = int(match.group(1)) if match else 0
+        if number >= 64:
+            return '6장 · 열리지 않는 문'
+        if number >= 54:
+            return '5장 · 밤끝탑'
         if number >= 40:
             return '4장 · 숨은이름 시장'
         if number >= 31:
             return '3장 · 거울숲'
         if number >= 19:
             return '2장 · 초저녁 정거장'
-        return '1장 · 멈춘 방과 첫 문'
+        return '프롤로그 · 1장 · 사잇별의 땅'
 
     node_parts: list[str] = []
     current_chapter = ''
