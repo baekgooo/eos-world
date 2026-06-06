@@ -23,7 +23,7 @@ REFERENCE_COLLECTIONS = [
     ("퍼즐 노트", PUZZLES_DIR, DOCS_DIR / "puzzles"),
 ]
 
-SECTION_REF_RE = re.compile(r"\b(S\d{3}[A-Z]?)\.\s*([^<\n]+)")
+SECTION_REF_RE = re.compile(r"\b((?:S|E)\d{3}[A-Z]?)\.\s*([^<\n]+)")
 
 
 def inline(text: str) -> str:
@@ -98,7 +98,7 @@ def md_to_html(markdown: str, section_links: dict[str, str]) -> str:
             flush_para()
             out.append(f"<li>{finish(inline(line[2:].strip()))}</li>")
             continue
-        if re.match(r"[A-Z]\.\s+.+?→\s*S\d{3}[A-Z]?\.", line):
+        if re.match(r"[A-Z]\.\s+.+?→\s*(?:S|E)\d{3}[A-Z]?\.", line):
             flush_para()
             out.append(f'<p class="choice-line">{finish(inline(line.strip()))}</p>')
             continue
@@ -120,19 +120,20 @@ def extract_title(markdown: str) -> str:
 
 
 def extract_section_id(filename: str) -> str | None:
-    match = re.match(r"(S\d{3}[A-Z]?)_", filename)
+    match = re.match(r"((?:S|E)\d{3}[A-Z]?)_", filename)
     return match.group(1) if match else None
 
 
 def section_sort_key(path: Path) -> tuple[int, str, str]:
-    """Sort base sections before same-number lettered branches."""
+    """Sort base story sections before endings, with lettered branches after base sections."""
 
-    match = re.match(r"S(\d{3})([A-Z]?)_", path.name)
+    match = re.match(r"([SE])(\d{3})([A-Z]?)_", path.name)
     if not match:
         return (9999, "", path.name)
-    number = int(match.group(1))
-    suffix = match.group(2)
-    return (number, suffix, path.name)
+    prefix_order = 0 if match.group(1) == "S" else 1
+    number = int(match.group(2))
+    suffix = match.group(3)
+    return (number, suffix, f"{prefix_order}_{path.name}")
 
 
 def write(path: Path, content: str) -> None:
@@ -154,7 +155,7 @@ def extract_choice_edges(markdown: str) -> list[dict[str, str]]:
     choice_block = markdown.split("## 선택지", 1)[1].split("## 다음 섹션", 1)[0]
     edges: list[dict[str, str]] = []
     for line in choice_block.splitlines():
-        match = re.match(r"\s*([A-Z])\.\s*(.*?)\s*→\s*(S\d{3}[A-Z]?)\.", line)
+        match = re.match(r"\s*([A-Z])\.\s*(.*?)\s*→\s*((?:S|E)\d{3}[A-Z]?)\.", line)
         if match:
             edges.append({"choice": match.group(1), "label": match.group(2).strip(), "target": match.group(3)})
     return edges
@@ -299,7 +300,7 @@ def extract_all_edges(markdown: str) -> list[dict[str, str]]:
     targets: list[str] = []
     if '## 다음 섹션' in markdown:
         block = markdown.split('## 다음 섹션', 1)[1].split('## ', 1)[0]
-        targets = re.findall(r'\b(S\d{3}[A-Z]?)\.', block)
+        targets = re.findall(r'\b((?:S|E)\d{3}[A-Z]?)\.', block)
     return [{'to': target, 'label': ''} for target in targets]
 
 
@@ -337,7 +338,7 @@ def _parse_prompts_from_spec() -> dict[str, str]:
     text = spec.read_text(encoding="utf-8")
     prompts: dict[str, str] = {}
     # Find sections like "## S002 — ..." then grab the first ```...``` code block after "### 메인 프롬프트"
-    for match in re.finditer(r"## (S\d{3}[A-Z]?) —", text):
+    for match in re.finditer(r"## ((?:S|E)\d{3}[A-Z]?) —", text):
         sid = match.group(1)
         after = text[match.end():]
         prompt_start = after.find("### 메인 프롬프트")
@@ -1167,12 +1168,13 @@ def main() -> None:
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
     SECTION_OUT_DIR.mkdir(parents=True, exist_ok=True)
     updated_at = build_updated_at()
-    for old_page in SECTION_OUT_DIR.glob("S*.html"):
+    for old_page in list(SECTION_OUT_DIR.glob("S*.html")) + list(SECTION_OUT_DIR.glob("E*.html")):
         old_page.unlink()
 
     source_sections: list[dict[str, str]] = []
     section_links: dict[str, str] = {}
-    for path in sorted(SECTIONS_DIR.glob("S*.md"), key=section_sort_key):
+    source_paths = list(SECTIONS_DIR.glob("S*.md")) + list(SECTIONS_DIR.glob("E*.md"))
+    for path in sorted(source_paths, key=section_sort_key):
         markdown = path.read_text(encoding="utf-8")
         title = extract_title(markdown)
         outname = path.with_suffix(".html").name
