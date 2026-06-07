@@ -415,31 +415,47 @@ def copy_illustration_images() -> dict[str, str]:
     return available
 
 
-def _parse_prompts_from_spec() -> dict[str, str]:
-    """Read illustration_spec.md and extract per-section prompts."""
+def _parse_prompts_from_spec() -> dict[str, dict[str, str]]:
+    """Read illustration_spec.md and extract per-section English/Korean prompts."""
     spec = PROJECT_DIR / "illustration_spec.md"
     if not spec.exists():
         return {}
     text = spec.read_text(encoding="utf-8")
-    prompts: dict[str, str] = {}
-    # Find sections like "## S002 — ..." then grab the first ```...``` code block after "### 메인 프롬프트"
-    for match in re.finditer(r"## ((?:S|E)\d{3}[A-Z]?) —", text):
+    prompts: dict[str, dict[str, str]] = {}
+
+    # Find sections like "## S002 — ..." and read the prompt blocks inside that section.
+    matches = list(re.finditer(r"^## ((?:S|E)\d{3}[A-Z]?) —", text, re.MULTILINE))
+    for idx, match in enumerate(matches):
         sid = match.group(1)
-        after = text[match.end():]
-        prompt_start = after.find("### 메인 프롬프트")
-        if prompt_start == -1:
-            continue
-        prompt_section = after[prompt_start:]
-        code_match = re.search(r"```\s*\n(.*?)```", prompt_section, re.DOTALL)
-        if code_match:
-            prompts[sid] = code_match.group(1).strip()
+        section_end = matches[idx + 1].start() if idx + 1 < len(matches) else len(text)
+        section_text = text[match.end():section_end]
+
+        prompt_data: dict[str, str] = {}
+        main_match = re.search(
+            r"### 메인 프롬프트\s*\n\s*```\s*\n(.*?)```",
+            section_text,
+            re.DOTALL,
+        )
+        if main_match:
+            prompt_data["en"] = main_match.group(1).strip()
+
+        korean_match = re.search(
+            r"### 한글 프롬프트\s*\n\s*```\s*\n(.*?)```",
+            section_text,
+            re.DOTALL,
+        )
+        if korean_match:
+            prompt_data["ko"] = korean_match.group(1).strip()
+
+        if prompt_data:
+            prompts[sid] = prompt_data
     return prompts
 
 
 def collect_illustration_items(
     source_sections: list[dict[str, str]],
     available_images: dict[str, str],
-    prompts: dict[str, str],
+    prompts: dict[str, dict[str, str]],
 ) -> list[dict[str, str]]:
     """Return illustration data for all sections that have a ## 삽화 필요 block."""
     items = []
@@ -453,13 +469,14 @@ def collect_illustration_items(
         section_id = section_id_for(section) or ""
         title = extract_title(markdown)
         image_url = available_images.get(section_id, "")
-        prompt = prompts.get(section_id, "")
+        prompt = prompts.get(section_id, {})
         items.append({
             "id": section_id,
             "title": title,
             "note": block,
             "image_url": image_url,
-            "prompt": prompt,
+            "prompt": prompt.get("en", ""),
+            "prompt_ko": prompt.get("ko", ""),
         })
     return items
 
@@ -565,6 +582,7 @@ def build_big_workshop(
         note = html.escape(item["note"])
         img_url = item.get("image_url", "")
         prompt = item.get("prompt", "")
+        prompt_ko = item.get("prompt_ko", "")
 
         img_html = ""
         if img_url:
@@ -574,7 +592,10 @@ def build_big_workshop(
 
         if prompt:
             status_badge = '<span class="illust-badge has-prompt">프롬프트 있음</span>'
-            prompt_html = f'<details class="prompt-details"><summary>프롬프트 보기</summary><pre class="prompt-pre">{html.escape(prompt)}</pre></details>'
+            prompt_html = f'<details class="prompt-details"><summary>프롬프트 보기</summary><div class="prompt-label">영문 프롬프트</div><pre class="prompt-pre prompt-pre-en">{html.escape(prompt)}</pre>'
+            if prompt_ko:
+                prompt_html += f'<div class="prompt-label prompt-label-ko">한글 프롬프트</div><pre class="prompt-pre prompt-pre-ko">{html.escape(prompt_ko)}</pre>'
+            prompt_html += '</details>'
         else:
             status_badge = '<span class="illust-badge needs-gen">이미지 생성 필요</span>'
             prompt_html = ""
@@ -739,7 +760,7 @@ a{{color:inherit}} .page-title{{position:fixed;top:16px;right:22px;z-index:20;pa
 .illust-thumb-col{{display:flex;align-items:flex-start;justify-content:center}} .illust-thumb{{width:90px;height:90px;object-fit:cover;border-radius:8px;border:1px solid var(--hair)}} .illust-thumb-empty{{width:90px;height:90px;border:1px dashed var(--hair);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);text-align:center;line-height:1.4}}
 .illust-meta{{display:flex;flex-direction:column;gap:5px}} .illust-id-row{{display:flex;align-items:center;gap:6px;flex-wrap:wrap}} .illust-sid{{font-size:13px;font-weight:800;color:var(--accent)}} .illust-title{{font-size:14px;font-weight:700;color:var(--ink)}} .illust-note{{font-size:12px;color:var(--muted);line-height:1.55}}
 .illust-badge{{font-size:10px;padding:2px 8px;border-radius:999px;font-weight:700}} .illust-badge.has-image{{background:#e6f3e7;color:#2d6a40;border:1px solid #a8d4b5}} .illust-badge.has-prompt{{background:#f3e6d8;color:var(--accent);border:1px solid #d9b08c}} .illust-badge.needs-gen{{background:#f1f1f1;color:#888;border:1px solid #ddd}}
-.prompt-details{{margin-top:6px}} .prompt-details summary{{font-size:11px;color:var(--muted);cursor:pointer;font-weight:700;user-select:none}} .prompt-pre{{margin:8px 0 0;background:var(--surface-warm);border:1px solid var(--hair);border-radius:8px;padding:10px;font-size:11px;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--ink);max-height:200px;overflow:auto}}
+.prompt-details{{margin-top:6px}} .prompt-details summary{{font-size:11px;color:var(--muted);cursor:pointer;font-weight:700;user-select:none}} .prompt-label{{margin:10px 0 4px;font-size:11px;font-weight:800;color:var(--accent)}} .prompt-label-ko{{margin-top:12px;color:#2f5f74}} .prompt-pre{{margin:0;background:var(--surface-warm);border:1px solid var(--hair);border-radius:8px;padding:10px;font-size:11px;line-height:1.6;white-space:pre-wrap;word-break:break-word;color:var(--ink);max-height:220px;overflow:auto}} .prompt-pre-ko{{background:#f3f8fa;border-color:#c9dde5;color:#213943}}
 .workshop.hide-flow{{grid-template-columns:220px minmax(0,1fr)}}.workshop.hide-flow .flow-wrap{{display:none}}
 #imgModal{{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,.88);align-items:center;justify-content:center;cursor:zoom-out;padding:24px}}
 #imgModal.open{{display:flex}}
