@@ -1,0 +1,884 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>섹션ID 신규 규칙 검토 · 어스름 너머의 세계</title>
+<style>
+:root {
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --ink: #171615;
+  --muted: #69635d;
+  --hair: #dfdbd4;
+  --hair-strong: #c9c2b8;
+  --accent: #8f5b2e;
+  --accent-soft: #f3e6d8;
+  --major: #f0c994;
+  --major-dark: #c97740;
+  --minor: #e8f0e9;
+  --ending-bg: #f1f1f1;
+  --bad-bg: #fce8e8;
+  --bad-border: #e07070;
+  --changed-bg: #fffae0;
+  --changed-border: #d4a800;
+  --unchanged-bg: #f8faf8;
+  --ch4-accent: #6a9ec5;
+  --ch7-accent: #8a6ac5;
+}
+* { box-sizing: border-box; word-break: keep-all; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.page { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+
+/* Header */
+.page-header { margin-bottom: 32px; padding-bottom: 20px; border-bottom: 2px solid var(--hair-strong); }
+.page-header h1 { margin: 0 0 6px; font-size: 22px; font-weight: 900; letter-spacing: -.04em; }
+.page-header p { margin: 0; color: var(--muted); font-size: 13px; }
+.warning-badge {
+  display: inline-block; margin-top: 8px;
+  background: #fff3e0; border: 1px solid #f0a830; border-radius: 6px;
+  padding: 5px 12px; font-size: 12px; font-weight: 700; color: #8a5000;
+}
+
+/* Section headers */
+section { margin-bottom: 48px; }
+section h2 {
+  font-size: 16px; font-weight: 900; letter-spacing: -.03em;
+  margin: 0 0 16px; padding-bottom: 8px;
+  border-bottom: 1px solid var(--hair-strong);
+}
+section h3 { font-size: 13px; font-weight: 800; color: var(--muted); margin: 24px 0 8px; letter-spacing: .03em; text-transform: uppercase; }
+
+/* Rule box */
+.rule-box {
+  background: var(--surface);
+  border: 1px solid var(--hair-strong);
+  border-radius: 12px;
+  padding: 18px 22px;
+  margin-bottom: 36px;
+}
+.rule-box h2 { border-bottom: 1px solid var(--hair); }
+.rule-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 32px;
+  margin-top: 4px;
+}
+.rule-item { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; }
+.rule-item .label {
+  font-weight: 800; white-space: nowrap; flex-shrink: 0;
+  color: var(--accent);
+}
+
+/* Mapping table */
+.mapping-table {
+  width: 100%; border-collapse: collapse; font-size: 13px;
+}
+.mapping-table th {
+  background: var(--bg); text-align: left;
+  padding: 7px 12px; border-bottom: 2px solid var(--hair-strong);
+  font-weight: 800; font-size: 12px; letter-spacing: .03em; color: var(--muted);
+}
+.mapping-table td {
+  padding: 6px 12px; border-bottom: 1px solid var(--hair);
+  vertical-align: middle;
+}
+.mapping-table tr:last-child td { border-bottom: none; }
+.mapping-table .id-cell {
+  font-family: monospace; font-size: 13px; font-weight: 700; white-space: nowrap;
+}
+.mapping-table .arrow-cell { color: var(--hair-strong); text-align: center; width: 24px; }
+.mapping-table .new-cell {
+  font-family: monospace; font-size: 13px; font-weight: 800;
+  color: var(--accent); white-space: nowrap;
+}
+.mapping-table .unchanged-cell {
+  font-family: monospace; font-size: 13px; font-weight: 700; color: var(--muted);
+}
+.mapping-table .note-cell { font-size: 12px; color: var(--muted); }
+.row-changed { background: var(--changed-bg); }
+.row-ending { background: #f0f4ff; }
+.row-ch4 { background: #f0f7ff; }
+.row-unchanged { opacity: .7; }
+
+.note-block {
+  background: var(--accent-soft); border-left: 3px solid var(--accent);
+  padding: 10px 14px; border-radius: 0 8px 8px 0; margin: 12px 0;
+  font-size: 13px; line-height: 1.7;
+}
+.note-block.warning { background: #fff3e0; border-left-color: #f0a830; }
+.note-block strong { display: block; margin-bottom: 4px; }
+
+/* Two-column layout */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+@media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ============================================================
+   FLOWCHART
+   ============================================================ */
+.flow-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+.ch-band {
+  width: 100%; max-width: 700px;
+  margin: 16px 0 8px;
+  padding: 5px 16px;
+  border: 1px solid var(--hair-strong);
+  border-radius: 999px;
+  background: rgba(255,255,255,.85);
+  color: var(--muted);
+  font-size: 11px; font-weight: 900;
+  text-align: center; letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.flow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  margin: 0;
+  position: relative;
+}
+.flow-row.branch-row { margin: 4px 0 4px; }
+.flow-row.merge-hint {
+  color: var(--muted); font-size: 11px; font-weight: 700;
+  margin: 0 0 2px; height: 18px;
+}
+.connector-down {
+  width: 2px; height: 20px;
+  background: var(--hair-strong);
+  margin: 0 auto;
+}
+.connector-short { height: 10px; }
+.connector-branch {
+  display: flex; align-items: flex-start; justify-content: center;
+  gap: 0; width: 100%; position: relative; margin: 0; height: 20px;
+}
+.connector-branch::before {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%; height: 2px;
+  background: var(--hair-strong);
+}
+/* node styles */
+.node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 7px 10px;
+  min-width: 100px;
+  max-width: 130px;
+  border: 1.5px solid var(--hair-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  cursor: default;
+  text-align: center;
+}
+.node:hover { border-color: var(--accent); }
+.node .node-id {
+  font-size: 12px; font-weight: 900; letter-spacing: -.01em;
+  font-family: monospace; color: var(--ink);
+}
+.node .node-title {
+  font-size: 10px; color: var(--muted); line-height: 1.4;
+}
+.node .old-label {
+  font-size: 10px; color: var(--changed-border); font-weight: 700; margin-top: 2px;
+}
+.node.branch {
+  background: var(--major);
+  border-color: var(--major-dark);
+  /* diamond shape via clip-path */
+  clip-path: polygon(50% 0%, 100% 35%, 100% 65%, 50% 100%, 0% 65%, 0% 35%);
+  padding: 12px 14px;
+  min-width: 110px;
+  min-height: 80px;
+  border-radius: 0;
+  border: none;
+}
+/* Use wrapper for diamond since clip-path clips border */
+.diamond-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 4px;
+}
+.diamond-wrap::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--major);
+  border: 2px solid var(--major-dark);
+  transform: rotate(45deg);
+  border-radius: 4px;
+  z-index: 0;
+}
+.diamond-wrap .node-inner {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  text-align: center; padding: 4px;
+}
+.diamond-wrap { width: 110px; height: 80px; }
+
+/* Regular node */
+.node.regular { background: var(--surface); }
+.node.changed { background: var(--changed-bg); border-color: var(--changed-border); }
+.node.ending-node {
+  background: var(--ending-bg); border-radius: 999px; padding: 7px 14px;
+  min-width: 110px; border-color: #aaa;
+}
+.node.ending-node.changed { background: #e8edff; border-color: #7090d0; }
+.node.bad-ending {
+  background: var(--bad-bg); border-color: var(--bad-border); border-radius: 6px;
+}
+.node.loop { opacity: .85; }
+.loop-tag {
+  display: inline-block; background: #ffe4b5; border: 1px solid #d4a030;
+  border-radius: 4px; padding: 1px 5px; font-size: 9px; font-weight: 800; color: #8a5000;
+}
+.node.spine {
+  background: #f4f0ff; border-color: #9080c0;
+}
+/* arrow between levels */
+.arrow-down {
+  display: flex; align-items: center; justify-content: center;
+  height: 16px; color: var(--hair-strong); font-size: 14px;
+}
+/* Merge line (multiple columns → single) */
+.merge-line {
+  display: flex; flex-direction: column; align-items: center;
+  width: 100%;
+}
+.merge-line .line { width: 2px; height: 12px; background: var(--hair-strong); }
+.merge-text {
+  font-size: 10px; color: var(--muted); font-weight: 700;
+  background: var(--bg); padding: 0 8px;
+  border: 1px solid var(--hair); border-radius: 999px; white-space: nowrap;
+}
+
+/* Chapter 4 diagram */
+.ch4-diagram {
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 0; padding: 20px; background: var(--surface);
+  border: 1px solid var(--hair-strong); border-radius: 12px;
+}
+.ch4-row { display: flex; align-items: center; gap: 4px; margin: 2px 0; }
+.ch4-indent1 { margin-left: 28px; }
+.ch4-indent2 { margin-left: 56px; }
+.ch4-indent3 { margin-left: 84px; }
+.ch4-node {
+  display: inline-flex; flex-direction: column; align-items: center;
+  padding: 4px 10px; border-radius: 6px; font-size: 12px;
+  border: 1.5px solid var(--hair-strong); background: var(--surface);
+  min-width: 90px; text-align: center; gap: 1px;
+}
+.ch4-node .nid { font-family: monospace; font-weight: 800; font-size: 12px; }
+.ch4-node .nnew { font-family: monospace; font-weight: 900; color: var(--accent); font-size: 11px; }
+.ch4-node .ntitle { font-size: 10px; color: var(--muted); }
+.ch4-node.diamond-sm {
+  background: var(--major); border-color: var(--major-dark);
+  transform: rotate(2deg);
+}
+.ch4-node.changed { background: var(--changed-bg); border-color: var(--changed-border); }
+.ch4-node.ok { background: var(--unchanged-bg); opacity: .7; }
+.ch4-connector { color: var(--hair-strong); font-size: 13px; margin: 0 2px; }
+.depth-badge {
+  display: inline-block; font-size: 10px; font-weight: 800;
+  padding: 1px 6px; border-radius: 999px; margin-left: 4px; white-space: nowrap;
+}
+.depth-1 { background: #e8f0ff; color: #5060a0; }
+.depth-2 { background: #fff0e0; color: #a06020; }
+.depth-3 { background: #ffe0e0; color: #a03020; }
+
+/* Legend */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px;
+  padding: 12px 16px; background: var(--surface);
+  border: 1px solid var(--hair); border-radius: 8px;
+}
+.legend-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.legend-swatch {
+  width: 28px; height: 18px; border-radius: 4px;
+  border: 1.5px solid var(--hair-strong); flex-shrink: 0;
+}
+.legend-swatch.diamond-sw {
+  transform: rotate(45deg); width: 16px; height: 16px;
+  background: var(--major); border-color: var(--major-dark);
+}
+.legend-swatch.changed-sw { background: var(--changed-bg); border-color: var(--changed-border); }
+.legend-swatch.ending-sw { background: var(--ending-bg); border-radius: 999px; }
+.legend-swatch.bad-sw { background: var(--bad-bg); border-color: var(--bad-border); }
+.legend-swatch.regular-sw { background: var(--surface); }
+
+/* Large flowchart */
+.big-flow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 24px 16px;
+  background: var(--surface);
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  overflow-x: auto;
+}
+.spine-node {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 120px; padding: 8px 12px; border: 1.5px solid var(--hair-strong);
+  border-radius: 6px; background: var(--surface); text-align: center; gap: 2px;
+}
+.spine-node.diamond-node {
+  background: var(--major); border-color: var(--major-dark);
+}
+.spine-node.changed-node { background: var(--changed-bg); border-color: var(--changed-border); }
+.spine-node.diamond-node.changed-node { background: #f8d080; border: 2px solid var(--changed-border); }
+.spine-node .sid { font-family: monospace; font-weight: 900; font-size: 13px; }
+.spine-node .stitle { font-size: 10px; color: var(--muted); line-height: 1.3; }
+.spine-node .sold { font-size: 10px; color: var(--changed-border); font-weight: 700; }
+
+.branch-block {
+  display: flex; flex-direction: column; align-items: center; width: 100%; gap: 2px;
+}
+.branch-nodes {
+  display: flex; align-items: flex-start; justify-content: center;
+  gap: 8px; flex-wrap: nowrap;
+}
+.branch-node {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  width: 108px; min-height: 64px; padding: 7px 8px;
+  border: 1.5px solid var(--hair-strong); border-radius: 6px;
+  background: var(--surface); text-align: center; gap: 2px;
+  font-size: 11px;
+}
+.branch-node.changed-node { background: var(--changed-bg); border-color: var(--changed-border); }
+.branch-node.ending-n { background: var(--ending-bg); border-radius: 999px; border-color: #aaa; }
+.branch-node.ending-n.changed-node { background: #e8edff; border-color: #7090d0; }
+.branch-node.bad-n { background: var(--bad-bg); border-color: var(--bad-border); }
+.branch-node.loop-n { opacity: .85; border-style: dashed; }
+.branch-node .bid { font-family: monospace; font-weight: 900; font-size: 12px; color: var(--ink); }
+.branch-node .btitle { font-size: 10px; color: var(--muted); line-height: 1.3; }
+.branch-node .bold { font-size: 9px; color: var(--changed-border); font-weight: 700; margin-top: 1px; }
+.vert-line { width: 2px; height: 14px; background: var(--hair-strong); margin: 0 auto; }
+.horiz-bracket {
+  position: relative; width: 100%; display: flex; justify-content: center;
+  height: 12px;
+}
+.horiz-bracket::before {
+  content: ''; position: absolute;
+  left: 20%; right: 20%; top: 0;
+  border-top: 2px solid var(--hair-strong);
+}
+.merge-indicator {
+  font-size: 10px; font-weight: 700; color: var(--muted);
+  text-align: center; margin: 2px 0;
+  padding: 2px 12px;
+  border: 1px dashed var(--hair-strong);
+  border-radius: 999px; background: var(--bg);
+}
+
+/* ─── Big-workshop style flowchart (section③) ─── */
+.flow-canvas {
+  position: relative;
+  overflow: auto;
+  max-height: 80vh;
+  min-height: 400px;
+  border: 1px solid var(--hair);
+  border-radius: 12px;
+  background: #faf9f7;
+  padding: 28px 32px 60px;
+  margin-top: 8px;
+}
+.flow-grid {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+  justify-content: flex-start;
+  min-width: 480px;
+}
+.flow-grid .chapter-band {
+  width: min(480px, 90%);
+  margin: 4px 0 0;
+  padding: 7px 14px;
+  border: 1px solid var(--hair);
+  border-radius: 999px;
+  background: rgba(255,255,255,.88);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 900;
+  text-align: center;
+  letter-spacing: .06em;
+}
+.flow-grid .flow-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 58px;
+}
+.flow-grid .branch-row { gap: 12px; }
+.flow-node {
+  position: relative;
+  width: 130px;
+  min-height: 50px;
+  border: 1px solid #c9c2b8;
+  background: #fff;
+  color: #171615;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 5px 8px;
+  font-family: -apple-system, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+  box-shadow: 0 2px 0 rgba(0,0,0,.04);
+  cursor: default;
+  text-align: center;
+}
+.flow-node .nid { font-size: 11px; font-weight: 900; letter-spacing: -.01em; line-height: 1; }
+.flow-node .ntitle { font-size: 9.5px; font-weight: 500; color: var(--muted); line-height: 1.3; max-width: 120px; word-break: keep-all; }
+.flow-node.decision.major {
+  background: #f0c994; border-color: #c9b27a;
+  transform: rotate(45deg); width: 64px; height: 64px; min-height: 64px;
+  margin: 8px 18px; padding: 4px; gap: 0;
+}
+.flow-node.decision.major .node-inner { transform: rotate(-45deg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; width: 70px; }
+.flow-node.decision.major .nid { font-size: 10px; font-weight: 900; }
+.flow-node.decision.major .ntitle { font-size: 8px; color: rgba(0,0,0,.55); max-width: 64px; }
+.flow-node.decision.minor { background: #e8f0e9; border-color: #b8cfba; width: 110px; min-height: 44px; }
+.flow-node.ending { background: #f1f1f1; border-color: #aaa; width: 130px; }
+.flow-node.changed { background: #fffae0; border: 2px solid #d4a800; }
+.flow-node.decision.major.changed { background: #f8d080; border: 2px solid #d4a800; }
+.flow-node.decision.minor.changed { background: #fff3c0; border: 2px solid #d4a800; }
+.flow-node.ending.changed { background: #e8edff; border: 2px solid #7090d0; }
+.edge-layer { position: absolute; top: 0; left: 0; z-index: 0; pointer-events: none; overflow: visible; }
+.edge-layer path { stroke: #b9afa5; stroke-width: 1.55; fill: none; }
+.changed-badge { background: #fffae0; border: 1px solid #d4a800; padding: 1px 7px; border-radius: 4px; font-weight: 700; font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header class="page-header">
+    <h1>섹션ID 신규 규칙 적용 검토</h1>
+    <p>신규 규칙을 현 섹션 구조에 적용했을 때의 파일명 변경 내역 및 7장 순서도 미리보기</p>
+    <div class="warning-badge">⚠ 검토용 문서 — 기존 파일 수정 없음 / 적용 결과 시각화만</div>
+  </header>
+
+  <!-- ① 규칙 요약 -->
+  <section>
+    <div class="rule-box">
+      <h2>적용 규칙 요약</h2>
+      <div class="rule-grid">
+        <div class="rule-item"><span class="label">직선 섹션</span><span>S001, S002, S003 ... (순차 고유번호, 바로 앞 번호 +1)</span></div>
+        <div class="rule-item"><span class="label">분기 결과</span><span>부모번호+알파벳 — S001A = S001에서 선택A 결과</span></div>
+        <div class="rule-item"><span class="label">2차 분기</span><span>알파벳 연장 — S001AA = S001A에서 선택A 결과</span></div>
+        <div class="rule-item"><span class="label">노드 모양</span><span>사각형 = 일반 섹션 / 다이아몬드 = 분기 섹션</span></div>
+        <div class="rule-item"><span class="label">E·BE 통일</span><span>엔딩·배드엔딩 접두어 모두 S로 통일</span></div>
+        <div class="rule-item"><span class="label">중복 금지</span><span>섹션ID는 절대 중복 불가</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ② 변경 내역 표 -->
+  <section>
+    <h2>변경 내역 전체</h2>
+
+    <h3>엔딩 섹션 (E → S 통일)</h3>
+    <div class="note-block">
+      현재 E001은 S068과 S070 사이에 위치하며 S069가 공백이므로 자연스럽게 S069로 이동.
+      E002·E003·E004는 7장 재번호 이후 S079·S080·S081로 배치.
+    </div>
+    <table class="mapping-table">
+      <thead><tr><th>현행 ID</th><th></th><th>신규 ID</th><th>제목</th><th>비고</th></tr></thead>
+      <tbody>
+        <tr class="row-ending"><td class="id-cell">E001</td><td class="arrow-cell">→</td><td class="new-cell">S069</td><td>혼자 돌아온 방</td><td class="note-cell">S068 분기 결과 중 하나 / 6장 엔딩</td></tr>
+        <tr class="row-ending"><td class="id-cell">E002</td><td class="arrow-cell">→</td><td class="new-cell">S079</td><td>이름을 되찾은 소년</td><td class="note-cell">S077(신) 선택A 결과</td></tr>
+        <tr class="row-ending"><td class="id-cell">E003</td><td class="arrow-cell">→</td><td class="new-cell">S080</td><td>별빛이 남은 세계 ★</td><td class="note-cell">S078(신) 이후 진엔딩</td></tr>
+        <tr class="row-ending"><td class="id-cell">E004</td><td class="arrow-cell">→</td><td class="new-cell">S081</td><td>어스름에 남은 나</td><td class="note-cell">S077(신) 선택C 결과</td></tr>
+      </tbody>
+    </table>
+
+    <h3>7장 — S071 서브섹션 재번호</h3>
+    <div class="note-block">
+      S071A·B·C는 S071에서 직접 분기한 결과로 변경 없음.<br>
+      <strong>S071D~S071O는 S071의 직접 선택 결과가 아닌 합류점/후속 분기이므로, 새 순차번호 S072·S073·S074로 승격.</strong><br>
+      이에 따라 기존 S072(찢어진 안내문)~S075(별빛 균열)는 S075~S078로 밀림.
+    </div>
+    <table class="mapping-table">
+      <thead><tr><th>현행 ID</th><th></th><th>신규 ID</th><th>제목</th><th>변경 이유</th></tr></thead>
+      <tbody>
+        <tr class="row-unchanged"><td class="id-cell">S071</td><td class="arrow-cell">—</td><td class="unchanged-cell">S071</td><td>얼어붙은 어스름의 심장</td><td class="note-cell">변경없음</td></tr>
+        <tr class="row-unchanged"><td class="id-cell">S071A</td><td class="arrow-cell">—</td><td class="unchanged-cell">S071A</td><td>피하지 않겠다는 약속</td><td class="note-cell">변경없음 (S071 직접 선택A)</td></tr>
+        <tr class="row-unchanged"><td class="id-cell">S071B</td><td class="arrow-cell">—</td><td class="unchanged-cell">S071B</td><td>얼음 속의 작은 문장</td><td class="note-cell">변경없음 (S071 직접 선택B)</td></tr>
+        <tr class="row-unchanged"><td class="id-cell">S071C</td><td class="arrow-cell">—</td><td class="unchanged-cell">S071C</td><td>녹이 향하는 곳</td><td class="note-cell">변경없음 (S071 직접 선택C)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071D</td><td class="arrow-cell">→</td><td class="new-cell">S072</td><td>기억 조각 ①</td><td class="note-cell">합류점 = 독립 순차번호로 승격</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071E</td><td class="arrow-cell">→</td><td class="new-cell">S072A</td><td>첫 번째 조각이 녹다</td><td class="note-cell">S072(신) 선택A 결과</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071F</td><td class="arrow-cell">→</td><td class="new-cell">S072B</td><td>너무 쉬운 원망</td><td class="note-cell">S072(신) 선택B 결과 (오답 루프)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071G</td><td class="arrow-cell">→</td><td class="new-cell">S072C</td><td>잘못 읽은 외로움</td><td class="note-cell">S072(신) 선택C 결과 (오답 루프)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071H</td><td class="arrow-cell">→</td><td class="new-cell">S073</td><td>기억 조각 ②</td><td class="note-cell">합류점 = 독립 순차번호로 승격</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071I</td><td class="arrow-cell">→</td><td class="new-cell">S073A</td><td>두 번째 조각이 떨리다</td><td class="note-cell">S073(신) 선택A 결과</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071J</td><td class="arrow-cell">→</td><td class="new-cell">S073B</td><td>차가운 질문</td><td class="note-cell">S073(신) 선택B 결과 (오답 루프)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071K</td><td class="arrow-cell">→</td><td class="new-cell">S073C</td><td>잃어버린 글자</td><td class="note-cell">S073(신) 선택C 결과 (부분 정답)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071L</td><td class="arrow-cell">→</td><td class="new-cell">S074</td><td>기억 조각 ③</td><td class="note-cell">합류점 = 독립 순차번호로 승격</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071M</td><td class="arrow-cell">→</td><td class="new-cell">S074A</td><td>세 번째 조각이 열린다</td><td class="note-cell">S074(신) 선택A 결과 (정답)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071N</td><td class="arrow-cell">→</td><td class="new-cell">S074B</td><td>보지 않게 해주고 싶은 마음</td><td class="note-cell">S074(신) 선택B 결과 (루프)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S071O</td><td class="arrow-cell">→</td><td class="new-cell">S074C</td><td>곁에 서서 보게 하기</td><td class="note-cell">S074(신) 선택C 결과 (정답 변형)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S072</td><td class="arrow-cell">→</td><td class="new-cell">S075</td><td>찢어진 안내문</td><td class="note-cell">번호 밀림 (+3)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S073</td><td class="arrow-cell">→</td><td class="new-cell">S076</td><td>이안이 말하다</td><td class="note-cell">번호 밀림 (+3)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S074</td><td class="arrow-cell">→</td><td class="new-cell">S077</td><td>마지막 선택</td><td class="note-cell">번호 밀림 (+3)</td></tr>
+        <tr class="row-changed"><td class="id-cell">S075</td><td class="arrow-cell">→</td><td class="new-cell">S078</td><td>별빛 균열</td><td class="note-cell">번호 밀림 (+3)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>4장 — 소거형 분기 재명명</h3>
+    <div class="note-block warning">
+      <strong>⚠ 심층 중첩 문제</strong>
+      현행 S046A는 사실 S045의 선택B 결과이므로 신규 규칙에서는 S045B가 맞음.
+      그러나 여기서 다시 분기가 발생하면 S045BB, S045BBA처럼 알파벳이 연쇄되어 3단계에서
+      S045CAB 수준으로 길어짐. 이 구조가 순서도 표기에서 허용 가능한지 확인 필요.
+    </div>
+    <table class="mapping-table">
+      <thead><tr><th>현행 ID</th><th></th><th>신규 ID</th><th>제목</th><th>중첩 깊이</th></tr></thead>
+      <tbody>
+        <tr class="row-ch4"><td class="id-cell">S046A</td><td class="arrow-cell">→</td><td class="new-cell">S045B</td><td>거짓말쟁이의 덫 (상인 1차)</td><td class="note-cell"><span class="depth-badge depth-1">1단계</span></td></tr>
+        <tr class="row-ch4"><td class="id-cell">S046B</td><td class="arrow-cell">→</td><td class="new-cell">S045C</td><td>가짜 안내자의 함정 (아이 1차)</td><td class="note-cell"><span class="depth-badge depth-1">1단계</span></td></tr>
+        <tr class="row-ch4"><td class="id-cell">S047A</td><td class="arrow-cell">→</td><td class="new-cell">S045BB</td><td>여자와 아이 (상인 배제)</td><td class="note-cell"><span class="depth-badge depth-2">2단계</span></td></tr>
+        <tr class="row-ch4"><td class="id-cell">S047B</td><td class="arrow-cell">→</td><td class="new-cell">S045CA</td><td>여자와 상인 (아이 배제)</td><td class="note-cell"><span class="depth-badge depth-2">2단계</span></td></tr>
+        <tr class="row-ch4"><td class="id-cell">S048A</td><td class="arrow-cell">→</td><td class="new-cell">S045BBA</td><td>가짜 안내자의 함정 (아이 2차)</td><td class="note-cell"><span class="depth-badge depth-3">3단계</span></td></tr>
+        <tr class="row-ch4"><td class="id-cell">S048B</td><td class="arrow-cell">→</td><td class="new-cell">S045CAB</td><td>거짓말쟁이의 덫 (상인 2차)</td><td class="note-cell"><span class="depth-badge depth-3">3단계</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ③ 전체 순서도 (신규 규칙 미리보기) -->
+  <section>
+    <h2>전체 스토리 순서도 — 신규 규칙 적용 미리보기</h2>
+    <p style="color:var(--muted);font-size:13px;margin:0 0 16px;">기존 파일명은 그대로 유지. 이 화면에서만 신규 규칙을 적용한 ID로 표시합니다. <span class="changed-badge">노란 하이라이트</span> = 신규 규칙으로 ID가 변경되는 섹션.</p>
+
+    <div class="flow-canvas" id="flowCanvas">
+      <svg class="edge-layer" id="edgeLayer"></svg>
+      <div class="flow-grid" id="flowGrid">
+        <svg class="edge-layer" id="edgeLayer"></svg>
+        <div class="chapter-band">프롤로그 · 1장 · 사잇별의 땅</div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S001" aria-label="S001. 평범한 밤의 방"><span class="nid">S001</span><span class="ntitle">평범한 밤의 방</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S002" aria-label="S002. 멈춘 시계와 이상한 창밖"><span class="nid">S002</span><span class="ntitle">멈춘 시계와 이상한 창밖</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S003" aria-label="S003. 휴대폰 화면에 뜬 문장"><span class="nid">S003</span><span class="ntitle">휴대폰 화면에 뜬 문장</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S004" aria-label="S004. 방 안에 없던 문"><span class="nid">S004</span><span class="ntitle">방 안에 없던 문</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S005" aria-label="S005. 문틈에서 나타난 이안"><span class="nid">S005</span><span class="ntitle">문틈에서 나타난 이안</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S006" aria-label="S006. 그림자가 방 안으로"><span class="nid">S006</span><span class="ntitle">그림자가 방 안으로</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S007" aria-label="S007. 첫 선택"><div class="node-inner"><span class="nid">S007</span><span class="ntitle">첫 선택</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S008A" aria-label="S008A. 이안에게 사실을 묻는다"><span class="nid">S008A</span><span class="ntitle">이안에게 사실을 묻는다</span></button> <button class="flow-node story" data-section="S008B" aria-label="S008B. 문밖을 직접 살핀다"><span class="nid">S008B</span><span class="ntitle">문밖을 직접 살핀다</span></button> <button class="flow-node story" data-section="S008C" aria-label="S008C. 작은 글씨를 다시 본다"><span class="nid">S008C</span><span class="ntitle">작은 글씨를 다시 본다</span></button> <button class="flow-node story" data-section="S008D" aria-label="S008D. 방이 접히기 시작한다"><span class="nid">S008D</span><span class="ntitle">방이 접히기 시작한다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S010" aria-label="S010. 낮은 별 아래로 떨어지다"><span class="nid">S010</span><span class="ntitle">낮은 별 아래로 떨어지다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S011" aria-label="S011. 사라진 문"><span class="nid">S011</span><span class="ntitle">사라진 문</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S012" aria-label="S012. 이안의 설명은 부족하다"><span class="nid">S012</span><span class="ntitle">이안의 설명은 부족하다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S013" aria-label="S013. 사잇별의 땅 첫 규칙"><span class="nid">S013</span><span class="ntitle">사잇별의 땅 첫 규칙</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S014" aria-label="S014. 낮은 별이 가리키는 길"><span class="nid">S014</span><span class="ntitle">낮은 별이 가리키는 길</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S015" aria-label="S015. 세 갈래 표지판"><span class="nid">S015</span><span class="ntitle">세 갈래 표지판</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S016" aria-label="S016. 첫 퍼즐"><div class="node-inner"><span class="nid">S016</span><span class="ntitle">첫 퍼즐</span></div></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S017" aria-label="S017. 작은 문장을 다시 읽는다"><span class="nid">S017</span><span class="ntitle">작은 문장을 다시 읽는다</span></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S018A" aria-label="S018A. 왼쪽 길의 결과"><span class="nid">S018A</span><span class="ntitle">왼쪽 길의 결과</span></button> <button class="flow-node story" data-section="S018B" aria-label="S018B. 오른쪽 길의 결과"><span class="nid">S018B</span><span class="ntitle">오른쪽 길의 결과</span></button> <button class="flow-node story" data-section="S018C" aria-label="S018C. 표지판 뒤쪽 좁은 길"><span class="nid">S018C</span><span class="ntitle">표지판 뒤쪽 좁은 길</span></button> <button class="flow-node story" data-section="S018D" aria-label="S018D. 이안에게 맡긴 결과"><span class="nid">S018D</span><span class="ntitle">이안에게 맡긴 결과</span></button></div>
+        <div class="chapter-band">2장 · 초저녁 정거장</div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S019" aria-label="S019. 초저녁 정거장의 불빛"><span class="nid">S019</span><span class="ntitle">초저녁 정거장의 불빛</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S020" aria-label="S020. 말하는 시간표"><div class="node-inner"><span class="nid">S020</span><span class="ntitle">말하는 시간표</span></div></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S021" aria-label="S021. 이안의 짧은 경고"><div class="node-inner"><span class="nid">S021</span><span class="ntitle">이안의 짧은 경고</span></div></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S022" aria-label="S022. 너무 안전하다는 말"><div class="node-inner"><span class="nid">S022</span><span class="ntitle">너무 안전하다는 말</span></div></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S023" aria-label="S023. 누구에게 도움을"><div class="node-inner"><span class="nid">S023</span><span class="ntitle">누구에게 도움을</span></div></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S024" aria-label="S024. 역무원을 따른다"><div class="node-inner"><span class="nid">S024</span><span class="ntitle">역무원을 따른다</span></div></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision minor" data-section="S025" aria-label="S025. 매표소 작은 목소리"><span class="nid">S025</span><span class="ntitle">매표소 작은 목소리</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S025B" aria-label="S025B. 이안에게 글씨 이유를 묻는다"><span class="nid">S025B</span><span class="ntitle">이안에게 글씨 이유를 묻는다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision minor" data-section="S026" aria-label="S026. 시간표를 직접 살핀다"><span class="nid">S026</span><span class="ntitle">시간표를 직접 살핀다</span></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S027A" aria-label="S027A. 역무원 함정에서 빠져나오다"><span class="nid">S027A</span><span class="ntitle">역무원 함정에서 빠져나오다</span></button> <button class="flow-node story" data-section="S027B" aria-label="S027B. 이름을 말한 뒤"><span class="nid">S027B</span><span class="ntitle">이름을 말한 뒤</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S028" aria-label="S028. 시간표 해독"><div class="node-inner"><span class="nid">S028</span><span class="ntitle">시간표 해독</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S028A" aria-label="S028A. 안전 승강장으로 간다"><span class="nid">S028A</span><span class="ntitle">안전 승강장으로 간다</span></button> <button class="flow-node story" data-section="S028B" aria-label="S028B. 분실물 보관소로 간다"><span class="nid">S028B</span><span class="ntitle">분실물 보관소로 간다</span></button> <button class="flow-node story" data-section="S028C" aria-label="S028C. 세 개의 별조각"><span class="nid">S028C</span><span class="ntitle">세 개의 별조각</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S029" aria-label="S029. 거울숲으로 가는 표"><span class="nid">S029</span><span class="ntitle">거울숲으로 가는 표</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S030" aria-label="S030. 표지판 수선공"><span class="nid">S030</span><span class="ntitle">표지판 수선공</span></button></div>
+        <div class="chapter-band">3장 · 거울숲</div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S031" aria-label="S031. 거울이 매달린 숲"><span class="nid">S031</span><span class="ntitle">거울이 매달린 숲</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S032" aria-label="S032. 나를 따라오는 다른 나"><span class="nid">S032</span><span class="ntitle">나를 따라오는 다른 나</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S033" aria-label="S033. 마음을 비추는 거울"><span class="nid">S033</span><span class="ntitle">마음을 비추는 거울</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S034" aria-label="S034. 세 개의 거울"><div class="node-inner"><span class="nid">S034</span><span class="ntitle">세 개의 거울</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S035A" aria-label="S035A. 웃는 거울을 따라간다"><span class="nid">S035A</span><span class="ntitle">웃는 거울을 따라간다</span></button> <button class="flow-node story" data-section="S035B" aria-label="S035B. 아무것도 비추지 않는 거울"><span class="nid">S035B</span><span class="ntitle">아무것도 비추지 않는 거울</span></button> <button class="flow-node story" data-section="S035C" aria-label="S035C. 보기 싫은 거울 앞에"><span class="nid">S035C</span><span class="ntitle">보기 싫은 거울 앞에</span></button> <button class="flow-node story" data-section="S035D" aria-label="S035D. 이안 뒤에 숨는다"><span class="nid">S035D</span><span class="ntitle">이안 뒤에 숨는다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S037" aria-label="S037. 이안의 그림자가 늦게 움직이다"><span class="nid">S037</span><span class="ntitle">이안의 그림자가 늦게 움직이다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S038" aria-label="S038. 첫 번째 별조각"><span class="nid">S038</span><span class="ntitle">첫 번째 별조각</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S039" aria-label="S039. 거울 속 경고"><span class="nid">S039</span><span class="ntitle">거울 속 경고</span></button></div>
+        <div class="chapter-band">4장 · 숨은이름 시장</div>
+        <div class="flow-row single-row"><button class="flow-node decision minor" data-section="S040" aria-label="S040. 이름 없는 간판들"><span class="nid">S040</span><span class="ntitle">이름 없는 간판들</span></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S040A" aria-label="S040A. 가까운 노점부터 살핀다"><span class="nid">S040A</span><span class="ntitle">가까운 노점부터 살핀다</span></button> <button class="flow-node story" data-section="S040B" aria-label="S040B. 이안에게 이곳을 묻는다"><span class="nid">S040B</span><span class="ntitle">이안에게 이곳을 묻는다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S041" aria-label="S041. 기억을 파는 노점"><span class="nid">S041</span><span class="ntitle">기억을 파는 노점</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S042" aria-label="S042. 기억 상인"><div class="node-inner"><span class="nid">S042</span><span class="ntitle">기억 상인</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S042A" aria-label="S042A. 가격표를 요청한다"><span class="nid">S042A</span><span class="ntitle">가격표를 요청한다</span></button> <button class="flow-node story" data-section="S042B" aria-label="S042B. 거절한다"><span class="nid">S042B</span><span class="ntitle">거절한다</span></button> <button class="flow-node story" data-section="S042C" aria-label="S042C. 어떻게 알았냐고 묻는다"><span class="nid">S042C</span><span class="ntitle">어떻게 알았냐고 묻는다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S043" aria-label="S043. 이름 수집가 아이"><span class="nid">S043</span><span class="ntitle">이름 수집가 아이</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S044" aria-label="S044. 거래 연쇄 추적"><div class="node-inner"><span class="nid">S044</span><span class="ntitle">거래 연쇄 추적</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S044B" aria-label="S044B. 잿빛 손 상인을 찾아서"><span class="nid">S044B</span><span class="ntitle">잿빛 손 상인을 찾아서</span></button> <button class="flow-node story" data-section="S044C" aria-label="S044C. 기록을 다시 살핀다"><span class="nid">S044C</span><span class="ntitle">기록을 다시 살핀다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S045" aria-label="S045. 상인 셋"><div class="node-inner"><span class="nid">S045</span><span class="ntitle">상인 셋</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node decision minor" data-section="S046A" aria-label="S046A. 거짓말쟁이의 덫"><span class="nid">S046A</span><span class="ntitle">거짓말쟁이의 덫</span></button> <button class="flow-node story" data-section="S046B" aria-label="S046B. 가짜 안내자의 함정"><span class="nid">S046B</span><span class="ntitle">가짜 안내자의 함정</span></button></div>
+        <div class="flow-row branch-row"><button class="flow-node decision minor" data-section="S047A" aria-label="S047A. 남은 두 명"><span class="nid">S047A</span><span class="ntitle">남은 두 명</span></button> <button class="flow-node decision minor" data-section="S047B" aria-label="S047B. 여자와 상인만 남아"><span class="nid">S047B</span><span class="ntitle">여자와 상인만 남아</span></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S048A" aria-label="S048A. 가짜 안내자 함정 ②"><span class="nid">S048A</span><span class="ntitle">가짜 안내자 함정 ②</span></button> <button class="flow-node decision minor" data-section="S048B" aria-label="S048B. 거짓말쟁이의 덫 ②"><span class="nid">S048B</span><span class="ntitle">거짓말쟁이의 덫 ②</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S049" aria-label="S049. 이름을 빼앗기다"><span class="nid">S049</span><span class="ntitle">이름을 빼앗기다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S050" aria-label="S050. 여자만 남아 있다"><span class="nid">S050</span><span class="ntitle">여자만 남아 있다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S051" aria-label="S051. 팔면 안 되는 것"><span class="nid">S051</span><span class="ntitle">팔면 안 되는 것</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S052" aria-label="S052. 두 번째 별조각"><span class="nid">S052</span><span class="ntitle">두 번째 별조각</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S053" aria-label="S053. 이안은 자기 이름을 모른다"><span class="nid">S053</span><span class="ntitle">이안은 자기 이름을 모른다</span></button></div>
+        <div class="chapter-band">5장 · 밤끝탑</div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S054" aria-label="S054. 검은 탑 앞에서"><span class="nid">S054</span><span class="ntitle">검은 탑 앞에서</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S055" aria-label="S055. 이안이 남는다"><span class="nid">S055</span><span class="ntitle">이안이 남는다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S056" aria-label="S056. 올라갈수록 내려가는 곳"><span class="nid">S056</span><span class="ntitle">올라갈수록 내려가는 곳</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S057" aria-label="S057. 세 개의 목소리"><div class="node-inner"><span class="nid">S057</span><span class="ntitle">세 개의 목소리</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S057A" aria-label="S057A. 부정의 방"><span class="nid">S057A</span><span class="ntitle">부정의 방</span></button> <button class="flow-node story" data-section="S057B" aria-label="S057B. 도피의 방"><span class="nid">S057B</span><span class="ntitle">도피의 방</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S058" aria-label="S058. 두려움의 심장"><span class="nid">S058</span><span class="ntitle">두려움의 심장</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S059" aria-label="S059. 세 번째 별조각"><span class="nid">S059</span><span class="ntitle">세 번째 별조각</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S060" aria-label="S060. 탑을 나서다"><span class="nid">S060</span><span class="ntitle">탑을 나서다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S061" aria-label="S061. 녹슨 열쇠가 반응하다"><span class="nid">S061</span><span class="ntitle">녹슨 열쇠가 반응하다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S062" aria-label="S062. 세계의 균열"><span class="nid">S062</span><span class="ntitle">세계의 균열</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S063" aria-label="S063. 챕터5 마감"><span class="nid">S063</span><span class="ntitle">챕터5 마감</span></button></div>
+        <div class="chapter-band">6장 · 열리지 않는 문</div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S064" aria-label="S064. 다시 나타난 현실의 문"><span class="nid">S064</span><span class="ntitle">다시 나타난 현실의 문</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S065" aria-label="S065. 문지기의 심사"><span class="nid">S065</span><span class="ntitle">문지기의 심사</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S066" aria-label="S066. 말하지 않은 열쇠"><span class="nid">S066</span><span class="ntitle">말하지 않은 열쇠</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S067" aria-label="S067. 이번에도 말하지 않은 아이"><span class="nid">S067</span><span class="ntitle">이번에도 말하지 않은 아이</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision minor" data-section="S068" aria-label="S068. 열린 방과 남겨진 문턱"><span class="nid">S068</span><span class="ntitle">열린 방과 남겨진 문턱</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node story changed" data-section="S069" aria-label="S069. 혼자 돌아온 방 (← E001)"><span class="nid">S069</span><span class="ntitle">혼자 돌아온 방</span></button></div>
+        <div class="chapter-band">7장 · 어스름의 심장</div>
+        <div class="flow-row single-row"><button class="flow-node story" data-section="S070" aria-label="S070. 어스름의 심장으로"><span class="nid">S070</span><span class="ntitle">어스름의 심장으로</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major" data-section="S071" aria-label="S071. 어스름의 심장"><div class="node-inner"><span class="nid">S071</span><span class="ntitle">어스름의 심장</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story" data-section="S071A" aria-label="S071A. 피하지 않겠다는 약속"><span class="nid">S071A</span><span class="ntitle">피하지 않겠다는 약속</span></button> <button class="flow-node story" data-section="S071B" aria-label="S071B. 얼음 속의 말 조각"><span class="nid">S071B</span><span class="ntitle">얼음 속의 말 조각</span></button> <button class="flow-node story" data-section="S071C" aria-label="S071C. 녹이 향하는 곳"><span class="nid">S071C</span><span class="ntitle">녹이 향하는 곳</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major changed" data-section="S072" aria-label="S072. 기억① (← S071D)"><div class="node-inner"><span class="nid">S072</span><span class="ntitle">기억①</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story changed" data-section="S072A" aria-label="S072A. 첫 번째 조각이 녹다 (← S071E)"><span class="nid">S072A</span><span class="ntitle">첫 번째 조각이 녹다</span></button> <button class="flow-node story changed" data-section="S072B" aria-label="S072B. 너무 쉬운 원망 (← S071F)"><span class="nid">S072B</span><span class="ntitle">너무 쉬운 원망</span></button> <button class="flow-node story changed" data-section="S072C" aria-label="S072C. 잘못 읽은 외로움 (← S071G)"><span class="nid">S072C</span><span class="ntitle">잘못 읽은 외로움</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major changed" data-section="S073" aria-label="S073. 기억② (← S071H)"><div class="node-inner"><span class="nid">S073</span><span class="ntitle">기억②</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story changed" data-section="S073A" aria-label="S073A. 두 번째 조각이 떨리다 (← S071I)"><span class="nid">S073A</span><span class="ntitle">두 번째 조각이 떨리다</span></button> <button class="flow-node story changed" data-section="S073B" aria-label="S073B. 차가운 질문 (← S071J)"><span class="nid">S073B</span><span class="ntitle">차가운 질문</span></button> <button class="flow-node story changed" data-section="S073C" aria-label="S073C. 잃어버린 글자 (← S071K)"><span class="nid">S073C</span><span class="ntitle">잃어버린 글자</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major changed" data-section="S074" aria-label="S074. 기억③ (← S071L)"><div class="node-inner"><span class="nid">S074</span><span class="ntitle">기억③</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story changed" data-section="S074A" aria-label="S074A. 세 번째 조각이 열린다 (← S071M)"><span class="nid">S074A</span><span class="ntitle">세 번째 조각이 열린다</span></button> <button class="flow-node story changed" data-section="S074B" aria-label="S074B. 보지 않게 해주고 싶은 마음 (← S071N)"><span class="nid">S074B</span><span class="ntitle">보지 않게 해주고 싶은 마음</span></button> <button class="flow-node story changed" data-section="S074C" aria-label="S074C. 곁에 서서 보게 하기 (← S071O)"><span class="nid">S074C</span><span class="ntitle">곁에 서서 보게 하기</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision minor changed" data-section="S075" aria-label="S075. 찢어진 안내문 (← S072)"><span class="nid">S075</span><span class="ntitle">찢어진 안내문</span></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story changed" data-section="S076A" aria-label="S076A. 찢어진 문장을 건네다 (← S073A)"><span class="nid">S076A</span><span class="ntitle">찢어진 문장을 건네다</span></button> <button class="flow-node story changed" data-section="S076" aria-label="S076. 이안이 말하다 (← S073)"><span class="nid">S076</span><span class="ntitle">이안이 말하다</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node decision major changed" data-section="S077" aria-label="S077. 마지막 선택 (← S074)"><div class="node-inner"><span class="nid">S077</span><span class="ntitle">마지막 선택</span></div></button></div>
+        <div class="flow-row branch-row"><button class="flow-node story changed" data-section="S079" aria-label="S079. 이름을 되찾은 소년 (← E002)"><span class="nid">S079</span><span class="ntitle">이름을 되찾은 소년</span></button> <button class="flow-node story changed" data-section="S078" aria-label="S078. 별빛 균열 (← S075)"><span class="nid">S078</span><span class="ntitle">별빛 균열</span></button> <button class="flow-node ending changed" data-section="S081" aria-label="S081. 비밀 엔딩 (← E004)"><span class="nid">S081</span><span class="ntitle">비밀 엔딩</span></button></div>
+        <div class="flow-row single-row"><button class="flow-node ending changed" data-section="S080" aria-label="S080. 진엔딩 (← E003)"><span class="nid">S080</span><span class="ntitle">진엔딩</span></button></div>
+      </div>
+    </div>
+
+    <script type="application/json" id="sectionData">[{"id": "S001", "kind": "story", "tier": "", "title": "S001. 평범한 밤의 방", "changed": false, "old": null}, {"id": "S002", "kind": "story", "tier": "", "title": "S002. 멈춘 시계와 이상한 창밖", "changed": false, "old": null}, {"id": "S003", "kind": "story", "tier": "", "title": "S003. 휴대폰 화면에 뜬 문장", "changed": false, "old": null}, {"id": "S004", "kind": "story", "tier": "", "title": "S004. 방 안에 없던 문", "changed": false, "old": null}, {"id": "S005", "kind": "story", "tier": "", "title": "S005. 문틈에서 나타난 이안", "changed": false, "old": null}, {"id": "S006", "kind": "story", "tier": "", "title": "S006. 그림자가 방 안으로", "changed": false, "old": null}, {"id": "S007", "kind": "decision", "tier": "major", "title": "S007. 첫 선택", "changed": false, "old": null}, {"id": "S008A", "kind": "story", "tier": "", "title": "S008A. 이안에게 사실을 묻는다", "changed": false, "old": null}, {"id": "S008B", "kind": "story", "tier": "", "title": "S008B. 문밖을 직접 살핀다", "changed": false, "old": null}, {"id": "S008C", "kind": "story", "tier": "", "title": "S008C. 작은 글씨를 다시 본다", "changed": false, "old": null}, {"id": "S008D", "kind": "story", "tier": "", "title": "S008D. 방이 접히기 시작한다", "changed": false, "old": null}, {"id": "S010", "kind": "story", "tier": "", "title": "S010. 낮은 별 아래로 떨어지다", "changed": false, "old": null}, {"id": "S011", "kind": "story", "tier": "", "title": "S011. 사라진 문", "changed": false, "old": null}, {"id": "S012", "kind": "story", "tier": "", "title": "S012. 이안의 설명은 부족하다", "changed": false, "old": null}, {"id": "S013", "kind": "story", "tier": "", "title": "S013. 사잇별의 땅 첫 규칙", "changed": false, "old": null}, {"id": "S014", "kind": "story", "tier": "", "title": "S014. 낮은 별이 가리키는 길", "changed": false, "old": null}, {"id": "S015", "kind": "story", "tier": "", "title": "S015. 세 갈래 표지판", "changed": false, "old": null}, {"id": "S016", "kind": "decision", "tier": "major", "title": "S016. 첫 퍼즐", "changed": false, "old": null}, {"id": "S017", "kind": "story", "tier": "", "title": "S017. 작은 문장을 다시 읽는다", "changed": false, "old": null}, {"id": "S018A", "kind": "story", "tier": "", "title": "S018A. 왼쪽 길의 결과", "changed": false, "old": null}, {"id": "S018B", "kind": "story", "tier": "", "title": "S018B. 오른쪽 길의 결과", "changed": false, "old": null}, {"id": "S018C", "kind": "story", "tier": "", "title": "S018C. 표지판 뒤쪽 좁은 길", "changed": false, "old": null}, {"id": "S018D", "kind": "story", "tier": "", "title": "S018D. 이안에게 맡긴 결과", "changed": false, "old": null}, {"id": "S019", "kind": "story", "tier": "", "title": "S019. 초저녁 정거장의 불빛", "changed": false, "old": null}, {"id": "S020", "kind": "decision", "tier": "major", "title": "S020. 말하는 시간표", "changed": false, "old": null}, {"id": "S021", "kind": "decision", "tier": "major", "title": "S021. 이안의 짧은 경고", "changed": false, "old": null}, {"id": "S022", "kind": "decision", "tier": "major", "title": "S022. 너무 안전하다는 말", "changed": false, "old": null}, {"id": "S023", "kind": "decision", "tier": "major", "title": "S023. 누구에게 도움을", "changed": false, "old": null}, {"id": "S024", "kind": "decision", "tier": "major", "title": "S024. 역무원을 따른다", "changed": false, "old": null}, {"id": "S025", "kind": "decision", "tier": "minor", "title": "S025. 매표소 작은 목소리", "changed": false, "old": null}, {"id": "S025B", "kind": "story", "tier": "", "title": "S025B. 이안에게 글씨 이유를 묻는다", "changed": false, "old": null}, {"id": "S026", "kind": "decision", "tier": "minor", "title": "S026. 시간표를 직접 살핀다", "changed": false, "old": null}, {"id": "S027A", "kind": "story", "tier": "", "title": "S027A. 역무원 함정에서 빠져나오다", "changed": false, "old": null}, {"id": "S027B", "kind": "story", "tier": "", "title": "S027B. 이름을 말한 뒤", "changed": false, "old": null}, {"id": "S028", "kind": "decision", "tier": "major", "title": "S028. 시간표 해독", "changed": false, "old": null}, {"id": "S028A", "kind": "story", "tier": "", "title": "S028A. 안전 승강장으로 간다", "changed": false, "old": null}, {"id": "S028B", "kind": "story", "tier": "", "title": "S028B. 분실물 보관소로 간다", "changed": false, "old": null}, {"id": "S028C", "kind": "story", "tier": "", "title": "S028C. 세 개의 별조각", "changed": false, "old": null}, {"id": "S029", "kind": "story", "tier": "", "title": "S029. 거울숲으로 가는 표", "changed": false, "old": null}, {"id": "S030", "kind": "story", "tier": "", "title": "S030. 표지판 수선공", "changed": false, "old": null}, {"id": "S031", "kind": "story", "tier": "", "title": "S031. 거울이 매달린 숲", "changed": false, "old": null}, {"id": "S032", "kind": "story", "tier": "", "title": "S032. 나를 따라오는 다른 나", "changed": false, "old": null}, {"id": "S033", "kind": "story", "tier": "", "title": "S033. 마음을 비추는 거울", "changed": false, "old": null}, {"id": "S034", "kind": "decision", "tier": "major", "title": "S034. 세 개의 거울", "changed": false, "old": null}, {"id": "S035A", "kind": "story", "tier": "", "title": "S035A. 웃는 거울을 따라간다", "changed": false, "old": null}, {"id": "S035B", "kind": "story", "tier": "", "title": "S035B. 아무것도 비추지 않는 거울", "changed": false, "old": null}, {"id": "S035C", "kind": "story", "tier": "", "title": "S035C. 보기 싫은 거울 앞에", "changed": false, "old": null}, {"id": "S035D", "kind": "story", "tier": "", "title": "S035D. 이안 뒤에 숨는다", "changed": false, "old": null}, {"id": "S037", "kind": "story", "tier": "", "title": "S037. 이안의 그림자가 늦게 움직이다", "changed": false, "old": null}, {"id": "S038", "kind": "story", "tier": "", "title": "S038. 첫 번째 별조각", "changed": false, "old": null}, {"id": "S039", "kind": "story", "tier": "", "title": "S039. 거울 속 경고", "changed": false, "old": null}, {"id": "S040", "kind": "decision", "tier": "minor", "title": "S040. 이름 없는 간판들", "changed": false, "old": null}, {"id": "S040A", "kind": "story", "tier": "", "title": "S040A. 가까운 노점부터 살핀다", "changed": false, "old": null}, {"id": "S040B", "kind": "story", "tier": "", "title": "S040B. 이안에게 이곳을 묻는다", "changed": false, "old": null}, {"id": "S041", "kind": "story", "tier": "", "title": "S041. 기억을 파는 노점", "changed": false, "old": null}, {"id": "S042", "kind": "decision", "tier": "major", "title": "S042. 기억 상인", "changed": false, "old": null}, {"id": "S042A", "kind": "story", "tier": "", "title": "S042A. 가격표를 요청한다", "changed": false, "old": null}, {"id": "S042B", "kind": "story", "tier": "", "title": "S042B. 거절한다", "changed": false, "old": null}, {"id": "S042C", "kind": "story", "tier": "", "title": "S042C. 어떻게 알았냐고 묻는다", "changed": false, "old": null}, {"id": "S043", "kind": "story", "tier": "", "title": "S043. 이름 수집가 아이", "changed": false, "old": null}, {"id": "S044", "kind": "decision", "tier": "major", "title": "S044. 거래 연쇄 추적", "changed": false, "old": null}, {"id": "S044B", "kind": "story", "tier": "", "title": "S044B. 잿빛 손 상인을 찾아서", "changed": false, "old": null}, {"id": "S044C", "kind": "story", "tier": "", "title": "S044C. 기록을 다시 살핀다", "changed": false, "old": null}, {"id": "S045", "kind": "decision", "tier": "major", "title": "S045. 상인 셋", "changed": false, "old": null}, {"id": "S046A", "kind": "decision", "tier": "minor", "title": "S046A. 거짓말쟁이의 덫", "changed": false, "old": null}, {"id": "S046B", "kind": "story", "tier": "", "title": "S046B. 가짜 안내자의 함정", "changed": false, "old": null}, {"id": "S047A", "kind": "decision", "tier": "minor", "title": "S047A. 남은 두 명", "changed": false, "old": null}, {"id": "S047B", "kind": "decision", "tier": "minor", "title": "S047B. 여자와 상인만 남아", "changed": false, "old": null}, {"id": "S048A", "kind": "story", "tier": "", "title": "S048A. 가짜 안내자 함정 ②", "changed": false, "old": null}, {"id": "S048B", "kind": "decision", "tier": "minor", "title": "S048B. 거짓말쟁이의 덫 ②", "changed": false, "old": null}, {"id": "S049", "kind": "story", "tier": "", "title": "S049. 이름을 빼앗기다", "changed": false, "old": null}, {"id": "S050", "kind": "story", "tier": "", "title": "S050. 여자만 남아 있다", "changed": false, "old": null}, {"id": "S051", "kind": "story", "tier": "", "title": "S051. 팔면 안 되는 것", "changed": false, "old": null}, {"id": "S052", "kind": "story", "tier": "", "title": "S052. 두 번째 별조각", "changed": false, "old": null}, {"id": "S053", "kind": "story", "tier": "", "title": "S053. 이안은 자기 이름을 모른다", "changed": false, "old": null}, {"id": "S054", "kind": "story", "tier": "", "title": "S054. 검은 탑 앞에서", "changed": false, "old": null}, {"id": "S055", "kind": "story", "tier": "", "title": "S055. 이안이 남는다", "changed": false, "old": null}, {"id": "S056", "kind": "story", "tier": "", "title": "S056. 올라갈수록 내려가는 곳", "changed": false, "old": null}, {"id": "S057", "kind": "decision", "tier": "major", "title": "S057. 세 개의 목소리", "changed": false, "old": null}, {"id": "S057A", "kind": "story", "tier": "", "title": "S057A. 부정의 방", "changed": false, "old": null}, {"id": "S057B", "kind": "story", "tier": "", "title": "S057B. 도피의 방", "changed": false, "old": null}, {"id": "S058", "kind": "story", "tier": "", "title": "S058. 두려움의 심장", "changed": false, "old": null}, {"id": "S059", "kind": "story", "tier": "", "title": "S059. 세 번째 별조각", "changed": false, "old": null}, {"id": "S060", "kind": "story", "tier": "", "title": "S060. 탑을 나서다", "changed": false, "old": null}, {"id": "S061", "kind": "story", "tier": "", "title": "S061. 녹슨 열쇠가 반응하다", "changed": false, "old": null}, {"id": "S062", "kind": "story", "tier": "", "title": "S062. 세계의 균열", "changed": false, "old": null}, {"id": "S063", "kind": "story", "tier": "", "title": "S063. 챕터5 마감", "changed": false, "old": null}, {"id": "S064", "kind": "story", "tier": "", "title": "S064. 다시 나타난 현실의 문", "changed": false, "old": null}, {"id": "S065", "kind": "story", "tier": "", "title": "S065. 문지기의 심사", "changed": false, "old": null}, {"id": "S066", "kind": "story", "tier": "", "title": "S066. 말하지 않은 열쇠", "changed": false, "old": null}, {"id": "S067", "kind": "story", "tier": "", "title": "S067. 이번에도 말하지 않은 아이", "changed": false, "old": null}, {"id": "S068", "kind": "decision", "tier": "minor", "title": "S068. 열린 방과 남겨진 문턱", "changed": false, "old": null}, {"id": "S069", "kind": "story", "tier": "", "title": "S069. 혼자 돌아온 방", "changed": true, "old": "E001"}, {"id": "S070", "kind": "story", "tier": "", "title": "S070. 어스름의 심장으로", "changed": false, "old": null}, {"id": "S071", "kind": "decision", "tier": "major", "title": "S071. 어스름의 심장", "changed": false, "old": null}, {"id": "S071A", "kind": "story", "tier": "", "title": "S071A. 피하지 않겠다는 약속", "changed": false, "old": null}, {"id": "S071B", "kind": "story", "tier": "", "title": "S071B. 얼음 속의 말 조각", "changed": false, "old": null}, {"id": "S071C", "kind": "story", "tier": "", "title": "S071C. 녹이 향하는 곳", "changed": false, "old": null}, {"id": "S072", "kind": "decision", "tier": "major", "title": "S072. 기억①", "changed": true, "old": "S071D"}, {"id": "S072A", "kind": "story", "tier": "", "title": "S072A. 첫 번째 조각이 녹다", "changed": true, "old": "S071E"}, {"id": "S072B", "kind": "story", "tier": "", "title": "S072B. 너무 쉬운 원망", "changed": true, "old": "S071F"}, {"id": "S072C", "kind": "story", "tier": "", "title": "S072C. 잘못 읽은 외로움", "changed": true, "old": "S071G"}, {"id": "S073", "kind": "decision", "tier": "major", "title": "S073. 기억②", "changed": true, "old": "S071H"}, {"id": "S073A", "kind": "story", "tier": "", "title": "S073A. 두 번째 조각이 떨리다", "changed": true, "old": "S071I"}, {"id": "S073B", "kind": "story", "tier": "", "title": "S073B. 차가운 질문", "changed": true, "old": "S071J"}, {"id": "S073C", "kind": "story", "tier": "", "title": "S073C. 잃어버린 글자", "changed": true, "old": "S071K"}, {"id": "S074", "kind": "decision", "tier": "major", "title": "S074. 기억③", "changed": true, "old": "S071L"}, {"id": "S074A", "kind": "story", "tier": "", "title": "S074A. 세 번째 조각이 열린다", "changed": true, "old": "S071M"}, {"id": "S074B", "kind": "story", "tier": "", "title": "S074B. 보지 않게 해주고 싶은 마음", "changed": true, "old": "S071N"}, {"id": "S074C", "kind": "story", "tier": "", "title": "S074C. 곁에 서서 보게 하기", "changed": true, "old": "S071O"}, {"id": "S075", "kind": "decision", "tier": "minor", "title": "S075. 찢어진 안내문", "changed": true, "old": "S072"}, {"id": "S076A", "kind": "story", "tier": "", "title": "S076A. 찢어진 문장을 건네다", "changed": true, "old": "S073A"}, {"id": "S076", "kind": "story", "tier": "", "title": "S076. 이안이 말하다", "changed": true, "old": "S073"}, {"id": "S077", "kind": "decision", "tier": "major", "title": "S077. 마지막 선택", "changed": true, "old": "S074"}, {"id": "S079", "kind": "story", "tier": "", "title": "S079. 이름을 되찾은 소년", "changed": true, "old": "E002"}, {"id": "S081", "kind": "ending", "tier": "", "title": "S081. 비밀 엔딩", "changed": true, "old": "E004"}, {"id": "S078", "kind": "story", "tier": "", "title": "S078. 별빛 균열", "changed": true, "old": "S075"}, {"id": "S080", "kind": "ending", "tier": "", "title": "S080. 진엔딩", "changed": true, "old": "E003"}]</script>
+    <script type="application/json" id="edgeData">[{"from": "S001", "to": "S002", "label": ""}, {"from": "S002", "to": "S003", "label": ""}, {"from": "S003", "to": "S004", "label": ""}, {"from": "S004", "to": "S005", "label": ""}, {"from": "S005", "to": "S006", "label": ""}, {"from": "S006", "to": "S007", "label": ""}, {"from": "S007", "to": "S008A", "label": "A"}, {"from": "S007", "to": "S008B", "label": "B"}, {"from": "S007", "to": "S008C", "label": "C"}, {"from": "S007", "to": "S008D", "label": "D"}, {"from": "S008A", "to": "S010", "label": ""}, {"from": "S008B", "to": "S010", "label": ""}, {"from": "S008C", "to": "S010", "label": ""}, {"from": "S008D", "to": "S010", "label": ""}, {"from": "S010", "to": "S011", "label": ""}, {"from": "S011", "to": "S012", "label": ""}, {"from": "S012", "to": "S013", "label": ""}, {"from": "S013", "to": "S014", "label": ""}, {"from": "S014", "to": "S015", "label": ""}, {"from": "S015", "to": "S016", "label": ""}, {"from": "S016", "to": "S018A", "label": "A"}, {"from": "S016", "to": "S018B", "label": "B"}, {"from": "S016", "to": "S018C", "label": "C"}, {"from": "S016", "to": "S018D", "label": "D"}, {"from": "S017", "to": "S018C", "label": ""}, {"from": "S018A", "to": "S017", "label": ""}, {"from": "S018B", "to": "S017", "label": ""}, {"from": "S018C", "to": "S019", "label": ""}, {"from": "S018D", "to": "S017", "label": ""}, {"from": "S019", "to": "S020", "label": ""}, {"from": "S020", "to": "S024", "label": "A"}, {"from": "S020", "to": "S021", "label": "B"}, {"from": "S020", "to": "S025", "label": "C"}, {"from": "S020", "to": "S026", "label": "D"}, {"from": "S021", "to": "S022", "label": "A"}, {"from": "S021", "to": "S026", "label": "B"}, {"from": "S021", "to": "S025", "label": "C"}, {"from": "S022", "to": "S024", "label": "A"}, {"from": "S022", "to": "S023", "label": "B"}, {"from": "S022", "to": "S026", "label": "C"}, {"from": "S023", "to": "S024", "label": "A"}, {"from": "S023", "to": "S025", "label": "B"}, {"from": "S023", "to": "S026", "label": "C"}, {"from": "S024", "to": "S027A", "label": "A"}, {"from": "S024", "to": "S027B", "label": "B"}, {"from": "S025", "to": "S028", "label": "A"}, {"from": "S025", "to": "S025B", "label": "B"}, {"from": "S025B", "to": "S026", "label": ""}, {"from": "S026", "to": "S028", "label": "A"}, {"from": "S026", "to": "S028C", "label": "B"}, {"from": "S027A", "to": "S026", "label": ""}, {"from": "S027B", "to": "S026", "label": ""}, {"from": "S028", "to": "S028A", "label": "A"}, {"from": "S028", "to": "S028B", "label": "B"}, {"from": "S028", "to": "S028C", "label": "C"}, {"from": "S028A", "to": "S028C", "label": ""}, {"from": "S028B", "to": "S028C", "label": ""}, {"from": "S028C", "to": "S029", "label": ""}, {"from": "S029", "to": "S030", "label": ""}, {"from": "S030", "to": "S031", "label": ""}, {"from": "S031", "to": "S032", "label": ""}, {"from": "S032", "to": "S033", "label": ""}, {"from": "S033", "to": "S034", "label": ""}, {"from": "S034", "to": "S035A", "label": "A"}, {"from": "S034", "to": "S035B", "label": "B"}, {"from": "S034", "to": "S035C", "label": "C"}, {"from": "S034", "to": "S035D", "label": "D"}, {"from": "S035A", "to": "S034", "label": ""}, {"from": "S035B", "to": "S034", "label": ""}, {"from": "S035C", "to": "S037", "label": ""}, {"from": "S035D", "to": "S034", "label": ""}, {"from": "S037", "to": "S038", "label": ""}, {"from": "S038", "to": "S039", "label": ""}, {"from": "S039", "to": "S040", "label": ""}, {"from": "S040", "to": "S040A", "label": "A"}, {"from": "S040", "to": "S040B", "label": "B"}, {"from": "S040A", "to": "S041", "label": ""}, {"from": "S040B", "to": "S041", "label": ""}, {"from": "S041", "to": "S042", "label": ""}, {"from": "S042", "to": "S042A", "label": "A"}, {"from": "S042", "to": "S042B", "label": "B"}, {"from": "S042", "to": "S042C", "label": "C"}, {"from": "S042A", "to": "S043", "label": ""}, {"from": "S042B", "to": "S043", "label": ""}, {"from": "S042C", "to": "S043", "label": ""}, {"from": "S043", "to": "S044", "label": ""}, {"from": "S044", "to": "S045", "label": "A"}, {"from": "S044", "to": "S044B", "label": "B"}, {"from": "S044", "to": "S044C", "label": "C"}, {"from": "S044B", "to": "S044", "label": "A"}, {"from": "S044C", "to": "S045", "label": "A"}, {"from": "S045", "to": "S051", "label": "A"}, {"from": "S045", "to": "S046A", "label": "B"}, {"from": "S045", "to": "S046B", "label": "C"}, {"from": "S046A", "to": "S049", "label": "A"}, {"from": "S046A", "to": "S047A", "label": "B"}, {"from": "S046B", "to": "S047B", "label": "A"}, {"from": "S047A", "to": "S051", "label": "A"}, {"from": "S047A", "to": "S048A", "label": "B"}, {"from": "S047B", "to": "S051", "label": "A"}, {"from": "S047B", "to": "S048B", "label": "B"}, {"from": "S048A", "to": "S050", "label": "A"}, {"from": "S048B", "to": "S049", "label": "A"}, {"from": "S048B", "to": "S050", "label": "B"}, {"from": "S049", "to": "S050", "label": "A"}, {"from": "S050", "to": "S051", "label": "A"}, {"from": "S051", "to": "S052", "label": ""}, {"from": "S052", "to": "S053", "label": ""}, {"from": "S053", "to": "S054", "label": ""}, {"from": "S054", "to": "S055", "label": ""}, {"from": "S055", "to": "S056", "label": ""}, {"from": "S056", "to": "S057", "label": ""}, {"from": "S057", "to": "S057A", "label": "A"}, {"from": "S057", "to": "S057B", "label": "B"}, {"from": "S057", "to": "S058", "label": "C"}, {"from": "S057A", "to": "S058", "label": ""}, {"from": "S057B", "to": "S058", "label": ""}, {"from": "S058", "to": "S059", "label": ""}, {"from": "S059", "to": "S060", "label": ""}, {"from": "S060", "to": "S061", "label": ""}, {"from": "S061", "to": "S062", "label": ""}, {"from": "S062", "to": "S063", "label": ""}, {"from": "S063", "to": "S064", "label": ""}, {"from": "S064", "to": "S065", "label": ""}, {"from": "S065", "to": "S066", "label": ""}, {"from": "S066", "to": "S067", "label": ""}, {"from": "S067", "to": "S068", "label": ""}, {"from": "S068", "to": "S069", "label": "A"}, {"from": "S068", "to": "S070", "label": "B"}, {"from": "S070", "to": "S071", "label": ""}, {"from": "S071", "to": "S071A", "label": "A"}, {"from": "S071", "to": "S071B", "label": "B"}, {"from": "S071", "to": "S071C", "label": "C"}, {"from": "S071A", "to": "S072", "label": ""}, {"from": "S071B", "to": "S072", "label": ""}, {"from": "S071C", "to": "S072", "label": ""}, {"from": "S072", "to": "S072A", "label": "A"}, {"from": "S072", "to": "S072B", "label": "B"}, {"from": "S072", "to": "S072C", "label": "C"}, {"from": "S072A", "to": "S073", "label": ""}, {"from": "S072B", "to": "S072", "label": ""}, {"from": "S072C", "to": "S072", "label": ""}, {"from": "S073", "to": "S073A", "label": "A"}, {"from": "S073", "to": "S073B", "label": "B"}, {"from": "S073", "to": "S073C", "label": "C"}, {"from": "S073A", "to": "S074", "label": ""}, {"from": "S073B", "to": "S073", "label": ""}, {"from": "S073C", "to": "S073", "label": ""}, {"from": "S074", "to": "S074A", "label": "A"}, {"from": "S074", "to": "S074B", "label": "B"}, {"from": "S074", "to": "S074C", "label": "C"}, {"from": "S074A", "to": "S075", "label": ""}, {"from": "S074B", "to": "S074", "label": ""}, {"from": "S074C", "to": "S075", "label": ""}, {"from": "S075", "to": "S076", "label": "B"}, {"from": "S075", "to": "S076A", "label": "C"}, {"from": "S076A", "to": "S076", "label": ""}, {"from": "S076", "to": "S077", "label": ""}, {"from": "S077", "to": "S079", "label": "A"}, {"from": "S077", "to": "S078", "label": "B"}, {"from": "S077", "to": "S081", "label": "C"}, {"from": "S078", "to": "S080", "label": ""}]</script>
+    <script>
+const flowCanvas=document.getElementById('flowCanvas');
+const flowGrid=document.getElementById('flowGrid');
+const edgeLayer=document.getElementById('edgeLayer');
+const nodes=[...document.querySelectorAll('.flow-node[data-section]')];
+const sections=JSON.parse(document.getElementById('sectionData').textContent);
+const edges=JSON.parse(document.getElementById('edgeData').textContent);
+function renderEdges(){
+  const box=flowCanvas.getBoundingClientRect();
+  edgeLayer.setAttribute('width',flowCanvas.scrollWidth);
+  edgeLayer.setAttribute('height',flowCanvas.scrollHeight);
+  [...edgeLayer.querySelectorAll('path.edge')].forEach(p=>p.remove());
+  if(!document.getElementById('arr')){const defs=document.createElementNS('http://www.w3.org/2000/svg','defs');const mk=document.createElementNS('http://www.w3.org/2000/svg','marker');mk.setAttribute('id','arr');mk.setAttribute('viewBox','0 0 4 4');mk.setAttribute('refX','4');mk.setAttribute('refY','2');mk.setAttribute('markerWidth','4');mk.setAttribute('markerHeight','4');mk.setAttribute('orient','auto');mk.setAttribute('markerUnits','userSpaceOnUse');const pl=document.createElementNS('http://www.w3.org/2000/svg','polygon');pl.setAttribute('points','0,0 4,2 0,4');pl.setAttribute('fill','#b9afa5');mk.appendChild(pl);defs.appendChild(mk);edgeLayer.insertBefore(defs,edgeLayer.firstChild);}
+  const sideRoutes=new Map();
+  const point=(rect,node,where,side=0)=>{
+    const centerX=rect.left+rect.width/2-box.left+flowCanvas.scrollLeft;
+    const centerY=rect.top+rect.height/2-box.top+flowCanvas.scrollTop;
+    const isDecision=node.classList.contains('decision');
+    if(isDecision&&where==='side'&&side!==0){
+      return {x:(side<0?rect.left:rect.right)-box.left+flowCanvas.scrollLeft,y:centerY};
+    }
+    return {x:centerX,y:(where==='bottom'?rect.bottom:where==='top'?rect.top:rect.top+rect.height/2)-box.top+flowCanvas.scrollTop};
+  };
+  for(const edge of edges){
+    const a=document.querySelector(`[data-section="${edge.from}"]`);
+    const b=document.querySelector(`[data-section="${edge.to}"]`);
+    if(!a||!b)continue;
+    const ar=a.getBoundingClientRect();
+    const br=b.getBoundingClientRect();
+    const downward=br.top>=ar.top;
+    const ac=point(ar,a,'center');
+    const bc=point(br,b,'center');
+    const ax=ac.x,bx=bc.x;
+    const sameColumn=Math.abs(ax-bx)<10;
+    const longJump=Math.abs(bc.y-ac.y)>85;
+    const path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('class','edge');path.setAttribute('marker-end','url(#arr)');
+    path.dataset.from=edge.from;path.dataset.to=edge.to;
+    const edgeTitle=document.createElementNS('http://www.w3.org/2000/svg','title');
+    edgeTitle.textContent=edge.label?`${edge.from} → ${edge.to} · ${edge.label}`:`${edge.from} → ${edge.to}`;
+    path.appendChild(edgeTitle);
+    if(sameColumn&&longJump){
+      const routeKey=`${Math.round(ax)}:${downward?'down':'up'}`;
+      const count=sideRoutes.get(routeKey)||0;
+      sideRoutes.set(routeKey,count+1);
+      const dir=count%2===0?-1:1;
+      const offset=dir*(46+Math.floor(count/2)*24);
+      const start=point(ar,a,a.classList.contains('decision')?'side':downward?'bottom':'top',dir);
+      const end=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
+      path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x+offset} ${start.y+18*(downward?1:-1)}, ${end.x+offset} ${end.y-18*(downward?1:-1)}, ${end.x} ${end.y}`);
+    }else{
+      const start=point(ar,a,downward?'bottom':'top');
+      const end=point(br,b,downward?'top':'bottom');
+      const midY=start.y+(end.y-start.y)*0.55;
+      path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x} ${midY}, ${end.x} ${midY}, ${end.x} ${end.y}`);
+    }
+    edgeLayer.appendChild(path);
+  }
+}
+window.addEventListener('resize',renderEdges);
+window.addEventListener('scroll',()=>requestAnimationFrame(renderEdges));
+flowCanvas.addEventListener('scroll',()=>requestAnimationFrame(renderEdges));
+requestAnimationFrame(renderEdges);
+</script>
+  </section>
+
+    <!-- ④ 4장 분기 구조도 (간략) -->
+  <section>
+    <h2>4장 소거형 분기 — 신규 규칙 적용 시 ID 변화</h2>
+
+    <div class="note-block warning">
+      <strong>핵심 문제</strong>
+      S045 → S046A → S047A → S048A의 3단계 중첩 구조에서 신규 규칙을 적용하면
+      <code>S045B → S045BB → S045BBA</code>처럼 알파벳이 쌓임.
+      반대 경로는 <code>S045C → S045CA → S045CAB</code>. 이 깊이를 허용할지 결정 필요.
+    </div>
+
+    <div class="ch4-diagram">
+      <!-- S045 -->
+      <div class="ch4-row">
+        <div class="ch4-node diamond-sm">
+          <span class="nid">S045</span>
+          <span class="ntitle">거짓말쟁이 상인 셋</span>
+        </div>
+        <span class="ch4-connector">→ A → S051 (정답, 직통)</span>
+      </div>
+
+      <!-- S045 → B → S046A(=S045B) -->
+      <div class="ch4-row ch4-indent1">
+        <span class="ch4-connector">→ B →</span>
+        <div class="ch4-node changed">
+          <span class="nid">S046A</span>
+          <span class="nnew">→ S045B</span>
+          <span class="ntitle">상인 함정 1차</span>
+        </div>
+        <span class="depth-badge depth-1">1단계</span>
+        <span class="ch4-connector">→ A → S049</span>
+      </div>
+      <div class="ch4-row ch4-indent2">
+        <span class="ch4-connector">→ B →</span>
+        <div class="ch4-node changed">
+          <span class="nid">S047A</span>
+          <span class="nnew">→ S045BB</span>
+          <span class="ntitle">여자+아이</span>
+        </div>
+        <span class="depth-badge depth-2">2단계</span>
+        <span class="ch4-connector">→ A → S051 (정답)</span>
+      </div>
+      <div class="ch4-row ch4-indent3">
+        <span class="ch4-connector">→ B →</span>
+        <div class="ch4-node changed">
+          <span class="nid">S048A</span>
+          <span class="nnew">→ S045BBA</span>
+          <span class="ntitle">아이 함정 2차</span>
+        </div>
+        <span class="depth-badge depth-3">3단계</span>
+        <span class="ch4-connector">→ S050</span>
+      </div>
+
+      <div style="height:16px;border-left:2px dashed var(--hair);margin-left:14px"></div>
+
+      <!-- S045 → C → S046B(=S045C) -->
+      <div class="ch4-row ch4-indent1">
+        <span class="ch4-connector">→ C →</span>
+        <div class="ch4-node changed">
+          <span class="nid">S046B</span>
+          <span class="nnew">→ S045C</span>
+          <span class="ntitle">아이 함정 1차</span>
+        </div>
+        <span class="depth-badge depth-1">1단계</span>
+      </div>
+      <div class="ch4-row ch4-indent2">
+        <span class="ch4-connector">→</span>
+        <div class="ch4-node changed">
+          <span class="nid">S047B</span>
+          <span class="nnew">→ S045CA</span>
+          <span class="ntitle">여자+상인</span>
+        </div>
+        <span class="depth-badge depth-2">2단계</span>
+        <span class="ch4-connector">→ A → S051 (정답)</span>
+      </div>
+      <div class="ch4-row ch4-indent3">
+        <span class="ch4-connector">→ B →</span>
+        <div class="ch4-node changed">
+          <span class="nid">S048B</span>
+          <span class="nnew">→ S045CAB</span>
+          <span class="ntitle">상인 함정 2차</span>
+        </div>
+        <span class="depth-badge depth-3">3단계</span>
+      </div>
+
+      <div style="height:16px;border-left:2px dashed var(--hair);margin-left:14px"></div>
+
+      <!-- S049, S050 unchanged -->
+      <div class="ch4-row">
+        <div class="ch4-node ok">
+          <span class="nid">S049</span>
+          <span class="ntitle">이름을 빼앗기다 (BE)</span>
+        </div>
+        <span class="ch4-connector">→</span>
+        <div class="ch4-node ok">
+          <span class="nid">S050</span>
+          <span class="ntitle">여자만 남아 있다</span>
+        </div>
+        <span class="ch4-connector">→</span>
+        <div class="ch4-node ok">
+          <span class="nid">S051</span>
+          <span class="ntitle">팔면 안 되는 것</span>
+        </div>
+        <span class="ch4-connector" style="color:var(--muted);font-size:11px">변경없음</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⑤ 결론 -->
+  <section>
+    <h2>검토 결과 요약</h2>
+    <div class="two-col">
+      <div>
+        <div class="note-block">
+          <strong>✅ 7장 — 적용 효과 명확</strong>
+          S071D~S071O를 S072·S073·S074(+branches)로 분리하면 각 기억 조각 단위가
+          독립 섹션 번호를 가져 구조가 훨씬 명확해짐.<br>
+          S072~S075 번호 밀림(+3)은 링크 일괄 수정으로 처리 가능.<br>
+          엔딩 E001~E004 → S069·S079~S081 통일도 자연스러움.
+        </div>
+      </div>
+      <div>
+        <div class="note-block warning">
+          <strong>⚠ 4장 — 3단계 중첩 ID 문제</strong>
+          S045CAB(3단계)처럼 알파벳이 쌓이는 구조는 가독성을 해침.<br>
+          선택지: ① 그대로 허용 (규칙 일관성 우선) / ② 4장만 예외로 현행 유지 /
+          ③ 4장 중첩 분기도 새 순차번호 부여 (S046~S050 유지 가능)<br>
+          현행 S046A~S048B 번호가 이미 합리적이라면 예외 처리하는 것도 방법.
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

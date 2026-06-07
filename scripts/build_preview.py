@@ -23,7 +23,8 @@ REFERENCE_COLLECTIONS = [
     ("퍼즐 노트", PUZZLES_DIR, DOCS_DIR / "puzzles"),
 ]
 
-SECTION_REF_RE = re.compile(r"\b((?:S|E)\d{3}[A-Z]?)\.\s*([^<\n]+)")
+SECTION_ID_PATTERN = r"(?:S|E)\d{3}[A-Z]?"
+SECTION_REF_RE = re.compile(rf"\b({SECTION_ID_PATTERN})\.\s*([^<\n]+)")
 
 
 def inline(text: str) -> str:
@@ -98,7 +99,7 @@ def md_to_html(markdown: str, section_links: dict[str, str]) -> str:
             flush_para()
             out.append(f"<li>{finish(inline(line[2:].strip()))}</li>")
             continue
-        if re.match(r"[A-Z]\.\s+.+?→\s*(?:S|E)\d{3}[A-Z]?\.", line):
+        if re.match(rf"[A-Z]\.\s+.+?→\s*{SECTION_ID_PATTERN}\.", line):
             flush_para()
             out.append(f'<p class="choice-line">{finish(inline(line.strip()))}</p>')
             continue
@@ -122,6 +123,25 @@ def extract_title(markdown: str) -> str:
 def extract_section_id(filename: str) -> str | None:
     match = re.match(r"((?:S|E)\d{3}[A-Z]?)_", filename)
     return match.group(1) if match else None
+
+
+def extract_section_id_from_markdown(markdown: str, fallback_filename: str = "") -> str | None:
+    """Return the canonical section id from the H1 heading.
+
+    The heading is the source of truth so generated preview links and graph
+    nodes stay aligned with the visible manuscript id.  EOS World uses simple
+    sequential ids like S071A, S071B, S071C for distinct content.
+    """
+
+    title = extract_title(markdown)
+    match = re.match(rf"({SECTION_ID_PATTERN})\.", title)
+    if match:
+        return match.group(1)
+    return extract_section_id(fallback_filename) if fallback_filename else None
+
+
+def section_id_for(section: dict[str, str]) -> str | None:
+    return section.get("id") or extract_section_id_from_markdown(section.get("markdown", ""), section.get("src", ""))
 
 
 def section_sort_key(path: Path) -> tuple[int, int, str, str]:
@@ -155,7 +175,7 @@ def extract_choice_edges(markdown: str) -> list[dict[str, str]]:
     choice_block = markdown.split("## 선택지", 1)[1].split("## 다음 섹션", 1)[0]
     edges: list[dict[str, str]] = []
     for line in choice_block.splitlines():
-        match = re.match(r"\s*([A-Z])\.\s*(.*?)\s*→\s*((?:S|E)\d{3}[A-Z]?)\.", line)
+        match = re.match(rf"\s*([A-Z])\.\s*(.*?)\s*→\s*({SECTION_ID_PATTERN})\.", line)
         if match:
             edges.append({"choice": match.group(1), "label": match.group(2).strip(), "target": match.group(3)})
     return edges
@@ -300,7 +320,7 @@ def extract_all_edges(markdown: str) -> list[dict[str, str]]:
     targets: list[str] = []
     if '## 다음 섹션' in markdown:
         block = markdown.split('## 다음 섹션', 1)[1].split('## ', 1)[0]
-        targets = re.findall(r'\b((?:S|E)\d{3}[A-Z]?)\.', block)
+        targets = re.findall(rf'\b({SECTION_ID_PATTERN})\.', block)
     return [{'to': target, 'label': ''} for target in targets]
 
 
@@ -335,7 +355,7 @@ def order_sections_for_flow(source_sections: list[dict[str, str]]) -> list[dict[
     by_id: dict[str, dict[str, str]] = {}
     endings: list[dict[str, str]] = []
     for section in source_sections:
-        section_id = extract_section_id(section['src'])
+        section_id = section_id_for(section)
         if not section_id:
             continue
         by_id[section_id] = section
@@ -344,7 +364,7 @@ def order_sections_for_flow(source_sections: list[dict[str, str]]) -> list[dict[
 
     ending_parent: dict[str, str] = {}
     for section in source_sections:
-        source_id = extract_section_id(section['src'])
+        source_id = section_id_for(section)
         if not source_id or source_id.startswith('E'):
             continue
         for target in extract_all_targets(section['markdown']):
@@ -354,7 +374,7 @@ def order_sections_for_flow(source_sections: list[dict[str, str]]) -> list[dict[
     endings_by_parent: dict[str, list[dict[str, str]]] = {}
     unattached_endings: list[dict[str, str]] = []
     for ending in endings:
-        ending_id = extract_section_id(ending['src']) or ''
+        ending_id = section_id_for(ending) or ''
         parent_id = ending_parent.get(ending_id)
         if parent_id:
             endings_by_parent.setdefault(parent_id, []).append(ending)
@@ -363,7 +383,7 @@ def order_sections_for_flow(source_sections: list[dict[str, str]]) -> list[dict[
 
     ordered: list[dict[str, str]] = []
     for section in source_sections:
-        section_id = extract_section_id(section['src'])
+        section_id = section_id_for(section)
         if not section_id or section_id.startswith('E'):
             continue
         ordered.append(section)
@@ -428,7 +448,7 @@ def collect_illustration_items(
         block = markdown.split("## 삽화 필요", 1)[1].split("## ", 1)[0].strip()
         if not block or block.startswith("없음") or block.startswith("삽화 없음"):
             continue
-        section_id = extract_section_id(section["src"]) or ""
+        section_id = section_id_for(section) or ""
         title = extract_title(markdown)
         image_url = available_images.get(section_id, "")
         prompt = prompts.get(section_id, "")
@@ -585,13 +605,13 @@ def build_big_workshop(
 </div>'''
 
     flow_sections = order_sections_for_flow(source_sections)
-    section_ids = [extract_section_id(section['src']) for section in flow_sections]
+    section_ids = [section_id_for(section) for section in flow_sections]
     section_ids = [section_id for section_id in section_ids if section_id]
     id_set = set(section_ids)
 
     ending_parent: dict[str, str] = {}
     for section in source_sections:
-        source_id = extract_section_id(section['src'])
+        source_id = section_id_for(section)
         if not source_id or source_id.startswith('E'):
             continue
         for target in extract_all_targets(section['markdown']):
@@ -601,7 +621,7 @@ def build_big_workshop(
     data_sections = []
     edges = []
     for section in flow_sections:
-        section_id = extract_section_id(section['src'])
+        section_id = section_id_for(section)
         if not section_id:
             continue
         markdown = section['markdown']
@@ -840,13 +860,13 @@ def build_flow_review(source_sections: list[dict[str, str]], section_links: dict
     import json
 
     flow_sections = order_sections_for_flow(source_sections)
-    section_ids = [extract_section_id(s['src']) for s in flow_sections]
+    section_ids = [section_id_for(s) for s in flow_sections]
     section_ids = [sid for sid in section_ids if sid]
     id_set = set(section_ids)
 
     ending_parent: dict[str, str] = {}
     for section in source_sections:
-        source_id = extract_section_id(section['src'])
+        source_id = section_id_for(section)
         if not source_id or source_id.startswith('E'):
             continue
         for target in extract_all_targets(section['markdown']):
@@ -856,7 +876,7 @@ def build_flow_review(source_sections: list[dict[str, str]], section_links: dict
     data_sections = []
     edges = []
     for section in flow_sections:
-        section_id = extract_section_id(section['src'])
+        section_id = section_id_for(section)
         if not section_id:
             continue
         markdown = section['markdown']
@@ -1243,24 +1263,24 @@ def main() -> None:
         markdown = path.read_text(encoding="utf-8")
         title = extract_title(markdown)
         outname = path.with_suffix(".html").name
-        section_id = extract_section_id(path.name)
+        section_id = extract_section_id_from_markdown(markdown, path.name)
         if section_id:
             section_links[section_id] = outname
         source_sections.append(
-            {"title": title, "outname": outname, "src": path.name, "markdown": markdown}
+            {"id": section_id or "", "title": title, "outname": outname, "src": path.name, "markdown": markdown}
         )
 
     validate_choice_targets(source_sections, section_links)
 
     section_meta: dict[str, tuple[str, str]] = {}
     for section in source_sections:
-        section_id = extract_section_id(section["src"])
+        section_id = section_id_for(section)
         if section_id:
             section_meta[section_id] = (section["title"], section["outname"])
 
     previous_by_id: dict[str, list[tuple[str, str, str]]] = {}
     for section in source_sections:
-        source_id = extract_section_id(section["src"])
+        source_id = section_id_for(section)
         if not source_id:
             continue
         for edge in extract_all_edges(section["markdown"]):
@@ -1277,7 +1297,7 @@ def main() -> None:
         src = section["src"]
         body = md_to_html(section["markdown"], section_links)
         items.append((title, outname, src))
-        section_id = extract_section_id(src)
+        section_id = section_id_for(section)
         previous_items = previous_by_id.get(section_id or "", [])
         page = render_page(title, body, "../assets/style.css", "../index.html", updated_at, previous_items)
         write(SECTION_OUT_DIR / outname, page)

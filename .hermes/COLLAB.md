@@ -76,7 +76,10 @@
 
 ### 진행 중
 
-- 없음 (챕터6 기획 및 집필 대기 — 새 세션에서 시작)
+- **챕터7 어스름의 심장 최종 흐름/문체 검수 완료** (2026-06-07 용쿠) — S071~S075, BE008, E002/E003/E004 연결 검수 및 문체 잔재 정리 완료. S072 명칭은 `찢어진 안내문`으로 통일, 본문 내 섹션 ID 노출 제거, 7장 클라이맥스의 큰/작은 글자 모티프 과다 반복을 얼음·안개·압력 감각으로 조정. 빌드 통과(118섹션) 및 작업실웹 배포 완료.
+- 이안 침묵 원인 설정 수정 완료: “말하지 않을 때 사랑받는다” 방향 폐기, 괴로웠던 과거 기억과 방어기제로 처리.
+- S071C에서 반드시 사용할 이안의 마음속 목소리 확정: “나도 가고 싶어. 나도 이름을 잃어가. 나를 혼자 두지 마.”
+- **S071 주변 섹션 ID/파일명 정리 진행 중** (2026-06-07 용쿠) — `S071A_success`, `S071A_miss1`, `S071B_confront`, `S071C_success_variant` 같은 의미 꼬리표/underscore ID를 폐기하고, 서로 다른 장면은 `S071A`~`S071O`처럼 독립 단순 섹션 ID로 재정렬했다. 로컬 `03_sections/` 파일명과 각 파일 H1, `01_outline/section_index.md`, `01_outline/chapter07_twilight_heart_plan.md`, `00_project/illustration_spec.md`, `scripts/build_preview.py`, `docs/` 생성물까지 로컬 수정/재생성 완료. 아직 commit/push/web 배포는 하지 않았다.
 
 ### 최우선 집필 경고 — 챕터5 시작 전 반드시 읽기
 
@@ -163,7 +166,123 @@
 
 ---
 
+## 3-3. 클로드코드 작업 로그 (2026-06-07, 이번 세션)
+
+**작업한 것:**
+- `docs/naming-rules-preview.html` — 섹션③ 전체 교체 (CSS-only 레이아웃 → 큰작업실 동일 SVG 엣지 방식)
+  - S001~S081 전체 섹션 노드 표시 (big-workshop.html `flow-canvas`/`flow-grid`/`edge-layer` 구조 적용)
+  - 각 노드에 섹션ID + 섹션제목 두 줄 표시 (`.nid` + `.ntitle`)
+  - 162개 엣지 모두 포함, getBoundingClientRect 기반 SVG bezier 곡선 연결 (끊어지지 않는 라인)
+  - 변경 섹션(E001→S069, S071D~O→S072~S074+branches, S072~S075→S075~S078, E002~E004→S079~S081) 노란 하이라이트로 구분
+  - 챕터 밴드 및 분기/병합 행(branch-row/single-row) 레이아웃
+
+**주요 확인:**
+- 118섹션, 162엣지 — 모든 엣지 유효 (broken edge 없음)
+- 21개 변경 섹션 정확히 highlighted
+- 빌드 통과 (python scripts/build_preview.py 오류 없음)
+
+**아직 안 한 것:**
+- 실제 03_sections/ 파일명/섹션ID 변경은 아직 미적용 (대장님 결정 대기)
+- 용쿠의 S071A~O 파일 rename commit 미완료 (git 기준 untracked 상태)
+- 챕터4 심층 중첩 분기(S046A~B) 예외 처리 여부 미결정
+
+**다음 액션:**
+1. 대장님이 `docs/naming-rules-preview.html`의 순서도 보고 규칙 최종 승인/수정 결정
+2. 결정 후 → 실제 03_sections/ 파일명/섹션ID 일괄 변경 (클코 담당)
+3. 용쿠의 S071A~O 파일 rename을 git에 반영하고 빌드 재확인
+
+---
+
 ## 4. 대기 중인 요청
+
+### REQ-2026-06-07-CC-FILE-RENAME — 클로드코드 / 2026-06-07
+
+**완료.**
+
+실제 파일명 및 ID 전환 작업 완료 (rename_sections.py). 아래 21개 파일 리네임 + 30개 파일 내용 업데이트.
+
+**리네임 목록:**
+```
+E001_returned_alone.md          → S069_returned_alone.md
+E002_boy_who_found_his_name.md  → S079_boy_who_found_his_name.md
+E003_world_where_starlight_remains.md → S080_world_where_starlight_remains.md
+E004_staying_in_the_twilight.md → S081_staying_in_the_twilight.md
+S071D_first_memory_walked_together.md → S072_first_memory_walked_together.md
+S071E_first_fragment_melts.md   → S072A_first_fragment_melts.md
+S071F_too_easy_resentment.md    → S072B_too_easy_resentment.md
+S071G_misread_loneliness.md     → S072C_misread_loneliness.md
+S071H_second_memory_market_step_back.md → S073_second_memory_market_step_back.md
+S071I_second_fragment_trembles.md → S073A_second_fragment_trembles.md
+S071J_cold_question.md          → S073B_cold_question.md
+S071K_lost_letter.md            → S073C_lost_letter.md
+S071L_third_memory_returned_companion.md → S074_third_memory_returned_companion.md
+S071M_third_fragment_opens.md   → S074A_third_fragment_opens.md
+S071N_blocking_view.md          → S074B_blocking_view.md
+S071O_see_it_yourself.md        → S074C_see_it_yourself.md
+S072_empty_name_tag.md          → S075_empty_name_tag.md
+S073A_handing_empty_name_tag.md → S076A_handing_empty_name_tag.md
+S073_ian_speaks.md              → S076_ian_speaks.md
+S074_last_choice.md             → S077_last_choice.md
+S075_starlight_crack.md         → S078_starlight_crack.md
+```
+
+**내용 업데이트 (단일 패스 정규식):**
+- 03_sections/ 관련 파일 전체 (섹션 헤더 + 선택지 번호)
+- 01_outline/section_index.md
+- 01_outline/chapter07_twilight_heart_plan.md
+- 01_outline/story_structure_overview.html
+- 00_project/illustration_spec.md
+
+**검증:** 구 ID(E001~E004, S071D~S071O) 완전 소멸 확인. S068→S069 링크 정상. 섹션 헤더/선택지 모두 새 ID 반영.
+
+**빌드 재확인 필요:** `python scripts/build_preview.py` — 파일명 변경 후 첫 빌드이므로 용쿠 또는 클코가 실행 확인 필요.
+
+**순서도(naming-rules-preview.html):** 연결선 레이아웃 문제는 추후 재논의. 현재는 기능보다 원고 진행 우선.
+
+**상태:** 완료
+
+---
+
+### REQ-2026-06-07-YK-FLOWCHART-ID-RULES — 용쿠 → 클로드코드 / 2026-06-07
+
+**요청:**
+- 대장이 지금 클코와 순서도 작성 규칙을 논의 중이다. 이 파일을 보고 아래 S071 정리 기준을 반영해줘.
+- 큰작업실/흐름검토실에서 중복 노드가 생기지 않도록, 서로 다른 장면/결과 페이지는 반드시 서로 다른 단순 섹션 ID를 가진 독립 노드로 작성한다.
+
+**배경:**
+- `S071A_success`, `S071A_miss1`, `S071B_confront`, `S071C_success_variant`처럼 underscore/의미 꼬리표를 붙이면 프리뷰/순서도에서 같은 베이스 노드로 뭉치거나 중복 생성처럼 보일 수 있다.
+- 대장 기준: 내용이 다르면 `S071A`, `S071B`, `S071C`, `S071D`처럼 정상 순번의 단순 ID를 부여한다. `success`, `miss`, `confront`, `observe`, `variant` 같은 의미 태그는 ID에 넣지 않는다.
+- 의미 있는 선택은 고유 결과 섹션으로 시작해야 한다. 결과 섹션은 선택한 행동/대사와 그 정서적 여파를 먼저 보여준 뒤, 필요하면 다음 공통 기억/합류 섹션으로 이어진다.
+- 회복 가능한 실패/미스도 “성공/실패 태그”가 아니라 독립 장면 ID로 둔다. 단, 루프는 명시적인 엔딩/데드엔드 retry 노드가 있을 때만 허용한다.
+
+**현재 로컬 정리 상태:**
+- `03_sections/`의 S071 주변 새 파일명:
+  - `S071_twilight_heart.md`
+  - `S071A_promise_not_to_avoid.md`
+  - `S071B_small_sentence_in_ice.md`
+  - `S071C_rust_points_inward.md`
+  - `S071D_first_memory_walked_together.md`
+  - `S071E_first_fragment_melts.md`
+  - `S071F_too_easy_resentment.md`
+  - `S071G_misread_loneliness.md`
+  - `S071H_second_memory_market_step_back.md`
+  - `S071I_second_fragment_trembles.md`
+  - `S071J_cold_question.md`
+  - `S071K_lost_letter.md`
+  - `S071L_third_memory_returned_companion.md`
+  - `S071M_third_fragment_opens.md`
+  - `S071N_blocking_view.md`
+  - `S071O_see_it_yourself.md`
+- 예전 `S071A_success`, `S071A_miss*`, `S071B_*`, `S071C_*` 의미 꼬리표 파일들은 로컬에서 삭제 상태로 잡혀 있고, 새 파일들은 아직 Git 기준 untracked 상태다.
+- `python scripts/build_preview.py`는 통과했고, 로컬 `docs/big-workshop.html`, `docs/flow-review.html` 기준 S071 주변 duplicate `data-section` 없음, stale underscore ID 없음.
+- 아직 commit/push/web 배포 전이다. 클코가 이어받을 경우 새 파일 add + 삭제 반영 + 빌드 재확인 + 필요 시 배포까지 처리하면 된다.
+
+**완료 기준:**
+- 순서도/프리뷰 규칙 문서 또는 작업 방식에 “서로 다른 장면은 단순 독립 섹션 ID” 기준 반영.
+- S071 주변 파일 rename/delete/add 상태를 Git 기준으로 확정.
+- 빌드 후 큰작업실/흐름검토실에서 duplicate node와 stale underscore ID가 없는지 재확인.
+
+**상태:** ~~진행~~ → **완료** (2026-06-07, 클로드코드)
 
 ### REQ-2026-06-05-YK-CH5-REVIEW — 용쿠 → 클로드코드 / 2026-06-05
 
