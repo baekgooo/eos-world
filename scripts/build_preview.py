@@ -124,16 +124,16 @@ def extract_section_id(filename: str) -> str | None:
     return match.group(1) if match else None
 
 
-def section_sort_key(path: Path) -> tuple[int, str, str]:
-    """Sort base story sections before endings, with lettered branches after base sections."""
+def section_sort_key(path: Path) -> tuple[int, int, str, str]:
+    """Sort story sections first, then endings, with lettered branches after base sections."""
 
     match = re.match(r"([SE])(\d{3})([A-Z]?)_", path.name)
     if not match:
-        return (9999, "", path.name)
+        return (9999, 9999, "", path.name)
     prefix_order = 0 if match.group(1) == "S" else 1
     number = int(match.group(2))
     suffix = match.group(3)
-    return (number, suffix, f"{prefix_order}_{path.name}")
+    return (prefix_order, number, suffix, path.name)
 
 
 def write(path: Path, content: str) -> None:
@@ -307,6 +307,69 @@ def extract_all_edges(markdown: str) -> list[dict[str, str]]:
 def extract_all_targets(markdown: str) -> list[str]:
     '''Extract next-section refs used by the workshop flow.'''
     return [edge['to'] for edge in extract_all_edges(markdown)]
+
+
+def chapter_label_for_section(section_id: str) -> str:
+    """Return the reader-facing chapter band for a section id."""
+
+    if section_id.startswith('E'):
+        return '엔딩 섹션'
+    match = re.match(r"S(\d{3})", section_id)
+    number = int(match.group(1)) if match else 0
+    if number >= 64:
+        return '6장 · 열리지 않는 문'
+    if number >= 54:
+        return '5장 · 밤끝탑'
+    if number >= 40:
+        return '4장 · 숨은이름 시장'
+    if number >= 31:
+        return '3장 · 거울숲'
+    if number >= 19:
+        return '2장 · 초저녁 정거장'
+    return '프롤로그 · 1장 · 사잇별의 땅'
+
+
+def order_sections_for_flow(source_sections: list[dict[str, str]]) -> list[dict[str, str]]:
+    """Keep endings near the branch that reaches them in workshop flow maps."""
+
+    by_id: dict[str, dict[str, str]] = {}
+    endings: list[dict[str, str]] = []
+    for section in source_sections:
+        section_id = extract_section_id(section['src'])
+        if not section_id:
+            continue
+        by_id[section_id] = section
+        if section_id.startswith('E'):
+            endings.append(section)
+
+    ending_parent: dict[str, str] = {}
+    for section in source_sections:
+        source_id = extract_section_id(section['src'])
+        if not source_id or source_id.startswith('E'):
+            continue
+        for target in extract_all_targets(section['markdown']):
+            if target.startswith('E') and target in by_id and target not in ending_parent:
+                ending_parent[target] = source_id
+
+    endings_by_parent: dict[str, list[dict[str, str]]] = {}
+    unattached_endings: list[dict[str, str]] = []
+    for ending in endings:
+        ending_id = extract_section_id(ending['src']) or ''
+        parent_id = ending_parent.get(ending_id)
+        if parent_id:
+            endings_by_parent.setdefault(parent_id, []).append(ending)
+        else:
+            unattached_endings.append(ending)
+
+    ordered: list[dict[str, str]] = []
+    for section in source_sections:
+        section_id = extract_section_id(section['src'])
+        if not section_id or section_id.startswith('E'):
+            continue
+        ordered.append(section)
+        ordered.extend(endings_by_parent.get(section_id, []))
+    ordered.extend(unattached_endings)
+    return ordered
 
 
 def extract_illustration_note(markdown: str) -> str:
@@ -521,13 +584,23 @@ def build_big_workshop(
 </div>
 </div>'''
 
-    section_ids = [extract_section_id(section['src']) for section in source_sections]
+    flow_sections = order_sections_for_flow(source_sections)
+    section_ids = [extract_section_id(section['src']) for section in flow_sections]
     section_ids = [section_id for section_id in section_ids if section_id]
     id_set = set(section_ids)
 
+    ending_parent: dict[str, str] = {}
+    for section in source_sections:
+        source_id = extract_section_id(section['src'])
+        if not source_id or source_id.startswith('E'):
+            continue
+        for target in extract_all_targets(section['markdown']):
+            if target.startswith('E') and target in id_set and target not in ending_parent:
+                ending_parent[target] = source_id
+
     data_sections = []
     edges = []
-    for section in source_sections:
+    for section in flow_sections:
         section_id = extract_section_id(section['src'])
         if not section_id:
             continue
@@ -579,19 +652,10 @@ def build_big_workshop(
     def chapter_label(section_id: str) -> str:
         if chapter_label_fn is not None:
             return chapter_label_fn(section_id)
-        match = re.match(r"S(\d{3})", section_id)
-        number = int(match.group(1)) if match else 0
-        if number >= 64:
-            return '6장 · 열리지 않는 문'
-        if number >= 54:
-            return '5장 · 밤끝탑'
-        if number >= 40:
-            return '4장 · 숨은이름 시장'
-        if number >= 31:
-            return '3장 · 거울숲'
-        if number >= 19:
-            return '2장 · 초저녁 정거장'
-        return '프롤로그 · 1장 · 사잇별의 땅'
+        parent_id = ending_parent.get(section_id)
+        if parent_id:
+            return chapter_label_for_section(parent_id)
+        return chapter_label_for_section(section_id)
 
     node_parts: list[str] = []
     current_chapter = ''
@@ -775,13 +839,23 @@ def build_flow_review(source_sections: list[dict[str, str]], section_links: dict
     '''Build the 흐름 검토실 3-panel narrative flow review page.'''
     import json
 
-    section_ids = [extract_section_id(s['src']) for s in source_sections]
+    flow_sections = order_sections_for_flow(source_sections)
+    section_ids = [extract_section_id(s['src']) for s in flow_sections]
     section_ids = [sid for sid in section_ids if sid]
     id_set = set(section_ids)
 
+    ending_parent: dict[str, str] = {}
+    for section in source_sections:
+        source_id = extract_section_id(section['src'])
+        if not source_id or source_id.startswith('E'):
+            continue
+        for target in extract_all_targets(section['markdown']):
+            if target.startswith('E') and target in id_set and target not in ending_parent:
+                ending_parent[target] = source_id
+
     data_sections = []
     edges = []
-    for section in source_sections:
+    for section in flow_sections:
         section_id = extract_section_id(section['src'])
         if not section_id:
             continue
@@ -831,19 +905,10 @@ def build_flow_review(source_sections: list[dict[str, str]], section_links: dict
         index += 1
 
     def chapter_label(section_id: str) -> str:
-        match = re.match(r"S(\d{3})", section_id)
-        number = int(match.group(1)) if match else 0
-        if number >= 64:
-            return '6장 · 열리지 않는 문'
-        if number >= 54:
-            return '5장 · 밤끝탑'
-        if number >= 40:
-            return '4장 · 숨은이름 시장'
-        if number >= 31:
-            return '3장 · 거울숲'
-        if number >= 19:
-            return '2장 · 초저녁 정거장'
-        return '프롤로그 · 1장 · 사잇별의 땅'
+        parent_id = ending_parent.get(section_id)
+        if parent_id:
+            return chapter_label_for_section(parent_id)
+        return chapter_label_for_section(section_id)
 
     node_parts: list[str] = []
     current_chapter = ''
