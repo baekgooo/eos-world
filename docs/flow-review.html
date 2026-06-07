@@ -252,12 +252,16 @@ function renderEdges(){
   edgeLayer.setAttribute('width',flowCanvas.scrollWidth);
   edgeLayer.setAttribute('height',flowCanvas.scrollHeight);
   [...edgeLayer.querySelectorAll('path.edge')].forEach(p=>p.remove());
+  const CUSTOM_ANCHORS={'S030:S031':{from:'bottom',to:'top',straight:true},'S039:S040':{from:'bottom',to:'top',straight:true},'S053:S054':{from:'bottom',to:'top',straight:true},'S063:S064':{from:'bottom',to:'top',straight:true},'S045:S051':{from:'left',to:'left'},'S046A:S049':{from:'left',to:'left'},'S047A:S051':{from:'left',to:'left'},'S047B:S051':{from:'right',to:'right'},'S048A:S050':{to:'left'},'S048B:S050':{from:'right',to:'right'},'S057:S058':{from:'left',to:'left',tension:160},'S068:S070':{from:'left',to:'left'},'S075:S076A':{from:'right',to:'right'},'S077:S081':{from:'left',to:'left'},'S078:S080':{from:'left',to:'left'},'S077:S079':{from:'right',to:'right'},'S076:S077':{from:'left',to:'left'}};
+  const curvePath=(sx,sy,ex,ey,fromDir,toDir,tOverride)=>{const dx=Math.abs(ex-sx),dy=Math.abs(ey-sy);const t=tOverride??Math.max(50,(dx+dy)*0.4);let cp1x=sx,cp1y=sy,cp2x=ex,cp2y=ey;if(fromDir==='bottom')cp1y=sy+t;else if(fromDir==='top')cp1y=sy-t;else if(fromDir==='left')cp1x=sx-t;else if(fromDir==='right')cp1x=sx+t;if(toDir==='top')cp2y=ey-t;else if(toDir==='bottom')cp2y=ey+t;else if(toDir==='left')cp2x=ex-t;else if(toDir==='right')cp2x=ex+t;return `M ${sx} ${sy} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${ex} ${ey}`;};
   const sideRoutes=new Map();
   const point=(rect,node,where,side=0)=>{
     const cx=rect.left+rect.width/2-box.left+flowCanvas.scrollLeft;
     const cy=rect.top+rect.height/2-box.top+flowCanvas.scrollTop;
     if(node.classList.contains('decision')&&where==='side'&&side!==0)
       return {x:(side<0?rect.left:rect.right)-box.left+flowCanvas.scrollLeft,y:cy};
+    if(where==='left') return {x:rect.left-box.left+flowCanvas.scrollLeft,y:cy};
+    if(where==='right') return {x:rect.right-box.left+flowCanvas.scrollLeft,y:cy};
     return {x:cx,y:(where==='bottom'?rect.bottom:where==='top'?rect.top:rect.top+rect.height/2)-box.top+flowCanvas.scrollTop};
   };
   for(const edge of edges){
@@ -284,17 +288,27 @@ function renderEdges(){
       const ny=nr.top+nr.height/2-box.top+flowCanvas.scrollTop;
       return Math.abs(nx-ac.x)<20&&ny>Math.min(ac.y,bc.y)&&ny<Math.max(ac.y,bc.y);
     });
-    if(sameCol&&longJump&&hasIntermediate){
+    const ca=CUSTOM_ANCHORS[edge.from+':'+edge.to];
+    if(ca&&ca.straight){
+      const s=point(ar,a,ca.from||'bottom');const e=point(br,b,ca.to||'top');
+      path.setAttribute('d',`M ${s.x} ${s.y} L ${e.x} ${e.y}`);
+    }else if(ca&&ca.from&&ca.to){
+      const s=point(ar,a,ca.from);const e=point(br,b,ca.to);
+      path.setAttribute('d',curvePath(s.x,s.y,e.x,e.y,ca.from,ca.to,ca.tension));
+    }else if(sameCol&&longJump&&hasIntermediate){
       const key=`${Math.round(ac.x)}:${downward?'d':'u'}`;
       const cnt=sideRoutes.get(key)||0;sideRoutes.set(key,cnt+1);
       const dir=cnt%2===0?-1:1,off=dir*(46+Math.floor(cnt/2)*24);
-      const s=point(ar,a,a.classList.contains('decision')?'side':downward?'bottom':'top',dir);
-      const e=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
-      path.setAttribute('d',`M ${s.x} ${s.y} C ${s.x+off} ${s.y+18*(downward?1:-1)}, ${e.x+off} ${e.y-18*(downward?1:-1)}, ${e.x} ${e.y}`);
+      const natS=point(ar,a,a.classList.contains('decision')?'side':downward?'bottom':'top',dir);
+      const natE=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
+      const s=ca&&ca.from?point(ar,a,ca.from):natS;
+      const e=ca&&ca.to?point(br,b,ca.to):natE;
+      if(ca){const fd=ca.from||(a.classList.contains('decision')?'center':(downward?'bottom':'top'));const td=ca.to||(b.classList.contains('decision')?'center':(downward?'top':'bottom'));path.setAttribute('d',curvePath(s.x,s.y,e.x,e.y,fd,td,ca.tension));}else{path.setAttribute('d',`M ${s.x} ${s.y} C ${s.x+off} ${s.y+18*(downward?1:-1)}, ${e.x+off} ${e.y-18*(downward?1:-1)}, ${e.x} ${e.y}`);}
     }else{
-      const s=point(ar,a,downward?'bottom':'top'),e=point(br,b,downward?'top':'bottom');
-      const my=s.y+(e.y-s.y)*0.55;
-      path.setAttribute('d',`M ${s.x} ${s.y} C ${s.x} ${my}, ${e.x} ${my}, ${e.x} ${e.y}`);
+      const natS=point(ar,a,downward?'bottom':'top'),natE=point(br,b,downward?'top':'bottom');
+      const s=ca&&ca.from?point(ar,a,ca.from):natS;
+      const e=ca&&ca.to?point(br,b,ca.to):natE;
+      if(ca){const fd=ca.from||(downward?'bottom':'top');const td=ca.to||(downward?'top':'bottom');path.setAttribute('d',curvePath(s.x,s.y,e.x,e.y,fd,td,ca.tension));}else{const my=s.y+(e.y-s.y)*0.55;path.setAttribute('d',`M ${s.x} ${s.y} C ${s.x} ${my}, ${e.x} ${my}, ${e.x} ${e.y}`);}
     }
     edgeLayer.appendChild(path);
   }
