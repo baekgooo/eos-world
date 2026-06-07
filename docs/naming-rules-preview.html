@@ -726,30 +726,29 @@ function renderEdges(){
     edgeTitle.textContent=edge.label?`${edge.from} → ${edge.to} · ${edge.label}`:`${edge.from} → ${edge.to}`;
     path.appendChild(edgeTitle);
     const ca=CUSTOM_ANCHORS[edge.from+':'+edge.to];
-    if(ca){
-      const fromDir=ca.from||(downward?'bottom':'top');
-      const toDir=ca.to||(downward?'top':'bottom');
-      const start=point(ar,a,fromDir);
-      const end=point(br,b,toDir);
-      if(ca.straight){
-        path.setAttribute('d',`M ${start.x} ${start.y} L ${end.x} ${end.y}`);
-      }else{
-        path.setAttribute('d',curvePath(start.x,start.y,end.x,end.y,fromDir,toDir));
-      }
+    if(ca&&ca.straight){
+      const start=point(ar,a,ca.from||'bottom');const end=point(br,b,ca.to||'top');
+      path.setAttribute('d',`M ${start.x} ${start.y} L ${end.x} ${end.y}`);
+    }else if(ca&&ca.from&&ca.to){
+      const start=point(ar,a,ca.from);const end=point(br,b,ca.to);
+      path.setAttribute('d',curvePath(start.x,start.y,end.x,end.y,ca.from,ca.to));
     }else if(sameColumn&&longJump){
       const routeKey=`${Math.round(ax)}:${downward?'down':'up'}`;
       const count=sideRoutes.get(routeKey)||0;
       sideRoutes.set(routeKey,count+1);
       const dir=count%2===0?-1:1;
       const offset=dir*(46+Math.floor(count/2)*24);
-      const start=point(ar,a,a.classList.contains('decision')?'side':downward?'bottom':'top',dir);
-      const end=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
-      path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x+offset} ${start.y+18*(downward?1:-1)}, ${end.x+offset} ${end.y-18*(downward?1:-1)}, ${end.x} ${end.y}`);
+      const natStart=point(ar,a,a.classList.contains('decision')?'side':downward?'bottom':'top',dir);
+      const natEnd=point(br,b,b.classList.contains('decision')?'side':downward?'top':'bottom',dir);
+      const start=ca&&ca.from?point(ar,a,ca.from):natStart;
+      const end=ca&&ca.to?point(br,b,ca.to):natEnd;
+      if(ca){const fromDir=ca.from||(a.classList.contains('decision')?'center':(downward?'bottom':'top'));const toDir=ca.to||(b.classList.contains('decision')?'center':(downward?'top':'bottom'));path.setAttribute('d',curvePath(start.x,start.y,end.x,end.y,fromDir,toDir));}else{path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x+offset} ${start.y+18*(downward?1:-1)}, ${end.x+offset} ${end.y-18*(downward?1:-1)}, ${end.x} ${end.y}`);}
     }else{
-      const start=point(ar,a,downward?'bottom':'top');
-      const end=point(br,b,downward?'top':'bottom');
-      const midY=start.y+(end.y-start.y)*0.55;
-      path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x} ${midY}, ${end.x} ${midY}, ${end.x} ${end.y}`);
+      const natStart=point(ar,a,downward?'bottom':'top');
+      const natEnd=point(br,b,downward?'top':'bottom');
+      const start=ca&&ca.from?point(ar,a,ca.from):natStart;
+      const end=ca&&ca.to?point(br,b,ca.to):natEnd;
+      if(ca){const fromDir=ca.from||(downward?'bottom':'top');const toDir=ca.to||(downward?'top':'bottom');path.setAttribute('d',curvePath(start.x,start.y,end.x,end.y,fromDir,toDir));}else{const midY=start.y+(end.y-start.y)*0.55;path.setAttribute('d',`M ${start.x} ${start.y} C ${start.x} ${midY}, ${end.x} ${midY}, ${end.x} ${end.y}`);}
     }
     edgeLayer.appendChild(path);
   }
