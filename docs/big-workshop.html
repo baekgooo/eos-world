@@ -621,7 +621,9 @@ function renderEdges(){
   edgeLayer.setAttribute('width',flowCanvas.scrollWidth);
   edgeLayer.setAttribute('height',flowCanvas.scrollHeight);
   [...edgeLayer.querySelectorAll('path.edge')].forEach(p=>p.remove());
-  const sideRoutes=new Map();
+  const CUSTOM_ANCHORS={'S030:S031':{from:'bottom',to:'top',straight:true},'S039:S040':{from:'bottom',to:'top',straight:true},'S053:S054':{from:'bottom',to:'top',straight:true},'S063:S064':{from:'bottom',to:'top',straight:true},'S045:S051':{to:'left'},'S047A:S051':{to:'left'},'S047B:S051':{to:'right'},'S048A:S050':{to:'left'},'S048B:S050':{to:'right'},'S057:S058':{to:'left'},'S068:S070':{to:'left'},'S075:S076A':{to:'right'},'S077:S081':{to:'right'},'S078:S080':{to:'right'},'S077:S079':{to:'right'},'S076:S077':{from:'left'}};
+  const curvePath=(sx,sy,ex,ey,fromDir,toDir)=>{const dx=Math.abs(ex-sx),dy=Math.abs(ey-sy);const t=Math.max(50,(dx+dy)*0.4);let cp1x=sx,cp1y=sy,cp2x=ex,cp2y=ey;if(fromDir==='bottom')cp1y=sy+t;else if(fromDir==='top')cp1y=sy-t;else if(fromDir==='left')cp1x=sx-t;else if(fromDir==='right')cp1x=sx+t;if(toDir==='top')cp2y=ey-t;else if(toDir==='bottom')cp2y=ey+t;else if(toDir==='left')cp2x=ex-t;else if(toDir==='right')cp2x=ex+t;return `M ${sx} ${sy} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${ex} ${ey}`;};
+    const sideRoutes=new Map();
   const point=(rect,node,where,side=0)=>{
     const centerX=rect.left+rect.width/2-box.left+flowCanvas.scrollLeft;
     const centerY=rect.top+rect.height/2-box.top+flowCanvas.scrollTop;
@@ -629,6 +631,8 @@ function renderEdges(){
     if(isDecision&&where==='side'&&side!==0){
       return {x:(side<0?rect.left:rect.right)-box.left+flowCanvas.scrollLeft,y:centerY};
     }
+    if(where==='left') return {x:rect.left-box.left+flowCanvas.scrollLeft,y:centerY};
+    if(where==='right') return {x:rect.right-box.left+flowCanvas.scrollLeft,y:centerY};
     return {
       x:centerX,
       y:(where==='bottom'?rect.bottom:where==='top'?rect.top:rect.top+rect.height/2)-box.top+flowCanvas.scrollTop
@@ -655,7 +659,18 @@ function renderEdges(){
     const edgeTitle=document.createElementNS('http://www.w3.org/2000/svg','title');
     edgeTitle.textContent=edge.label?`${edge.from} → ${edge.to} · ${edge.label}`:`${edge.from} → ${edge.to}`;
     path.appendChild(edgeTitle);
-    if(sameColumn&&longJump){
+    const ca=CUSTOM_ANCHORS[edge.from+':'+edge.to];
+    if(ca){
+      const fromDir=ca.from||(downward?'bottom':'top');
+      const toDir=ca.to||(downward?'top':'bottom');
+      const start=point(ar,a,fromDir);
+      const end=point(br,b,toDir);
+      if(ca.straight){
+        path.setAttribute('d',`M ${start.x} ${start.y} L ${end.x} ${end.y}`);
+      }else{
+        path.setAttribute('d',curvePath(start.x,start.y,end.x,end.y,fromDir,toDir));
+      }
+    }else if(sameColumn&&longJump){
       const routeKey=`${Math.round(ax)}:${downward?'down':'up'}`;
       const count=sideRoutes.get(routeKey)||0;
       sideRoutes.set(routeKey,count+1);
