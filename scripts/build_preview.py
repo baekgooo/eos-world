@@ -336,6 +336,8 @@ def chapter_label_for_section(section_id: str) -> str:
         return '엔딩 섹션'
     match = re.match(r"S(\d{3})", section_id)
     number = int(match.group(1)) if match else 0
+    if number >= 71:
+        return '7장 · 어스름의 심장'
     if number >= 64:
         return '6장 · 열리지 않는 문'
     if number >= 54:
