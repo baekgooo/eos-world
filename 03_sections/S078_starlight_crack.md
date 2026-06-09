@@ -4,7 +4,7 @@
 어스름의 심장. 현실과의 경계, 열린 문 앞.
 
 ## 목적
-주인공이 이안의 질문에 바로 손을 잡지 못하고 멈춘 이유를 따라가며, 자신의 별빛이 단순한 두려움의 반대편에 있는 바람임을 처음으로 말한다. 사잇별의 땅이 안정되고 진엔딩 E003으로 이어진다.
+주인공이 이안의 “같이 가고 싶었어.”를 듣고도 바로 손을 잡지 못하는 이유를 따라가며, 자신의 별빛이 단순한 두려움의 반대편에 있는 바람임을 처음으로 말한다. 이안의 바람과 주인공의 바람이 서로를 지우지 않고 공존한 뒤, 두 사람은 현실로 함께 들어가는 것이 아니라 ‘문턱까지 함께 가는’ 형태로 S080에 진입한다.
 
 ## 본문
 
@@ -100,7 +100,29 @@
 
 이안의 열쇠가 울렸다.
 
-이번에는 아픈 소리가 아니었다. 문을 열라는 명령도 아니었다. 오래 잊고 있던 노래의 첫 음처럼, 작고 분명한 울림이 열쇠 안쪽에서 번졌다. 이안은 열쇠를 내려다보았다가 나를 보았다. 묻는 눈빛이었다. 이번에도 먼저 정하지 않겠다는 눈빛.
+이번에는 아픈 소리가 아니었다. 문을 열라는 명령도 아니었다. 오래 잊고 있던 노래의 첫 음처럼, 작고 분명한 울림이 열쇠 안쪽에서 번졌다. 이안은 열쇠를 내려다보았다가 나를 보았다. 이번에도 먼저 정하지 않겠다는 눈빛이었다. 그리고 동시에, 더 이상 아무것도 숨기지 않겠다는 눈빛이었다.
+
+“같이 가고 싶었다고 했잖아.”
+
+이안이 말했다.
+
+그는 아주 작게 웃으려다 실패했다. 웃음은 입가까지 왔다가, 오래 긴장해 있던 얼굴 위에서 어색하게 멈췄다.
+
+“지금도 그래.”
+
+가슴 안쪽이 다시 조여왔다.
+
+이안은 바로 덧붙였다.
+
+“근데 네가 나를 데려가야 하는 건 아니야.”
+
+나는 그를 보았다.
+
+이안은 열쇠를 쥔 손을 내려다보았다. 손잡이 안쪽의 녹 자국이 낮은 별빛 아래 가느다랗게 남아 있었다. 사라지지 않은 흔적. 하지만 더 이상 문을 잠그지 못하는 흔적.
+
+“내가 가고 싶었다는 것하고, 네가 나를 책임져야 한다는 건 다른 거니까.”
+
+그 말은 조금 서툴렀다. 너무 오래 말하지 않던 사람이 이제 막 자기 말의 무게를 재는 것처럼, 문장 끝이 아주 조금 흔들렸다. 하지만 그는 끝까지 말했다. 그 흔들림을 숨기지 않았다.
 
 나는 빛 쪽으로 한 걸음 다가갔다.
 
@@ -114,7 +136,9 @@
 
 열쇠 끝의 별무늬가 균열에 닿자, 빛은 문이 되었다. 갑자기 폭발하듯 열리는 문과 달랐다. 처음부터 거기에 있었지만 우리가 너무 오래 보지 못했던 틈이 천천히 넓어지는 것처럼. 문 너머에서 내 방의 공기가 더 선명하게 밀려왔다. 그 속에 아주 희미하게, 낮의 하늘에는 있을 리 없는 별빛 하나가 섞여 있었다.
 
-나는 그 빛을 보며 생각했다.
+그리고 문턱의 반대편, 우리가 지나온 어스름의 심장 쪽에서도 낮은 별빛이 길게 이어졌다.
+
+나는 그제야 알았다. 문은 한쪽으로만 열리는 구멍이 아니었다. 돌아갈 곳과 남을 곳이 서로를 완전히 지우지 않도록, 아주 잠깐 두 세계를 맞대는 자리였다.
 
 사잇별의 땅은 사라지는 곳이 아니었다.
 
@@ -122,13 +146,13 @@
 
 이안이 말했다.
 
-“가자.”
+“문턱까지만.”
 
-이번에는 명령처럼 들리지 않았다. 같이 내딛자는 말이었다.
+이번에는 명령처럼 들리지 않았다. 같이 내딛자는 말이면서, 동시에 거기서 멈출 수 있다는 말이었다.
 
 나는 고개를 끄덕였다.
 
-그리고 우리는 문 안으로 들어갔다.
+그리고 우리는 문턱을 향해 걸었다.
 
 ## 선택지
 없음. S080. 별빛이 남은 세계 진행.
@@ -140,7 +164,12 @@ S080. 별빛이 남은 세계
 도입 / 진엔딩 진입
 
 ## 삽화 필요
-선택적. 균열 앞에서 주인공과 이안이 나란히 서 있고, 이안의 회복된 열쇠가 문을 여는 순간. 현실의 따뜻한 빛과 사잇별의 낮은 별빛이 함께 섞여 있어야 한다.
+선택적. 균열 앞에서 주인공과 이안이 나란히 서 있고, 이안의 회복된 열쇠가 문을 여는 순간. 현실의 따뜻한 빛과 사잇별의 낮은 별빛이 함께 섞여 있어야 한다. 두 사람이 완전히 현실로 들어가는 장면이 아니라, 문턱을 함께 향하는 장면.
+
+English prompt for image generation:
+```text
+Watercolor and ink illustration for a literary young-adult fantasy gamebook, quiet and numinous, not cute, not chibi, not anime exaggeration, not photorealistic, not 3D. Two teens stand side by side before a glowing threshold in a twilight ice field. The protagonist is seen from behind or in understated partial view, with no clear gendered features and no detailed face, so readers can project themselves. Beside the protagonist stands a mysterious teen boy holding a restored key with a small low-star motif. The key touches a thin crack of light, and the crack opens into a doorway where warm ordinary bedroom light and cool low starlight mix without overpowering each other. They are not stepping fully into the room yet; they are approaching the threshold together. Behind them, the ice field holds faint star-like names under the surface. The composition should emphasize equal distance, no hand-holding, no pulling, no one leading the other. Mood: fragile trust, chosen separation beginning to form, calm after confession. Muted blue ice, warm amber doorway glow, fine ink outlines, soft watercolor washes.
+```
 
 ## 메모
-S075는 주인공의 별빛 선언 장면이다. 세 별조각은 두려움의 인정이고, 별빛은 그 밑에 있던 바람의 인정이다. 이안은 가르치거나 안내하지 않고 “들었어”로 응답한다. 마지막 진입은 이안이 일방적으로 데려가는 것이 아니라 두 사람이 각자의 말을 한 뒤 나란히 문을 넘는 구조로 유지한다.
+S076의 “같이 가고 싶었어.”를 받아, 이안이 자기 바람을 인정하되 주인공에게 책임을 넘기지 않는 장면이다. S080에서 이안은 현실 방 안까지 따라 들어오지 않고, 현실과 사잇별의 땅이 겹친 문턱에서 자기 자리를 선택한다.

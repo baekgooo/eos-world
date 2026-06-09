@@ -51,7 +51,7 @@ text, readable letters, watermark, signature, logo, extra fingers, distorted han
 ### 메인 프롬프트
 
 ```
-Watercolor and ink illustration, square format, atmospheric literary fantasy, matching the existing S002 reference.
+Watercolor and ink illustration, square format, atmospheric literary fantasy, matching the established watercolor-and-ink reference style.
 
 A quiet bedroom at night in deep navy and ink-black washes. Center: an old wooden window with dark ink crossbars. Outside the glass, a single small star floats impossibly close at eye level, glowing warm gold-white. The light from the star and the strange outside world rises softly upward, making the window area cold blue and luminous while the room remains dark.
 
@@ -65,7 +65,7 @@ Mood: quiet wonder, uneasy beauty, the first impossible thing. Palette: deep nav
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 멈춘 시계와 이상한 창밖 장면을 그린다. 핵심 구도는 다음과 같다: 창문 앞의 방, 낮게 떠 있는 별, 멈춘 시계. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 짙은 남색, 잉크 블랙, 차가운 창문빛, 작은 금백색 별빛을 중심으로 한 조용하고 불가사의한 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 멈춘 시계와 이상한 창밖 장면을 그린다. 핵심 구도는 다음과 같다: 창문 앞의 방, 낮게 떠 있는 별, 멈춘 시계. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 짙은 남색, 잉크 블랙, 차가운 창문빛, 작은 금백색 별빛을 중심으로 한 조용하고 불가사의한 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다.
 ```
@@ -82,19 +82,27 @@ Mood: quiet wonder, uneasy beauty, the first impossible thing. Palette: deep nav
 ```
 Watercolor and ink illustration, square format, atmospheric literary fantasy.
 
-A familiar bedroom at night, painted with deep navy watercolor shadows and loose ink linework. On a wall where no door should exist, an old narrow door has appeared, slightly ajar. The door looks real but wrong, its edges bleeding softly into the wallpaper as if the room is remembering it. Through the thin gap spills a cold silver-blue light mixed with a few warm gold star motes.
+A familiar bedroom at night, painted with deep navy watercolor shadows and loose ink linework. The ordinary bedroom door is visible off to one side, unchanged and closed, while the impossible event happens on the wall beside the bookcase. On that blank wall, a thin vertical seam has opened, as if the wallpaper first tore and then slowly widened from the inside. The seam has become the outline of a narrow door that should not exist.
 
-Foreground: the protagonist's ambiguous silhouette stands still, not touching the door yet, shoulders tense. Ordinary room details remain visible in the darkness — bed corner, desk edge, books, the stopped clock — so the impossible door feels more uncanny.
+Through the crack spills an ambiguous dusk-colored light — not yellow, not pure white, somewhere between the sky just before nightfall and the first shadow of night. Tiny star-dust motes drift out of the gap and settle on the bedroom floor. The door itself should feel real but wrong: plain and old rather than ornate, with a worn metal handle and a few tiny scratched marks below the handle, too small and blurred to read.
+
+Foreground or midground: the protagonist's ambiguous teen silhouette has taken one cautious step toward the door, shoulders tense, face turned away or obscured. Keep ordinary room details visible in the darkness — the bookcase beside the impossible door, bed corner, desk edge, scattered books — so the new door feels like a quiet violation of a real room.
 
 Character reference: If the protagonist appears, use the attached protagonist character sheet as the reference for his late-teen male hairstyle, lean build, and clothing; keep his face and expression subdued, turned away, blurred, or silhouetted in the actual illustration.
 
-Mood: hesitation before crossing a boundary, wonder with a small thread of dread. Palette follows S002: deep room navy, cold doorlight, tiny warm star sparks. No text, no watermark.
+Mood: the moment just before someone speaks from behind the crack; hesitation, uncanny wonder, and a small held breath. Palette follows the prologue bedroom mood: deep room navy, ink black, dusk-blue doorlight, tiny warm star-dust sparks. No readable text, no watermark.
 ```
 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 방 안에 없던 문 장면을 그린다. 핵심 구도는 다음과 같다: 방 안에 없던 문, 문틈의 별빛. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 짙은 남색, 잉크 블랙, 차가운 창문빛, 작은 금백색 별빛을 중심으로 한 조용하고 불가사의한 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 익숙한 밤의 방 안에서, 원래 방문은 한쪽에 그대로 닫혀 있고, 책장 옆의 빈 벽에 있어서는 안 될 문이 생겨나는 장면을 그린다. 처음에는 벽지가 찢어진 것처럼 보이는 가느다란 세로선이 벽에 생겼고, 그 선이 안쪽에서 밀리는 것처럼 조금 벌어지며 좁은 문의 윤곽이 된다. 문은 화려한 판타지 문이 아니라, 현실 방과 조용히 어긋난 낡고 평범한 문처럼 보여야 한다.
+
+문틈 사이로는 노란빛도 순백색도 아닌 애매한 어스름빛이 새어 나온다. 해가 완전히 지기 전의 하늘빛과 밤이 막 시작되기 전의 그림자가 섞인 듯한 차가운 푸른빛에, 아주 작은 별가루 같은 금백색 입자들이 흘러나와 방바닥에 내려앉는다. 문에는 낡은 금속 손잡이가 있고, 손잡이 아래에는 작게 긁힌 자국들이 있지만 실제로 읽을 수 있는 글자는 넣지 않는다.
+
+주인공은 화면 앞쪽이나 중간 거리에서 그 문 쪽으로 조심스럽게 한 걸음 다가간 실루엣으로 표현한다. 얼굴과 표정은 특정되지 않게 뒷모습, 옆모습, 흐린 그림자 중심으로 처리하고, 어깨와 몸의 긴장만 보이게 한다. 책장, 침대 모서리, 책상 끝, 흩어진 책 같은 평범한 방의 물건들이 어둠 속에 보이게 해서, 갑자기 생긴 문이 현실 방을 조용히 어긋나게 만든 느낌을 살린다.
+
+색감은 프롤로그 방 분위기 기준: 짙은 남색, 잉크 블랙, 어스름한 푸른 문틈빛, 작고 따뜻한 금백색 별가루. 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지한다. 분위기는 문턱을 넘기 전의 망설임, 문틈 뒤에서 누군가 숨을 삼키고 곧 말을 걸 것 같은 불가사의한 긴장으로 잡는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더, 치비, 애니 과장, 밝고 귀여운 카툰, 워터마크, 서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다.
 ```
@@ -109,7 +117,7 @@ Mood: hesitation before crossing a boundary, wonder with a small thread of dread
 ### 메인 프롬프트
 
 ```
-Watercolor and ink illustration, square format, atmospheric literary fantasy, matching the existing S005 reference.
+Watercolor and ink illustration, square format, atmospheric literary fantasy, matching the established Ian character reference style.
 
 A mysterious adolescent boy stands in a half-open doorway, caught in a vertical blade of cold silver light. He is slender, slightly androgynous, with dark tousled hair whose tips carry a faint gold-indigo twilight glow. One side of his face is lit, the other dissolves into blue-black shadow. His edges blur subtly in watercolor at the shoulders and sleeves, as if he is not fully present.
 
@@ -123,7 +131,7 @@ Mood: ancient, quiet, unsettling but not threatening; someone who has searched f
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 문틈에서 나타난 이안 장면을 그린다. 핵심 구도는 다음과 같다: 문틈에서 나타난 이안, 녹슨 열쇠, 어스름빛. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 짙은 남색, 잉크 블랙, 차가운 창문빛, 작은 금백색 별빛을 중심으로 한 조용하고 불가사의한 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 문틈에서 나타난 이안 장면을 그린다. 핵심 구도는 다음과 같다: 문틈에서 나타난 이안, 녹슨 열쇠, 어스름빛. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 짙은 남색, 잉크 블랙, 차가운 창문빛, 작은 금백색 별빛을 중심으로 한 조용하고 불가사의한 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -146,13 +154,13 @@ Foreground: the dark edge of the doorframe and the protagonist's partial silhoue
 
 Character reference: If the protagonist appears, use the attached protagonist character sheet as the reference for his late-teen male hairstyle, lean build, and clothing; keep his face and expression subdued, turned away, blurred, or silhouetted in the actual illustration.
 
-Mood: first glimpse of another world, fear mixed with invitation. Palette: twilight teal, muted grass green, dusky violet, warm low star gold. Keep S002/S005 ink texture but make the outside air softer and less dark. No text, no watermark.
+Mood: first glimpse of another world, fear mixed with invitation. Palette: twilight teal, muted grass green, dusky violet, warm low star gold. Keep the established watercolor-and-ink texture but make the outside air softer and less dark. No text, no watermark.
 ```
 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 문밖을 직접 살핀다 장면을 그린다. 핵심 구도는 다음과 같다: 문틈 너머 낮은 별과 어스름 풀밭. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 짙은 남색, 잉크 블랙, 차가운 창문빛, 작은 금백색 별빛을 중심으로 한 조용하고 불가사의한 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 문밖을 직접 살피는 장면을 그린다. 핵심 구도는 다음과 같다: 어두운 방 안의 문틀 너머로 보이는 어스름 풀밭, 낮게 떠 있는 별, 종이처럼 접힌 먼 산맥, 하늘 쪽으로 거꾸로 올라가는 강. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 방 안쪽은 짙은 남색과 잉크 블랙으로 어둡게 두고, 문밖 세계는 어스름한 청록, 부드러운 풀빛, 흐린 보라, 따뜻한 낮은 별빛으로 더 숨 쉴 수 있게 밝힌다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 처음 보는 세계의 조용한 초대와 불안을 함께 느끼게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다.
 ```
@@ -181,7 +189,7 @@ Mood: disorientation, wonder, the first breath in a new world. Palette: dusky te
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 낮은 별 아래로 떨어지다 장면을 그린다. 핵심 구도는 다음과 같다: 낮은 별 아래 풀밭에 떨어진 주인공과 이안. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 짙은 남색, 잉크 블랙, 차가운 창문빛, 작은 금백색 별빛을 중심으로 한 조용하고 불가사의한 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 낮은 별 아래 풀밭에 떨어진 직후의 장면을 그린다. 핵심 구도는 다음과 같다: 축축한 풀밭에 무릎이나 손을 짚은 주인공 실루엣, 조금 떨어져 조용히 서 있는 이안, 풀잎 사이와 낮은 하늘에 떠 있는 작은 별들. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 색감은 어스름한 청록, 검푸른 풀빛, 부드러운 보라, 젖은 흙의 어두운 녹색, 따뜻한 금백색 낮은 별빛으로 잡는다. 방 장면보다 공기가 열려 있고, 낯선 세계에 처음 숨을 들이마시는 느낌이 나야 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -196,21 +204,33 @@ Mood: disorientation, wonder, the first breath in a new world. Palette: dusky te
 ### 메인 프롬프트
 
 ```
-Watercolor and ink illustration, square format, atmospheric gamebook fantasy.
+Watercolor and ink illustration, square format, atmospheric literary fantasy.
 
-A three-way path in a twilight meadow. The protagonist and Ian stand small in the lower foreground before three narrow paths splitting into mist. Low stars hover just above the grass, and one warm star seems to point toward the correct path. Two old signposts lean near the fork, their surfaces weathered and unreadable from the viewer's distance.
+A wide traveling scene in a twilight meadow in the land between reality and dream, before the characters fully arrive at the puzzle. The protagonist and Ian are small figures walking after a low floating star through grass that opens only a few steps ahead of them. Behind them, the grass has already closed cleanly, leaving no trace of the protagonist's footprints. Near Ian's feet, show only a few faint marks like pale water stains drying on old paper, almost disappearing.
 
-The landscape is brighter than the room scenes: misty teal air, muted grass green, violet-blue shadows, and gentle gold-white star glows. Use expressive ink lines for the signposts, grass blades, and silhouettes, with soft watercolor bleeding in the sky and paths.
+The low star is the main focus: it hovers just above the grass at walking height, not a perfect round orb but a small gold-white shape like a star drawn on trembling water, its edges softly wavering as it leads the way. The path should feel temporary and alive, sliding open through the grass.
+
+Make the strange world larger than the puzzle: far above the dusky hills, a river flows upward into the sky. Somewhere near the protagonist's next step, a thin black thread-like crack hides between grass blades, barely visible. The three-way fork and the old signboards should appear only in the far distance as small silhouettes or a vague destination, not as the central subject; do not include the small stone clue in this image.
+
+Palette: twilight teal, muted grass green, dusky violet, blue-gray shadows, warm gold-white low-star light. Use wet watercolor blooms, paper texture, and fine ink lines for grass, the wavering star, the temporary path, and the two quiet silhouettes.
 
 Character reference: If the protagonist appears, use the attached protagonist character sheet as the reference for his late-teen male hairstyle, lean build, and clothing; keep his face and expression subdued, turned away, blurred, or silhouetted in the actual illustration. If Ian appears, use the attached Ian character sheet as the reference for Ian's hairstyle, slim build, clothing, and rusty key.
 
-Mood: choosing a direction for the first time, quiet adventure rather than danger. No readable text on signs, no watermark.
+Mood: uncanny wonder during the first walk through the new world, a quiet moving journey rather than a puzzle close-up. This must be an outdoor meadow scene only: no bedroom, no interior wall, no door, no doorway, no doorframe, no portal, no glowing crack in a wall. No readable text, no watermark.
 ```
 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 낮은 별이 가리키는 길 장면을 그린다. 핵심 구도는 다음과 같다: 세 갈래 길 앞에 선 주인공과 이안, 낮은 별, 두 표지판. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 어스름한 청록, 부드러운 풀빛, 흐린 보라, 낮게 뜬 따뜻한 별빛을 중심으로 한 낯선 야외 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 주인공과 이안이 낮은 별을 따라 풀밭 사이를 걸어가는 넓은 이동 장면을 그린다. 아직 퍼즐의 단서에 가까이 도착한 장면이 아니라, 사잇별의 땅을 처음 걸으며 이 세계의 규칙을 몸으로 느끼는 장면이다. 시점은 두 인물의 뒤쪽 또는 옆뒤쪽에서 바라보는 구도. 두 인물은 화면 아래쪽이나 중간 거리의 작은 실루엣으로 두고, 낮은 별과 이상한 풀길, 하늘로 흐르는 강이 장면의 중심이 되게 한다.
+
+장면의 핵심은 사잇별의 땅의 이상한 규칙이다. 풀밭은 두 사람 앞에서만 길처럼 갈라지고, 지나온 뒤쪽은 다시 닫혀 주인공의 발자국이 전혀 남지 않는다. 반면 이안의 발밑에는 오래전 물에 젖었던 종이가 마르며 남긴 얼룩 같은 희미한 자국이 몇 개만 거의 사라지듯 남아 있다. 풀잎 사이에는 발밑의 위험을 암시하는 가느다란 검은 실 같은 틈이 숨어 있고, 먼 산등성이 위로는 강물이 하늘 쪽으로 거꾸로 흘러 올라간다.
+
+화면의 중심에는 손바닥보다 조금 큰 낮은 별이 풀 위에 낮게 떠서 길을 이끈다. 별은 완전한 둥근 빛덩어리가 아니라, 물 위에 그린 별 모양이 천천히 흔들리는 듯한 금백색 빛으로 표현한다. 길은 살아 있는 풀밭이 앞쪽에서만 조용히 열리는 느낌이어야 한다. 세 갈래 길과 낡은 표지판은 멀리 있는 작은 실루엣이나 희미한 목적지 정도로만 보이게 하고, 이 이미지에서는 작은 돌 단서를 넣지 않는다.
+
+색감은 어스름한 청록, 부드러운 풀빛, 흐린 보라, 푸른 회색 그림자, 낮게 뜬 따뜻한 금백색 별빛. 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 방 장면보다 숨 쉴 수 있는 야외의 밝기를 남긴다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 낯설고 아름다운 문학적 판타지와 첫 이동의 조용한 경이로 잡는다.
+
+표지판이 멀리 보이더라도 실제로 읽을 수 있는 글자는 넣지 말고, 글씨가 있을 듯한 추상적인 잉크 자국만 표현한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더, 치비, 애니 과장, 밝고 귀여운 카툰, 워터마크, 서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -227,19 +247,27 @@ Mood: choosing a direction for the first time, quiet adventure rather than dange
 ```
 Watercolor and ink illustration, square format, close-up fantasy puzzle scene.
 
-A close view of three weathered signboards at a twilight path fork. Their boards are old wood with inked cracks, but do not render readable words. Near the base lies a small ordinary stone, subtly important, catching a faint warm glimmer from behind the sign. Behind the signpost, almost hidden, is a tiny low-star sparkle.
+A low, close view at the base of two old weathered signboards standing between the paths. The signboards point in opposite directions, but their words are not readable; suggest writing only as blurred abstract ink strokes on cracked wood. The main focus is a small half-buried stone between the two posts, almost hidden by grass blades. The stone is ordinary and easy to miss, but a tiny warm gold-white glimmer catches its edge.
 
-Keep the scene luminous and natural: damp grass in muted green-teal, dusky lavender shadows, soft gold-white glints. The protagonist and Ian may appear as small blurred silhouettes in the background, but the signpost, stone, and hidden light are the focus.
+Compose the image like a clue being discovered: foreground grass large and detailed, the small stone near the lower center, two leaning wooden signboards rising above it, and a faint low-star sparkle peeking from behind the signboards. The three path choices should be implied by dark and light gaps in the background, not shown as a wide landscape. The protagonist may appear only as a partial blurred hand or knee at the edge, as if bending down to look; Ian may be a soft shadow behind the signboards. Do not make the characters the focus.
+
+Keep the scene luminous but intimate: damp grass in muted green-teal, dusky lavender shadows, soft gold-white glints, ink cracks in wood, delicate texture on the stone. This image is about noticing the small hidden clue, not the journey across the meadow.
 
 Character reference: If the protagonist appears, use the attached protagonist character sheet as the reference for his late-teen male hairstyle, lean build, and clothing; keep his face and expression subdued, turned away, blurred, or silhouetted in the actual illustration. If Ian appears, use the attached Ian character sheet as the reference for Ian's hairstyle, slim build, clothing, and rusty key.
 
-Mood: quiet noticing, a puzzle clue waiting to be seen. Watercolor washes, ink details, no text, no watermark.
+Mood: quiet concentration, a puzzle clue waiting to be seen. Watercolor washes, ink details. This must be an outdoor ground-level scene at the base of signboards: no bedroom, no interior wall, no door, no doorway, no doorframe, no portal, no glowing crack in a wall. No readable text, no watermark.
 ```
 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 세 갈래 표지판 장면을 그린다. 핵심 구도는 다음과 같다: 세 갈래 표지판, 작은 돌, 표지판 뒤쪽의 희미한 반짝임. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 어스름한 청록, 부드러운 풀빛, 흐린 보라, 낮게 뜬 따뜻한 별빛을 중심으로 한 낯선 야외 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 세 갈래 길 전체를 멀리 보여주는 장면이 아니라, 표지판 아래에 숨은 작은 단서를 가까이 들여다보는 클로즈업 장면을 그린다. 화면의 중심은 서로 반대 방향을 가리키는 낡은 표지판 두 개와, 그 사이 풀잎에 반쯤 묻힌 작은 돌 하나다. 표지판의 나무결과 갈라진 잉크 자국은 보이지만, 실제로 읽을 수 있는 글자는 절대 넣지 않는다.
+
+구도는 낮고 가까운 시점이다. 앞쪽 풀잎은 크게 보이고, 작은 돌은 화면 아래쪽 중앙 근처에서 거의 놓치기 쉬운 크기로 놓인다. 돌 가장자리에는 아주 약한 금백색 빛이 닿아 있어, 평범하지만 중요한 단서처럼 느껴지게 한다. 두 표지판은 화면 위쪽으로 비스듬히 솟아 있고, 표지판 뒤쪽에는 낮은 별빛 하나가 아주 작게 숨어 반짝인다. 세 갈래 길은 배경의 어둡고 밝은 틈으로만 암시하고, 넓은 풍경이나 이동 장면처럼 보이지 않게 한다.
+
+주인공과 이안은 이 이미지의 중심이 아니다. 주인공은 화면 가장자리에 흐릿한 손끝이나 무릎 일부만 보여, 허리를 숙여 돌을 살피는 느낌이면 충분하다. 이안은 표지판 뒤쪽의 부드러운 그림자 정도로만 남겨도 된다. 이 장면은 두 사람이 걷는 장면이 아니라, 큰 표지판보다 작고 낮은 돌을 알아차리는 순간이다.
+
+색감은 어스름한 청록, 젖은 풀빛, 흐린 보라 그림자, 부드러운 금백색 반짝임. 수채 번짐, 종이 질감, 섬세한 잉크 선으로 풀잎, 나무 표지판의 갈라짐, 작은 돌의 표면을 자세히 살린다. 분위기는 조용한 집중, 숨은 단서를 발견하기 직전의 문학적 판타지로 잡는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더, 치비, 애니 과장, 밝고 귀여운 카툰, 워터마크, 서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -268,7 +296,7 @@ Mood: antique, polite, suspiciously safe. Not horror, not bright cartoon. No rea
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 초저녁 정거장의 불빛 장면을 그린다. 핵심 구도는 다음과 같다: 선로 없는 초저녁 정거장, 여러 개의 시계, 친절한 역무원 실루엣. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 초저녁 정거장의 불빛 장면을 그린다. 핵심 구도는 다음과 같다: 선로 없는 초저녁 정거장, 여러 개의 시계, 친절한 역무원 실루엣. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -297,7 +325,7 @@ Mood: helpful information that may not be safe. No readable text, no watermark.
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 말하는 시간표 장면을 그린다. 핵심 구도는 다음과 같다: 말하는 시간표 앞에 선 주인공, 웃는 역무원, 경계하는 이안. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 말하는 시간표 장면을 그린다. 핵심 구도는 다음과 같다: 말하는 시간표 앞에 선 주인공, 웃는 역무원, 경계하는 이안. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -326,7 +354,7 @@ Mood: the word "safe" beginning to feel like a trap. Watercolor and ink texture,
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 너무 안전하다는 말 장면을 그린다. 핵심 구도는 다음과 같다: 웃는 역무원과 굳은 이안, 바닥 물에 비친 새장 그림자. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 너무 안전하다는 말 장면을 그린다. 핵심 구도는 다음과 같다: 웃는 역무원과 굳은 이안, 바닥 물에 비친 새장 그림자. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -355,7 +383,7 @@ Mood: bureaucratic politeness turning predatory. Watercolor washes, ink details,
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 역무원을 따른다 장면을 그린다. 핵심 구도는 다음과 같다: 이름 빈칸이 입처럼 벌어지는 임시 보관표. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 역무원을 따른다 장면을 그린다. 핵심 구도는 다음과 같다: 이름 빈칸이 입처럼 벌어지는 임시 보관표. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -384,7 +412,7 @@ Mood: a tiny honest voice inside a place of traps. Watercolor and ink, delicate 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 매표소 안쪽의 작은 목소리 장면을 그린다. 핵심 구도는 다음과 같다: 닫힌 매표소 틈으로 나온 작은 종이표. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 매표소 안쪽의 작은 목소리 장면을 그린다. 핵심 구도는 다음과 같다: 닫힌 매표소 틈으로 나온 작은 종이표. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -413,7 +441,7 @@ Mood: concentration, decoding, a path through confusion. No readable text, no wa
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 시간표 해독 장면을 그린다. 핵심 구도는 다음과 같다: 세 승강장 안내가 적힌 말하는 시간표. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 시간표 해독 장면을 그린다. 핵심 구도는 다음과 같다: 세 승강장 안내가 적힌 말하는 시간표. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -442,7 +470,7 @@ Mood: departure by an impossible vehicle, beautiful and uncanny. Watercolor and 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 거울숲으로 가는 표 장면을 그린다. 핵심 구도는 다음과 같다: 검은 물길 위에 떠내려온 거울 손잡이 문. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 거울숲으로 가는 표 장면을 그린다. 핵심 구도는 다음과 같다: 검은 물길 위에 떠내려온 거울 손잡이 문. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -471,7 +499,7 @@ Mood: a small honest craft in a suspicious place. No text, no watermark.
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 표지판 수선공 장면을 그린다. 핵심 구도는 다음과 같다: 승강장 기둥 아래에서 작은 글씨를 고치는 표지판 수선공. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 표지판 수선공 장면을 그린다. 핵심 구도는 다음과 같다: 승강장 기둥 아래에서 작은 글씨를 고치는 표지판 수선공. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 스모키 앰버, 오래된 종이색, 낡은 황동, 철도 녹색, 푸른 그림자를 중심으로 한 수상한 정거장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -500,7 +528,7 @@ Mood: beautiful, cold, self-conscious, uncanny. Palette: luminous misty silver, 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 거울이 매달린 숲 장면을 그린다. 핵심 구도는 다음과 같다: 비 젖은 숲속 나뭇가지마다 거울들이 매달려 있고, 가장 가까운 거울 속에는 숲 대신 늦게 웃는 주인공의 얼굴이 겹쳐 보이는 장면. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 환한 은빛, 옅은 아쿠아, 젖은 녹회색, 유리와 거울의 반사광을 중심으로 한 밝고 차가운 거울숲 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 거울이 매달린 숲 장면을 그린다. 핵심 구도는 다음과 같다: 비 젖은 숲속 나뭇가지마다 거울들이 매달려 있고, 가장 가까운 거울 속에는 숲 대신 늦게 웃는 주인공의 얼굴이 겹쳐 보이는 장면. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 환한 은빛, 옅은 아쿠아, 젖은 녹회색, 유리와 거울의 반사광을 중심으로 한 밝고 차가운 거울숲 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -529,7 +557,7 @@ Mood: being judged by versions of yourself. Elegant and eerie, not horror. No te
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 나를 따라오는 다른 나 장면을 그린다. 핵심 구도는 다음과 같다: 젖은 숲길 양쪽의 작은 거울들 속에서 서로 다른 순간의 주인공이 다른 표정으로 따라오는 장면. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 환한 은빛, 옅은 아쿠아, 젖은 녹회색, 유리와 거울의 반사광을 중심으로 한 밝고 차가운 거울숲 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 나를 따라오는 다른 나 장면을 그린다. 핵심 구도는 다음과 같다: 젖은 숲길 양쪽의 작은 거울들 속에서 서로 다른 순간의 주인공이 다른 표정으로 따라오는 장면. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 환한 은빛, 옅은 아쿠아, 젖은 녹회색, 유리와 거울의 반사광을 중심으로 한 밝고 차가운 거울숲 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -558,7 +586,7 @@ Mood: choosing which truth to face. Beautiful, tense, quiet. No readable text, n
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 세 개의 거울 장면을 그린다. 핵심 구도는 다음과 같다: 세 개의 거울 앞에 선 주인공과 한 걸음 물러선 이안. 왼쪽은 밝고 매끈한 거울, 가운데는 검은 빈 거울, 오른쪽은 금이 간 흐린 거울. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 환한 은빛, 옅은 아쿠아, 젖은 녹회색, 유리와 거울의 반사광을 중심으로 한 밝고 차가운 거울숲 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 세 개의 거울 장면을 그린다. 핵심 구도는 다음과 같다: 세 개의 거울 앞에 선 주인공과 한 걸음 물러선 이안. 왼쪽은 밝고 매끈한 거울, 가운데는 검은 빈 거울, 오른쪽은 금이 간 흐린 거울. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 환한 은빛, 옅은 아쿠아, 젖은 녹회색, 유리와 거울의 반사광을 중심으로 한 밝고 차가운 거울숲 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -587,7 +615,7 @@ Mood: a small truth accepted, fragile relief. Palette: silver, pale aqua, wet gr
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 첫 번째 별조각 장면을 그린다. 핵심 구도는 다음과 같다: 젖은 유리 조각 같은 별조각이 주인공 손바닥 위에 내려앉고, 숲의 거울들이 희미하게 빛나는 장면. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 환한 은빛, 옅은 아쿠아, 젖은 녹회색, 유리와 거울의 반사광을 중심으로 한 밝고 차가운 거울숲 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 첫 번째 별조각 장면을 그린다. 핵심 구도는 다음과 같다: 젖은 유리 조각 같은 별조각이 주인공 손바닥 위에 내려앉고, 숲의 거울들이 희미하게 빛나는 장면. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 환한 은빛, 옅은 아쿠아, 젖은 녹회색, 유리와 거울의 반사광을 중심으로 한 밝고 차가운 거울숲 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다.
 ```
@@ -616,7 +644,7 @@ Mood: alluring bargains, missing identities, a beautiful trap. Watercolor and in
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 이름 없는 간판들 장면을 그린다. 핵심 구도는 다음과 같다: 이름이 긁혀 나간 간판들이 늘어선 시장 골목. 별빛이 바닥에 낮게 고여 있음. 중경에 윤곽이 흐릿한 사람들이 서성거리는 모습. 어둡고 공기가 무거운 분위기. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 버건디 천막, 오래된 금빛, 먼지 낀 보라, 병유리 초록, 남색 그림자를 중심으로 한 어두우면서도 색이 살아 있는 시장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 이름 없는 간판들 장면을 그린다. 핵심 구도는 다음과 같다: 이름이 긁혀 나간 간판들이 늘어선 시장 골목. 별빛이 바닥에 낮게 고여 있음. 중경에 윤곽이 흐릿한 사람들이 서성거리는 모습. 어둡고 공기가 무거운 분위기. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 버건디 천막, 오래된 금빛, 먼지 낀 보라, 병유리 초록, 남색 그림자를 중심으로 한 어두우면서도 색이 살아 있는 시장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -645,7 +673,7 @@ Mood: fragile trust inside a place of transactions. Watercolor blooms, expressiv
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 이름 수집가 아이 장면을 그린다. 핵심 구도는 다음과 같다: 이름 수집가 아이가 이안에게 별빛 조각을 보여주는 장면. 이안의 측면 또는 뒷모습. 아이는 작고 조심스럽다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 버건디 천막, 오래된 금빛, 먼지 낀 보라, 병유리 초록, 남색 그림자를 중심으로 한 어두우면서도 색이 살아 있는 시장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 이름 수집가 아이 장면을 그린다. 핵심 구도는 다음과 같다: 이름 수집가 아이가 이안에게 별빛 조각을 보여주는 장면. 이안의 측면 또는 뒷모습. 아이는 작고 조심스럽다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 버건디 천막, 오래된 금빛, 먼지 낀 보라, 병유리 초록, 남색 그림자를 중심으로 한 어두우면서도 색이 살아 있는 시장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -674,7 +702,7 @@ Mood: piecing together a hidden chain, suspicion becoming understanding. No text
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 별조각 거래 연쇄 추적 장면을 그린다. 핵심 구도는 다음과 같다: 낡은 거래 기록판 앞에 선 주인공. 복잡한 기록들이 담긴 게시판. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 버건디 천막, 오래된 금빛, 먼지 낀 보라, 병유리 초록, 남색 그림자를 중심으로 한 어두우면서도 색이 살아 있는 시장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 별조각 거래 연쇄 추적 장면을 그린다. 핵심 구도는 다음과 같다: 낡은 거래 기록판 앞에 선 주인공. 복잡한 기록들이 담긴 게시판. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 버건디 천막, 오래된 금빛, 먼지 낀 보라, 병유리 초록, 남색 그림자를 중심으로 한 어두우면서도 색이 살아 있는 시장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -703,7 +731,7 @@ Mood: the danger of selling what should not be sold. Watercolor and ink, no read
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 팔면 안 되는 것 장면을 그린다. 핵심 구도는 다음과 같다: 말없는 여자의 가판대 앞, 이안이 쪽지 쪽으로 손을 뻗으려는 순간. 주인공이 이안의 옆에서 입을 열려는 찰나. 빛이 낮게 깔린 어두운 분위기. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 버건디 천막, 오래된 금빛, 먼지 낀 보라, 병유리 초록, 남색 그림자를 중심으로 한 어두우면서도 색이 살아 있는 시장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 팔면 안 되는 것 장면을 그린다. 핵심 구도는 다음과 같다: 말없는 여자의 가판대 앞, 이안이 쪽지 쪽으로 손을 뻗으려는 순간. 주인공이 이안의 옆에서 입을 열려는 찰나. 빛이 낮게 깔린 어두운 분위기. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 버건디 천막, 오래된 금빛, 먼지 낀 보라, 병유리 초록, 남색 그림자를 중심으로 한 어두우면서도 색이 살아 있는 시장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 표지판, 시간표, 종이, 간판에는 읽을 수 있는 글자를 넣지 않는다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -732,7 +760,7 @@ Mood: separation before ascent, unspoken worry. Watercolor and ink, quiet and so
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 이안이 남는다 장면을 그린다. 핵심 구도는 다음과 같다: 탑 입구 앞에 선 두 사람. 빛이 주인공의 윤곽을 또렷하게 밝히고 있고, 이안은 같은 빛 속에서 가장자리가 흐릿하게 번지고 있다. 이안의 손에 열쇠. 두 사람 사이의 빛의 차이가 핵심. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 달빛 석회색, 보랏빛 검정, 채도 낮은 파랑, 차가운 흰 바닥빛을 중심으로 한 밤끝탑 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 이안이 남는다 장면을 그린다. 핵심 구도는 다음과 같다: 탑 입구 앞에 선 두 사람. 빛이 주인공의 윤곽을 또렷하게 밝히고 있고, 이안은 같은 빛 속에서 가장자리가 흐릿하게 번지고 있다. 이안의 손에 열쇠. 두 사람 사이의 빛의 차이가 핵심. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 달빛 석회색, 보랏빛 검정, 채도 낮은 파랑, 차가운 흰 바닥빛을 중심으로 한 밤끝탑 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -761,7 +789,7 @@ Mood: inner voices becoming architecture, lonely choice. No text, no watermark.
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 세 개의 목소리 장면을 그린다. 핵심 구도는 다음과 같다: 아무것도 쓰여 있지 않은 세 개의 문. 앞에 홀로 서 있는 주인공의 뒷모습. 문들이 전부 같은 크기, 같은 높이지만 재질이 미묘하게 다르다. 바닥에서 희미한 빛이 올라오고 있다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 달빛 석회색, 보랏빛 검정, 채도 낮은 파랑, 차가운 흰 바닥빛을 중심으로 한 밤끝탑 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 세 개의 목소리 장면을 그린다. 핵심 구도는 다음과 같다: 아무것도 쓰여 있지 않은 세 개의 문. 앞에 홀로 서 있는 주인공의 뒷모습. 문들이 전부 같은 크기, 같은 높이지만 재질이 미묘하게 다르다. 바닥에서 희미한 빛이 올라오고 있다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 달빛 석회색, 보랏빛 검정, 채도 낮은 파랑, 차가운 흰 바닥빛을 중심으로 한 밤끝탑 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다.
 ```
@@ -790,7 +818,7 @@ Mood: denial made visible, confronting the self that gave up feeling. Palette: m
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 또 다른 나, 부정의 방 장면을 그린다. 핵심 구도는 다음과 같다: 표정 없는 또 다른 나. 서로를 마주보고 있는 두 사람. 같은 얼굴인데 한 쪽은 눈빛이 살아 있고 다른 한 쪽은 꺼져 있다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 달빛 석회색, 보랏빛 검정, 채도 낮은 파랑, 차가운 흰 바닥빛을 중심으로 한 밤끝탑 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 또 다른 나, 부정의 방 장면을 그린다. 핵심 구도는 다음과 같다: 표정 없는 또 다른 나. 서로를 마주보고 있는 두 사람. 같은 얼굴인데 한 쪽은 눈빛이 살아 있고 다른 한 쪽은 꺼져 있다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 달빛 석회색, 보랏빛 검정, 채도 낮은 파랑, 차가운 흰 바닥빛을 중심으로 한 밤끝탑 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다.
 ```
@@ -819,7 +847,7 @@ Mood: fear acknowledged, choices gathered, quiet power. Watercolor and ink, lumi
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 세 번째 별조각 장면을 그린다. 핵심 구도는 다음과 같다: 손바닥 위에 세 개의 별조각. 각자 다른 형태와 질감을 가지고 있지만 함께 있으면 하나처럼 박동하는 느낌이 있어야 한다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 달빛 석회색, 보랏빛 검정, 채도 낮은 파랑, 차가운 흰 바닥빛을 중심으로 한 밤끝탑 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 세 번째 별조각 장면을 그린다. 핵심 구도는 다음과 같다: 손바닥 위에 세 개의 별조각. 각자 다른 형태와 질감을 가지고 있지만 함께 있으면 하나처럼 박동하는 느낌이 있어야 한다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 달빛 석회색, 보랏빛 검정, 채도 낮은 파랑, 차가운 흰 바닥빛을 중심으로 한 밤끝탑 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다.
 ```
@@ -848,7 +876,7 @@ Mood: almost home, but blocked by a rule. No readable text, no watermark.
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 다시 나타난 현실의 문 장면을 그린다. 핵심 구도는 다음과 같다: 허공이 네모나게 도려내지듯 열리고, 그 틈에서 낡은 도장을 든 까칠한 문지기가 고개를 내미는 장면. 주인공의 손에는 세 별조각이 빛나고, 뒤쪽에는 말없이 굳어 있는 이안. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 다시 나타난 현실의 문 장면을 그린다. 핵심 구도는 다음과 같다: 허공이 네모나게 도려내지듯 열리고, 그 틈에서 낡은 도장을 든 까칠한 문지기가 고개를 내미는 장면. 주인공의 손에는 세 별조각이 빛나고, 뒤쪽에는 말없이 굳어 있는 이안. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -877,7 +905,7 @@ Mood: a door that opens for one but not the other. No text, no watermark.
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 문지기의 심사 장면을 그린다. 핵심 구도는 다음과 같다: 문지기가 이안을 심사하듯 바라보고, 이안의 발밑에서 불꽃이 꺼지는 장면. 문빛은 주인공에게는 닿지만 이안에게는 스며들어 윤곽을 흐리게 한다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 문지기의 심사 장면을 그린다. 핵심 구도는 다음과 같다: 문지기가 이안을 심사하듯 바라보고, 이안의 발밑에서 불꽃이 꺼지는 장면. 문빛은 주인공에게는 닿지만 이안에게는 스며들어 윤곽을 흐리게 한다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -906,7 +934,7 @@ Mood: a secret object answering before its owner speaks. Watercolor and ink, no 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 말하지 않은 열쇠 장면을 그린다. 핵심 구도는 다음과 같다: 주인공의 세 별조각과 이안의 녹슨 열쇠가 서로 반응하는 장면. 이안은 손을 숨기려 하고, 문지기는 귀찮고 날카로운 표정으로 도장을 든다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 말하지 않은 열쇠 장면을 그린다. 핵심 구도는 다음과 같다: 주인공의 세 별조각과 이안의 녹슨 열쇠가 서로 반응하는 장면. 이안은 손을 숨기려 하고, 문지기는 귀찮고 날카로운 표정으로 도장을 든다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -935,7 +963,7 @@ Mood: the past showing itself because it was never spoken. Not horror, not villa
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 이번에도 말하지 않은 아이 장면을 그린다. 핵심 구도는 다음과 같다: 귀환문 표면에 어린 이안과 얼굴 없는 옛 동행자의 장면이 물막처럼 비치는 순간. 어린 이안은 열쇠를 등 뒤로 숨기고 있다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 이번에도 말하지 않은 아이 장면을 그린다. 핵심 구도는 다음과 같다: 귀환문 표면에 어린 이안과 얼굴 없는 옛 동행자의 장면이 물막처럼 비치는 순간. 어린 이안은 열쇠를 등 뒤로 숨기고 있다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -964,7 +992,7 @@ Mood: home is open, but someone is still left behind. No text, no watermark.
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 열린 방과 남겨진 문턱 장면을 그린다. 핵심 구도는 다음과 같다: 열린 귀환문 너머로 따뜻한 방의 빛이 보이고, 반대편 흐릿한 사잇별의 땅 깊은 곳으로 가는 가는 빛줄기가 나타나는 장면. 주인공은 문턱 앞에 서 있고, 이안은 말없이 기다린다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 열린 방과 남겨진 문턱 장면을 그린다. 핵심 구도는 다음과 같다: 열린 귀환문 너머로 따뜻한 방의 빛이 보이고, 반대편 흐릿한 사잇별의 땅 깊은 곳으로 가는 가는 빛줄기가 나타나는 장면. 주인공은 문턱 앞에 서 있고, 이안은 말없이 기다린다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -993,7 +1021,7 @@ Mood: relief mixed with the hollow shape of someone left behind. Gentle, not mel
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 혼자 돌아온 방 장면을 그린다. 핵심 구도는 다음과 같다: 현실의 방으로 돌아온 주인공이 문이 사라진 벽을 만지는 장면. 방은 평범하지만, 벽 근처에 아주 희미한 낮은 별빛의 잔상이 느껴진다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 따뜻한 문턱의 크림빛, 양피지색, 황동 도장, 청록 그림자를 중심으로 한 귀환문 심사 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 혼자 돌아온 방 장면을 그린다. 핵심 구도는 다음과 같다: 현실의 방으로 돌아온 주인공이 문이 사라진 벽을 만지는 장면. 방은 평범하고 조용하며, 벽 근처에 아주 희미한 낮은 별빛의 잔상만 남아 있다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 색감은 따뜻한 현실 조명, 부드러운 베이지, 나무색, muted blue shadow, 벽 가장자리의 아주 약한 금백색 별빛 잔상으로 잡는다. 귀환문 심사 장면처럼 보이지 않게 하고, 혼자 돌아온 뒤의 조용한 여운과 현실의 무게가 중심이 되게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1022,7 +1050,7 @@ Mood: awe, cold pressure, the beauty of a frozen wound. No text, no watermark.
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 어스름의 심장 장면을 그린다. 핵심 구도는 다음과 같다: 얼어붙은 어스름의 심장 전경. 짙은 남색과 보랏빛의 얼음 벌판, 얼음 속에 갇힌 작은 별빛과 보석 같은 기억조각들. 주인공과 이안은 작게 서 있고, 이안의 손에는 녹슨 열쇠가 희미하게 떨린다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 어스름의 심장 장면을 그린다. 핵심 구도는 다음과 같다: 얼어붙은 어스름의 심장 전경. 짙은 남색과 보랏빛의 얼음 벌판, 얼음 속에 갇힌 작은 별빛과 보석 같은 기억조각들. 주인공과 이안은 작게 서 있고, 이안의 손에는 녹슨 열쇠가 희미하게 떨린다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1051,7 +1079,7 @@ Mood: an ordinary small silence preserved forever. Watercolor and ink, no readab
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 기억 조각 ①. 같이 걷던 시절 장면을 그린다. 핵심 구도는 다음과 같다: S072.png. 두 인물이 나란히 걷는 얼어붙은 기억. 동행자는 얼굴 없는 실루엣으로 앞을 보며 말하고, 어린 이안은 반걸음 뒤에서 입을 열려다 멈춘다. 열쇠는 아직 녹슬지 않았고, 장면 전체는 투명한 얼음/보석 안에 갇혀 있는 느낌. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 기억 조각 ①. 같이 걷던 시절 장면을 그린다. 핵심 구도는 다음과 같다: 두 인물이 나란히 걷는 얼어붙은 기억. 동행자는 얼굴 없는 실루엣으로 앞을 보며 말하고, 어린 이안은 반걸음 뒤에서 입을 열려다 멈춘다. 열쇠는 아직 녹슬지 않았고, 장면 전체는 투명한 얼음/보석 안에 갇혀 있는 느낌. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1080,7 +1108,7 @@ Mood: wanting to speak, retreating before anger. No readable labels or text, no 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 기억 조각 ②. 숨은이름 시장에서 물러난 발 장면을 그린다. 핵심 구도는 다음과 같다: S073.png. 숨은이름 시장의 기억 조각. 상인은 유리병을 내밀고, 얼굴 흐릿한 동행자는 잊고 싶은 감정을 팔려 한다. 어린 이안은 한 손에 아직 덜 녹슨 열쇠를 쥔 채 “그거 넘기면 안 돼”라고 막으려 하지만, 동행자의 분노 앞에서 한 걸음 물러나는 순간. 시장은 오래된 천막, 유리병, 낮은 금빛과 남색 그림자로 구성. 이안의 몸 전체에 멈춤의 긴장이 보여야 한다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 기억 조각 ②. 숨은이름 시장에서 물러난 발 장면을 그린다. 핵심 구도는 다음과 같다: 숨은이름 시장의 기억 조각. 상인은 유리병을 내밀고, 얼굴 흐릿한 동행자는 잊고 싶은 감정을 팔려 한다. 어린 이안은 한 손에 아직 덜 녹슨 열쇠를 쥔 채 막으려 하지만, 동행자의 분노 앞에서 한 걸음 물러나는 순간이다. 말풍선이나 실제 대사는 넣지 말고, 막으려다 멈춘 몸짓과 물러나는 발로 표현한다. 시장은 오래된 천막, 유리병, 낮은 금빛과 남색 그림자로 구성. 이안의 몸 전체에 멈춤의 긴장이 보여야 한다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1109,7 +1137,7 @@ Mood: the last chance passing in silence. Watercolor and ink, no readable text, 
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 기억 조각 ③. 현실로 돌아간 동행자 장면을 그린다. 핵심 구도는 다음과 같다: S074.png. 현실로 돌아가는 문 앞의 얼어붙은 기억. 문 안쪽에서는 따뜻한 현실의 흰빛이 새어 나오고, 얼굴이 흐릿한 동행자는 한 발을 문 안에 들여놓은 채 “고마워. 이안.”이라고 말하려 한다. 어린 이안은 문턱 바깥에 서서 녹슬기 시작한 열쇠를 쥐고 있고, 입술은 열렸지만 말은 나오지 않는다. 얼음 표면에는 “나도 가고 싶어 / 나도 이름을 잃어가 / 나를 혼자 두지 마”라는 문장들이 흠집처럼 희미하게 떠 있다. 동행자는 악역처럼 보이지 않되, 이미 자기 빛 쪽으로 기울어진 몸짓이어야 한다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 얼음 표면의 문장들은 읽을 수 있는 글자가 아니라 흠집 같은 흔적으로만 표현한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 기억 조각 ③. 현실로 돌아간 동행자 장면을 그린다. 핵심 구도는 다음과 같다: 현실로 돌아가는 문 앞의 얼어붙은 기억. 문 안쪽에서는 따뜻한 현실의 흰빛이 새어 나오고, 얼굴이 흐릿한 동행자는 한 발을 문 안에 들여놓은 채 뒤돌아 말하려는 자세다. 어린 이안은 문턱 바깥에 서서 녹슬기 시작한 열쇠를 쥐고 있고, 입술은 열렸지만 말은 나오지 않는다. 얼음 표면에는 말하지 못한 문장들이 실제 글자가 아니라 흠집 같은 흔적으로 희미하게 떠 있다. 동행자는 악역처럼 보이지 않되, 이미 자기 빛 쪽으로 기울어진 몸짓이어야 한다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 얼음 표면의 흔적들은 읽을 수 있는 글자가 아니라 흠집 같은 흔적으로만 표현한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1138,7 +1166,7 @@ Mood: a borrowed name traced back to a torn remnant. Watercolor and ink, no wate
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 찢어진 안내문 장면을 그린다. 핵심 구도는 다음과 같다: 얼음 위에 떠오른 낡고 찢어진 안내문 조각. 온전한 티켓이나 양식 문서가 아니라 가장자리가 닳고 일부가 사라진 종이에 `...이 안에 있어...`만 겨우 남아 있다. 주인공은 손을 뻗을 듯 말 듯 멈춰 있고, 이안은 녹슨 열쇠를 쥔 채 그 문장을 알아본다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 종이에 실제 글자를 자동 생성하지 말고, 필요한 문구는 나중에 수동으로 넣을 수 있도록 비워 둔다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 찢어진 안내문 장면을 그린다. 핵심 구도는 다음과 같다: 얼음 위에 떠오른 낡고 찢어진 안내문 조각. 온전한 티켓이나 양식 문서가 아니라 가장자리가 닳고 일부가 사라진 종이에 `...이 안에 있어...`만 겨우 남아 있다. 주인공은 손을 뻗을 듯 말 듯 멈춰 있고, 이안은 녹슨 열쇠를 쥔 채 그 문장을 알아본다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 종이에 실제 글자를 자동 생성하지 말고, 필요한 문구는 나중에 수동으로 넣을 수 있도록 비워 둔다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1167,7 +1195,7 @@ Mood: a voice finally becoming real. Bright ice, warm human light, watercolor bl
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 이안이 말하다 장면을 그린다. 핵심 구도는 다음과 같다: 이안이 찢어진 안내문을 가슴 가까이에 들고 자기 안쪽으로 이름을 말하는 순간. 독자에게 이름 글자는 보이지 않는다. 녹슨 열쇠의 녹이 가루처럼 떨어지고, 이안의 윤곽이 처음으로 선명해진다. 주변 얼음 아래의 이름들은 낮은 별빛처럼 조용히 빛난다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 이안이 말하다 장면을 그린다. 핵심 구도는 다음과 같다: 이안이 찢어진 안내문을 가슴 가까이에 들고 자기 안쪽으로 이름을 말하는 순간. 독자에게 이름 글자는 보이지 않는다. 녹슨 열쇠의 녹이 가루처럼 떨어지고, 이안의 윤곽이 처음으로 선명해진다. 주변 얼음 아래의 이름들은 낮은 별빛처럼 조용히 빛난다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1196,7 +1224,7 @@ Mood: not escape alone, but a door opened together. Luminous, hopeful, still mys
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 별빛 균열 장면을 그린다. 핵심 구도는 다음과 같다: 균열 앞에서 주인공과 이안이 나란히 서 있고, 이안의 회복된 열쇠가 문을 여는 순간. 현실의 따뜻한 빛과 사잇별의 낮은 별빛이 함께 섞여 있어야 한다. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 별빛 균열 장면을 그린다. 핵심 구도는 다음과 같다: 균열 앞에서 주인공과 이안이 나란히 서 있고, 이안의 회복된 열쇠가 문을 여는 순간. 현실의 따뜻한 빛과 사잇별의 낮은 별빛이 함께 섞여 있어야 한다. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1215,7 +1243,7 @@ Watercolor and ink illustration, square format, warm quiet ending scene.
 
 The protagonist and Ian have returned to the real bedroom. Ian is now fully solid and clear, no blurred shoulders, no fading edges, and the rusty key is gone from his hand. He stands in ordinary warm room light, looking quietly present. The protagonist is nearby, still ambiguous and mostly from behind or side.
 
-The window shows a normal real-world night or early dawn, not a fantasy sky. The room palette is warmer than S002: soft cream, muted blue shadows, gentle brown wood, with only a faint memory of star-light. Keep watercolor and ink texture consistent with the earlier room illustrations.
+The window shows a normal real-world night or early dawn, not a fantasy sky. The room palette is warmer than the earlier night-room scenes: soft cream, muted blue shadows, gentle brown wood, with only a faint memory of star-light. Keep watercolor and ink texture consistent with the earlier room illustrations.
 
 Character reference: If the protagonist appears, use the attached protagonist character sheet as the reference for his late-teen male hairstyle, lean build, and clothing; keep his face and expression subdued, turned away, blurred, or silhouetted in the actual illustration. If Ian appears, use the attached Ian character sheet as the reference for Ian's hairstyle, slim build, clothing, and rusty key.
 
@@ -1225,7 +1253,7 @@ Mood: someone impossible is now really here. No text, no watermark.
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 이름을 되찾은 소년 장면을 그린다. 핵심 구도는 다음과 같다: 현실의 방 안에 돌아온 두 사람. 이안은 완전히 선명하게 존재하고, 손에는 더 이상 열쇠가 없다. 창밖은 평범한 현실 풍경이며, 방 안의 따뜻한 빛과 두 사람 사이의 조용한 여운이 중심. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 이름을 되찾은 소년 장면을 그린다. 핵심 구도는 다음과 같다: 현실의 방 안에 돌아온 두 사람. 이안은 완전히 선명하게 존재하고, 손에는 더 이상 열쇠가 없다. 창밖은 평범한 현실 풍경이며, 방 안의 따뜻한 빛과 두 사람 사이의 조용한 여운이 중심. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1254,7 +1282,7 @@ Mood: the world is ordinary again, but now it has room for wonder. No text, no w
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 별빛이 남은 세계 ★ 진엔딩 장면을 그린다. 핵심 구도는 다음과 같다: 창가에 선 주인공과 이안. 창문 유리 한쪽에 아주 작고 희미한 낮은 별빛이 남아 있고, 방 안은 현실의 따뜻한 빛으로 채워져 있다. 두 사람은 손을 잡기보다 나란히 서 있으며, 사잇별의 땅이 사라지지 않고 조용히 남아 있다는 느낌이 중심. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 별빛이 남은 세계 ★ 진엔딩 장면을 그린다. 핵심 구도는 다음과 같다: 창가에 선 주인공과 이안. 창문 유리 한쪽에 아주 작고 희미한 낮은 별빛이 남아 있고, 방 안은 현실의 따뜻한 빛으로 채워져 있다. 두 사람은 손을 잡기보다 나란히 서 있으며, 사잇별의 땅이 사라지지 않고 조용히 남아 있다는 느낌이 중심. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1283,7 +1311,7 @@ Mood: farewell, courage, a new path in the in-between world. Watercolor and ink,
 ### 한글 프롬프트
 
 ```
-정방형 수채화와 잉크 삽화. 어스름에 남은 나 ✦ 비밀 엔딩 장면을 그린다. 핵심 구도는 다음과 같다: 닫히는 현실의 문 앞에서 이안이 완전히 선명한 실루엣으로 빛 속에 들어가고, 주인공은 어스름의 깊은 남색 세계 쪽에 남아 작은 별빛을 바라보는 장면. 문 너머는 따뜻한 현실의 빛, 이쪽은 낮은 별빛과 얼음길. 비극만이 아니라 조용한 선택과 새로운 시작의 느낌. 화풍은 S002/S005처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
+정방형 수채화와 잉크 삽화. 어스름에 남은 나 ✦ 비밀 엔딩 장면을 그린다. 핵심 구도는 다음과 같다: 닫히는 현실의 문 앞에서 이안이 완전히 선명한 실루엣으로 빛 속에 들어가고, 주인공은 어스름의 깊은 남색 세계 쪽에 남아 작은 별빛을 바라보는 장면. 문 너머는 따뜻한 현실의 빛, 이쪽은 낮은 별빛과 얼음길. 비극만이 아니라 조용한 선택과 새로운 시작의 느낌. 화풍은 기존 수채·잉크 기준처럼 수채 번짐, 종이 질감, 섬세한 잉크 선을 유지하되, 이 장면의 색감은 투명한 얼음 파랑, 진주빛 흰색, 크리스털 시안, 옅은 라벤더, 따뜻한 사람의 빛을 중심으로 한 밝고 투명한 어스름의 심장 분위기로 잡는다. 분위기는 과장된 공포나 귀여운 만화풍이 아니라, 조용한 판타지와 문학적인 여운이 느껴지게 한다. 사진처럼 사실적으로 만들지 말고, 3D 렌더·치비·애니 과장·워터마크·서명은 피한다.
 
 캐릭터 레퍼런스: 주인공이 등장하면 첨부한 주인공 캐릭터시트 레퍼런스 이미지를 기준으로 10대 후반 남자의 헤어스타일, 마른 체격, 옷차림을 맞추되, 실제 삽화에서는 얼굴과 표정은 실루엣, 뒷모습, 옆모습, 흐린 그림자 중심으로 처리한다. 이안이 등장하면 첨부한 이안 캐릭터시트 레퍼런스 이미지를 기준으로 헤어스타일, 가는 체격, 옷차림, 녹슨 열쇠를 맞춘다.
 ```
@@ -1302,5 +1330,5 @@ Character reference sheet for Ian, watercolor and ink illustration, clean grid l
 
 Ian appears adolescent, slender, slightly androgynous, but carries an ancient weathered feeling. Dark tousled hair reaching around the ears or jawline, faint pale gold-indigo glow at the tips. Dark eyes with tiny unstable star-like points deep inside. Simple old-fashioned layered clothing in navy, gray, and muted blue. His shoulders and sleeves can blur subtly at the edges in some views. He often grips a rust-covered old key.
 
-Show face close-ups, full-body views, expression variations, and a close-up of the rusty key. Keep the background pale parchment for reference clarity. Style should match S005: expressive ink hair lines, watercolor shadows, delicate melancholy, not cute, not anime-chibi, not photorealistic. No text labels, no watermark.
+Show face close-ups, full-body views, expression variations, and a close-up of the rusty key. Keep the background pale parchment for reference clarity. Style should match the established Ian reference: expressive ink hair lines, watercolor shadows, delicate melancholy, not cute, not anime-chibi, not photorealistic. No text labels, no watermark.
 ```

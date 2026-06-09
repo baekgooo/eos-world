@@ -4,7 +4,7 @@
 7장. 어스름의 심장. 이안의 고백과 이름 회복
 
 ## 목적
-이안이 처음으로 자기 입으로 숨겼던 마음과 목적을 말한다. 주인공을 도운 마음이 진심이었지만 자기 이름을 찾고 싶은 목적도 있었음을 인정하고, 과거의 침묵들과 현재의 침묵을 연결한다. 핵심 문장 “말하면 네가 날 싫어할 수도 있어. 그래도 말할게.”를 통해 이름 회복의 조건을 완성한다.
+이안이 처음으로 자기 입으로 숨겼던 마음과 목적을 말한다. 주인공을 도운 마음이 진심이었지만 자기 이름을 찾고 싶은 목적도 있었음을 인정하고, 과거의 침묵들과 현재의 침묵을 연결한다. 마지막 대사 “같이 가고 싶었어.”를 통해 이안이 주인공에게 결정을 떠넘기는 질문이 아니라 자기 욕망을 스스로 인정하는 고백으로 만든다.
 
 ## 본문
 
@@ -200,9 +200,11 @@
 
 이번에는 길을 가리키지 않았다. 이쪽이야, 따라와, 조심해, 그렇게 말하지 않았다. 이안은 처음으로 안내자의 얼굴을 내려놓고, 같이 문 앞에 선 사람처럼 나를 보았다.
 
-그리고 물었다.
+그리고 아주 늦게, 자기 안에서 오래 숨어 있던 문장을 꺼냈다.
 
-“같이 갈 수 있어?”
+“같이 가고 싶었어.”
+
+말하고 난 뒤, 이안은 더 붙이지 않았다. 같이 가도 되느냐고 묻지 않았고, 같이 가자고 잡아끌지도 않았다. 다만 그 문장을 얼음 위에 놓아두었다. 오래 말하지 못했던 마음 하나를, 이제는 내 대답이 아니라 자기 목소리로 먼저 인정한 사람처럼.
 
 ## 선택지
 없음. S077. 마지막 선택 진행.
@@ -216,5 +218,10 @@ S077. 마지막 선택
 ## 삽화 필요
 선택적. 이안이 찢어진 안내문을 가슴 가까이에 들고 자기 안쪽으로 이름을 말하는 순간. 독자에게 이름 글자는 보이지 않는다. 녹슨 열쇠의 녹이 가루처럼 떨어지고, 이안의 윤곽이 처음으로 선명해진다. 주변 얼음 아래의 이름들은 낮은 별빛처럼 조용히 빛난다.
 
+English prompt for image generation:
+```text
+Watercolor and ink illustration for a literary young-adult fantasy gamebook, mysterious and emotional, not cute, not chibi, not anime exaggeration, not photorealistic, not 3D. In a vast twilight ice field, a mysterious teen boy stands with a trembling torn notice fragment held close to his chest, as if he is finally speaking his true name inwardly. His real name must not be visible. The torn paper may have a small blank reserved area or faint unreadable ink marks for later manual lettering, but do not generate legible text. In his other hand, an old key is transforming: rust flakes fall like brown dust, revealing a quiet golden key with a tiny low-star motif. The boy's outline, once misty, is becoming clear; his shadow finally reaches the ice beneath him. Under the transparent ice, many lost names glow softly like low stars, bowing or dimming in silence. The mood is hushed, painful, and healing at once. Muted blue twilight, pale gold keylight, delicate ink lines, soft watercolor texture, strong emotional focus on the boy's face and hands.
+```
+
 ## 메모
-S073은 이안의 핵심 성장 장면. 주인공은 즉시 용서하지 않고 “들었어”, “이번엔 네가 말했어” 정도로 청취를 먼저 준다. 이안의 진짜 이름은 독자에게 공개하지 않는다. 마지막 문장 “같이 갈 수 있어?”로 S074와 직접 연결한다.
+마지막 문장 “같이 가고 싶었어.”는 허락 요청이 아니라 이안이 자기 바람을 인정하는 고백이다. 이후 S077은 주인공이 이안의 바람을 들은 뒤, 자기 선택과 자기 별빛을 구분하는 장면으로 이어진다.
