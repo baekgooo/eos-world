@@ -210,6 +210,23 @@
 **주의:**
 - 작업 전부터 repo에 삽화/문서/프리뷰 관련 미커밋 변경과 untracked 이미지가 많이 있었음. 이번 원고 수정의 핵심 범위는 챕터2 `03_sections/S019~S030` 본문과 빌드로 갱신된 `docs/`다.
 
+## 3-7. 클코 작업 로그 (2026-06-09, 배포)
+
+**작업한 것:**
+- 로컬 변경 전체 분류 후 의도한 파일만 선별 커밋/push.
+- 포함: `.hermes/COLLAB.md`, `00_project/illustration_spec.md`, 챕터2 원고(S019~S030) + S001/S014/S076~S078/S080, `02_front_matter/`(신규), `05_image/*.png`(최상위 36종+캐릭터시트3종), `docs/`(빌드 산출물).
+- 제외(미커밋): `03_sections/.obsidian/`, `03_sections_revision_drafts/`, `05_image/_backup/`, `05_image/안쓸_이미지/`.
+- `python scripts/build_preview.py` 통과(118 section pages, 15 reference pages) 후 커밋.
+- GitHub Pages 배포 완료 (main → 2842e62).
+
+**다음 액션:**
+1. 웹 프리뷰 확인 — `docs/index.html`, `docs/big-workshop.html`, `docs/flow-review.html` 및 주요 엔딩 섹션.
+2. `05_image/_backup/`, `05_image/안쓸_이미지/`, `03_sections/.obsidian/`, `03_sections_revision_drafts/`를 .gitignore에 추가하면 앞으로 `git status`가 깔끔해짐 (선택 사항).
+3. 삽화 최소 세트 확정 — PDF에 넣을 것/버릴 것/재생성할 것 분류.
+4. 전체 링크/구조 검수 (S001~S081).
+
+---
+
 ## 3-6. 용쿠 작업 로그 (2026-06-09, 배포 전 최신 상태)
 
 **작업한 것 — 원고/엔딩/삽화/PDF 준비:**
